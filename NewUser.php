@@ -44,9 +44,13 @@
         $phoneNumberErrorMessage = ValidatePhone($phoneNumber);
         $passwordErrorMessage = ValidatePassword($password);
         $passwordConfirmErrorMessage = ConfirmPassword($password, $passwordConfirm);
+
+        //password_hash returns an string which is the encrypted password which
+        //will later be inserted into the database.
         $encryptedPassword = password_hash($password, PASSWORD_BCRYPT);
-        $_SESSION['encryptedPassword'] = $encryptedPassword;
         
+        $_SESSION['encryptedPassword'] = $encryptedPassword;
+
         $valid = ValidatePage($idErrorMessage, $nameErrorMessage, $phoneNumberErrorMessage, $passwordErrorMessage, $passwordConfirmErrorMessage);
         
     }
@@ -110,7 +114,7 @@
     if(isset($_POST["submitBtn"]) && $valid) {
         $sql = 'INSERT INTO User (UserID, Name, Phone, Password) VALUES (?,?,?,?)';
         $preparedQuery = $myPDO->prepare($sql);
-        $preparedQuery->execute([$id, $name, $phoneNumber, $password]);
+        $preparedQuery->execute([$id, $name, $phoneNumber, $encryptedPassword]);
         
         $loggedInUser = new User($id, $name, $phoneNumber, $encryptedPassword);
         $_SESSION['loggedInUser'] = $loggedInStudent;
