@@ -1,17 +1,19 @@
-<!DOCTYPE html>
-<!--
-To change this license header, choose License Headers in Project Properties.
-To change this template file, choose Tools | Templates
-and open the template in the editor.
--->
+<?php
+    include "./Common/Header.php"
+?>
 <html>
     <head>
         <meta charset="UTF-8">
         <title></title>
     </head>
     <body>
-        <?php
-            echo "<h1>Hello World!</h1>";
-        ?>
+        <h1>Welcome to Algonquin Social Media Website</h1>
+        <div>
+            <p>If you have never used this before, you have to <a href="NewUser.php">sign up</a> first</p>
+            <p>If you have already have an account, please <a href="Login.php">Login</a> here</p>
+        </div>
     </body>
 </html>
+<?php 
+    include "./Common/Footer.php"
+?>
