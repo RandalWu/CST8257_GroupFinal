@@ -27,12 +27,4 @@ Class User {
     public function getPassword() {
         return $this->password;
     }
-    
-    public function getHours() {
-        return $this->hours;
-    }
-    
-    public function setHours($hours) {
-        $this->hours = $hours;
-    }
 }
