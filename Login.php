@@ -62,15 +62,15 @@
 <?php
 
     if (isset($_POST['submitBtn']) && $valid) {
-        $getStudent = "SELECT * FROM Student WHERE StudentID = ? AND Password = ?";
-        $preparedGetStudent = $myPDO->prepare($getStudent);
-        $preparedGetStudent->execute([$id, $password]);
+        $getStudent = "SELECT * FROM User WHERE UserID = ?";
+        $preparedGetUser = $myPDO->prepare($getStudent);
+        $preparedGetUser->execute([$id]);
         
-        foreach($preparedGetStudent as $row) {
-            $loggedInStudent = new Student($row['StudentId'], $row['Name'], $row['Phone'], $row['Password'] );
+        foreach($preparedGetUser as $row) {
+            $loggedInUser = new User($row['StudentId'], $row['Name'], $row['Phone'], $row['Password'] );
         }
         
-        $_SESSION['loggedInStudent'] = $loggedInStudent;
+        $_SESSION['loggedInUser'] = $loggedInUser;
         header("Location: CourseSelection.php");
         die();
     }
