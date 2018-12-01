@@ -54,6 +54,30 @@
         $valid = ValidatePage($idErrorMessage, $nameErrorMessage, $phoneNumberErrorMessage, $passwordErrorMessage, $passwordConfirmErrorMessage);
         
     }
+    
+    // Inserting User into CST8257 and set loggedInUser Session.
+    if(isset($_POST["submitBtn"]) && $valid) {
+        $sql = 'INSERT INTO User (UserID, Name, Phone, Password) VALUES (?,?,?,?)';
+        $preparedQuery = $myPDO->prepare($sql);
+        $preparedQuery->execute([$id, $name, $phoneNumber, $encryptedPassword]);
+        
+        $loggedInUser = new User($id, $name, $phoneNumber, $encryptedPassword);
+        $_SESSION['loggedInUser'] = $loggedInStudent;
+        
+        $userDirectory = USERS_DIR .'/'. $name;
+        if (!file_exists($userDirectory)) {
+            mkdir($userDirectory,true);
+	}
+        
+        $id = '';
+        $name = '';
+        $phoneNumber = '';
+        $password = '';
+        $passwordConfirm = '';
+
+        header("Location: Login.php");
+        die();
+    }
 ?>
 
 <center><h1>Sign Up</h1></center> 
@@ -110,30 +134,6 @@
 </form>
 
 <?php
-// Inserting User into CST8257 and set loggedInUser Session.
-    if(isset($_POST["submitBtn"]) && $valid) {
-        $sql = 'INSERT INTO User (UserID, Name, Phone, Password) VALUES (?,?,?,?)';
-        $preparedQuery = $myPDO->prepare($sql);
-        $preparedQuery->execute([$id, $name, $phoneNumber, $encryptedPassword]);
-        
-        $loggedInUser = new User($id, $name, $phoneNumber, $encryptedPassword);
-        $_SESSION['loggedInUser'] = $loggedInStudent;
-        
-        $userDirectory = USERS_DIR .'/'. $name;
-        if (!file_exists($userDirectory)) {
-            mkdir($userDirectory,true);
-	}
-        
-        $id = '';
-        $name = '';
-        $phoneNumber = '';
-        $password = '';
-        $passwordConfirm = '';
-
-        header("Location: Login.php");
-        die();
-    }
-    
     include './Common/Footer.php';
 
 
