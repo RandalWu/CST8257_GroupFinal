@@ -21,7 +21,7 @@
 
 <meta name=”viewport” content=”width=device-width, initial-scale=1″>
 
-<body style="padding-top: 50px; margin-bottom: 60px;">
+<body style="padding-top: 50px; margin-bottom: 60px; background-color: lightblue;">
     <nav class="navbar navbar-default navbar-fixed-top navbar-inverse">
       <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
