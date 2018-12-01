@@ -1,5 +1,6 @@
 <?php 
 //              Validation Functions
+//NewUser.php=========================================================================================================
 function ValidateID($id){
     if (strlen($id) == 0) {
         return "ID Cannot be blank";
@@ -63,5 +64,20 @@ function ValidatePage() {
     }
     else {
         return false;
+    }
+}
+
+//AddFriend.php===============================================================================
+
+function validateSearch($friendID)
+{
+    if (strlen($friendID)==0)
+    {
+        //input field is empty
+        return false;
+    }
+    else
+    {
+        return true;
     }
 }
