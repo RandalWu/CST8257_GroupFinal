@@ -19,7 +19,7 @@ if (isset($_POST["btnSearch"]))
 {
     //Your ID and Friend ID
 //  TODO  $myID = $_SESSION['userID'];
-    $myID = 1;
+    $myID = 4;
     $friendID = ($_POST["txtFriendID"]);
 
 
