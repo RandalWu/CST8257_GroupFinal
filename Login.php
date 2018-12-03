@@ -77,7 +77,7 @@
         $preparedGetUser->execute([$id]);
 
         foreach($preparedGetUser as $row) {
-            $loggedInUser = new User($row['StudentId'], $row['Name'], $row['Phone'], $row['Password'] );
+            $loggedInUser = new User($row['UserID'], $row['Name'], $row['Phone'], $row['Password'] );
         }
         
         $_SESSION['loggedInUser'] = $loggedInUser;
@@ -100,4 +100,5 @@
             exit();
         }
 }
+
     include './Common/Footer.php';
