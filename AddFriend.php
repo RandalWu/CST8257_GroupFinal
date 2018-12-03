@@ -13,19 +13,22 @@ include './Common/DatabaseFunctions.php';
 session_start(); 	// start PHP session!
 
 
-
 //decided to do this in line ¯\_(ツ)_/¯
 if (isset($_POST["btnSearch"]))
 {
     //Your ID and Friend ID
-//    $myID = $_SESSION['userID'];
+//  TODO  $myID = $_SESSION['userID'];
     $myID = 1;
     $friendID = ($_POST["txtFriendID"]);
+
+
 
     //validate if form is empty
     $validSearch = validateSearch($friendID);
     if ($validSearch = true)
     {
+
+
         //make sure entered ID is not your own
         if ($myID == $friendID)
         {
@@ -33,22 +36,67 @@ if (isset($_POST["btnSearch"]))
         }
         else
         {
+
+
             //check if user exists in database
             $retrievedID = getFriendIdById($friendID);
-
             if ($retrievedID == null)
             {
                 $errorMessage = "This user doesn't exist!";
             }
             else
             {
+
+//                $friendshipStatus = friendshipStatus($myID, $friendID);
+//                echo $friendshipStatus;
+
                 //check if user is already friends
-                $checkFriendshipStatus = validateFriendsAlreadyCheck($friendID, $myID);
-                if ($checkFriendshipStatus == "not friends" || "request")
+                $checkFriendsAlreadyStatus = validateFriendshipMeToThem($friendID, $myID);
+                if ($checkFriendsAlreadyStatus == "not friends" || $checkFriendsAlreadyStatus == "request")
                 {
+                    //region Error Checking
+                    //                    echo "Not friends in database";
+//                    echo '<br>';
+//                    echo $checkFriendsAlreadyStatus;
+//
+//                    if ($checkFriendsAlreadyStatus == "request")
+//                    {
+//                        echo "<br> It's a request";
+//                    }
+//                    if ($checkFriendsAlreadyStatus == "accepted")
+//                    {
+//                        echo "<br> WHY IS THIS PRINTING THEN";
+//                    }
+                    //endregion
+
+                    if ($checkFriendsAlreadyStatus == "request")
+                    {
+                        $errorMessage = "You have already sent a request to this user. They have not accepted...";
+
+                    }
+
+
                     //continue with request
-                    echo "Sending Friend Request";
-                    $checkRequestStatus = validatePreExistingFriendRequest($friendID, $myID);
+                    echo "<br>...Sending Friend Request";
+                    //add friend if request already exists
+                    $checkIfRequestExists = validatePreExistingFriendRequest($friendID, $myID);
+                    if ($checkIfRequestExists == "request")
+                    {
+                        echo "<br>...They sent me a request and now I'm accepting!";
+                        //update existing request to "approved"
+                        $updateFriendStatus = addFriendsFromExistingRequest($friendID, $myID);
+                        $errorMessage = "You and `NAME` are now friends. How nice for you!!!";
+
+                    }
+                    else
+                    {
+                        echo "<br>...No prior request existed. Sending a request now";
+
+                    }
+
+
+
+//                    $checkRequestStatus = validatePreExistingFriendRequest($friendID, $myID);
                     //check if request exists
 //                    if(request = there)
 //                    {
@@ -66,16 +114,16 @@ if (isset($_POST["btnSearch"]))
 
 
                 }
-                elseif ($checkFriendshipStatus == "accepted")
+                elseif ($checkFriendsAlreadyStatus == "accepted")
                 {
                     $errorMessage = "You are already friends with this user!";
+                    echo "<br> myID -> friendID = accepted in db";
+
                 }
-
             }
-
         }
     }
-    else
+    elseif($validSearch == null)
     {
         $errorMessage = "You must input a user ID!";
     }
