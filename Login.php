@@ -18,15 +18,21 @@
         $loginCheck = "SELECT UserID, Password FROM User WHERE UserID = ?";
         $preparedLoginCheck = $myPDO->prepare($loginCheck);
         $preparedLoginCheck->execute([$id]);
+        
+        $idErrorMessage = ValidateID($id);
+        $passwordErrorMessage = ValidatePassword($password);
         foreach ($preparedLoginCheck as $row) {
             if (!password_verify($password, $row['Password'])) {
                 $loginErrorMessage = "UserID/Password not correct";
             }
         }
-        $idErrorMessage = ValidateID($id);
-        $passwordErrorMessage = ValidatePassword($password);
         
         $valid = ValidatePage($idErrorMessage, $passwordErrorMessage, $loginErrorMessage);
+        
+        if ((($preparedLoginCheck->rowCount())== 0) && $valid){
+            $loginErrorMessage = "User does not exist, please signup first";
+            $valid = ValidatePage($idErrorMessage, $passwordErrorMessage, $loginErrorMessage);
+        }
     }
 ?>
 <h1 align="center">Login</h1>
@@ -69,13 +75,30 @@
         $getStudent = "SELECT * FROM User WHERE UserID = ?";
         $preparedGetUser = $myPDO->prepare($getStudent);
         $preparedGetUser->execute([$id]);
-        
+
         foreach($preparedGetUser as $row) {
             $loggedInUser = new User($row['UserID'], $row['Name'], $row['Phone'], $row['Password'] );
         }
         
         $_SESSION['loggedInUser'] = $loggedInUser;
-        header("Location: AddAlbums.php");
-        die();
-    }
+
+        switch ($_SESSION["fromPage"]) {
+        case "MyFriends":
+            header("Location: MyFriends.php");
+            exit();
+        case "MyAlbums":
+            header("Location: MyAlbums.php");
+            exit();
+        case "MyPictures":
+            header("Location: MyPictures.php");
+            exit();
+        case "UploadPictures":
+            header("Location: UploadPictures.php");
+            exit();
+        default:
+            header("Location: Index.php");
+            exit();
+        }
+}
+
     include './Common/Footer.php';
