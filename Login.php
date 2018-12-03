@@ -67,11 +67,11 @@
         $preparedGetUser->execute([$id]);
         
         foreach($preparedGetUser as $row) {
-            $loggedInUser = new User($row['StudentId'], $row['Name'], $row['Phone'], $row['Password'] );
+            $loggedInUser = new User($row['UserID'], $row['Name'], $row['Phone'], $row['Password'] );
         }
         
         $_SESSION['loggedInUser'] = $loggedInUser;
-        header("Location: CourseSelection.php");
+        header("Location: AddAlbums.php");
         die();
     }
     include './Common/Footer.php';
