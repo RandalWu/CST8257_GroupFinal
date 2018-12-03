@@ -47,7 +47,7 @@
                <li><a href="MyPictures.php">My Pictures</a></li>
                <li><a href="UploadPictures.php">Upload Pictures</a></li>
                <?php
-               if (isset($_SESSION["loggedInStudent"]))
+               if (isset($_SESSION["loggedInUser"]))
                {
                    echo "<li><a href='Logout.php'>Logout</a></li>";
                }
