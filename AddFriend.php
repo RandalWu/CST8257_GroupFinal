@@ -12,6 +12,7 @@ include './Common/DatabaseFunctions.php';
 
 session_start(); 	// start PHP session!
 
+//TODO: insert session redirect
 
 //decided to do this in line ¯\_(ツ)_/¯
 if (isset($_POST["btnSearch"]))
@@ -47,12 +48,13 @@ if (isset($_POST["btnSearch"]))
             else
             {
 
-//                $friendshipStatus = friendshipStatus($myID, $friendID);
-//                echo $friendshipStatus;
+                //TODO: check if friends in either configuration
+                $friendshipStatus = friendshipStatus($myID, $friendID);
+                echo "<br>Friendship status is $friendshipStatus";
 
                 //check if user is already friends
-                $checkFriendsAlreadyStatus = validateFriendshipMeToThem($friendID, $myID);
-                if ($checkFriendsAlreadyStatus == "not friends" || $checkFriendsAlreadyStatus == "request")
+//                $checkFriendsAlreadyStatus = validateFriendshipMeToThem($friendID, $myID);
+                if ($friendshipStatus == "not friends" || $friendshipStatus == "request")
                 {
                     //region Error Checking
                     //                    echo "Not friends in database";
@@ -69,55 +71,41 @@ if (isset($_POST["btnSearch"]))
 //                    }
                     //endregion
 
-                    if ($checkFriendsAlreadyStatus == "request")
+                    if ($friendshipStatus == "request")
                     {
                         $errorMessage = "You have already sent a request to this user. They have not accepted...";
 
                     }
-
-
-                    //continue with request
-                    echo "<br>...Sending Friend Request";
-                    //add friend if request already exists
-                    $checkIfRequestExists = validatePreExistingFriendRequest($friendID, $myID);
-                    if ($checkIfRequestExists == "request")
-                    {
-                        echo "<br>...They sent me a request and now I'm accepting!";
-                        //update existing request to "approved"
-                        $updateFriendStatus = addFriendsFromExistingRequest($friendID, $myID);
-                        $errorMessage = "You and `NAME` are now friends. How nice for you!!!";
-
-                    }
                     else
                     {
-                        echo "<br>...No prior request existed. Sending a request now";
+                        //continue with request
+                        echo "<br>...Sending Friend Request";
+                        //add friend if request already exists
+                        $checkIfRequestExists = validatePreExistingFriendRequest($friendID, $myID);
+                        if ($checkIfRequestExists == "request")
+                        {
+                            echo "<br>...They sent me a request and now I'm accepting!";
+                            //update existing request to "approved"
+                            $updateFriendStatus = addFriendsFromExistingRequest($friendID, $myID);
+                            $errorMessage = "You and `NAME` are now friends. How nice for you!!!";
+
+                        }
+                        else
+                        {
+                            echo "<br>...No prior request existed. Sending a request now";
+                            //insert friend request into table
+                            $sendRequest = sendFriendRequest($myID, $friendID);
+                            echo "<br>$sendRequest";
+                            $errorMessage = "Friend Request Sent";
+                        }
 
                     }
 
-
-
-//                    $checkRequestStatus = validatePreExistingFriendRequest($friendID, $myID);
-                    //check if request exists
-//                    if(request = there)
-//                    {
-//                        //add friend right away
-//                        $errorMessage = "You are now friends with 'name'!";
-
-                    //Insert row for requester + requestee in reverse order??
-//                    }
-//                    else
-//                    {
-//                        //send request
-//                        $errorMessage = "You have sent a request to 'name'!!!!";
-//
-//                    }
-
-
                 }
-                elseif ($checkFriendsAlreadyStatus == "accepted")
+                elseif ($friendshipStatus == "accepted")
                 {
                     $errorMessage = "You are already friends with this user!";
-                    echo "<br> myID -> friendID = accepted in db";
+//                    echo "<br> myID -> friendID = accepted in db";
 
                 }
             }
@@ -127,6 +115,18 @@ if (isset($_POST["btnSearch"]))
     {
         $errorMessage = "You must input a user ID!";
     }
+}
+
+if (isset ($_POST['btnCheck']))
+{
+    $myID = 1;
+    $friendID = ($_POST["txtFriendID"]);
+
+    $friendshipStatus = friendshipStatus($myID, $friendID);
+    echo $friendshipStatus;
+    $errorMessage = $friendshipStatus;
+
+
 }
 
 
@@ -156,6 +156,7 @@ if (isset($_POST["btnSearch"]))
 
 
                 <input class="btn btn-primary" type="submit" name="btnSearch" value="Submit Friend Request"/>
+                <input class="btn btn-success" type="submit" name="btnCheck" value="Check Friend Status"/>
             </form>
         </div>
 

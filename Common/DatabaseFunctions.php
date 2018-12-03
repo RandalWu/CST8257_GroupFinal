@@ -41,59 +41,68 @@ function getFriendIdById($friendID)
 
 }
 
-function validateFriendshipMeToThem($friendID, $myID)
-{
-    $dbConnection = parse_ini_file("db_connection.ini");
-    extract($dbConnection);
-    $PDO = new PDO($dsn, $un, $p);
-
-    $sql = "SELECT FriendRequesterId, FriendRequesteeId, Friendship.Status Status            
-            FROM `Friendship` 
-            WHERE FriendRequesteeId =:friendsID AND FriendRequesterId =:myID";
-    $pStmt = $PDO -> prepare( $sql );
-    $pStmt -> execute(['friendsID' => $friendID, 'myID' => $myID]);
-    $row = ($pStmt->fetch(PDO::FETCH_ASSOC));
 
 
-    if ($row)
-    {
-        return $row['Status'];
-
-    }
-    else
-    {
-        return "not friends";
-    }
 
 
-}
+//region Deprecated Functions
+//
+//function validateFriendshipMeToThem($friendID, $myID)
+//{
+//    $dbConnection = parse_ini_file("db_connection.ini");
+//    extract($dbConnection);
+//    $PDO = new PDO($dsn, $un, $p);
+//
+//    $sql = "SELECT FriendRequesterId, FriendRequesteeId, Friendship.Status Status
+//            FROM `Friendship`
+//            WHERE FriendRequesteeId =:friendsID AND FriendRequesterId =:myID";
+//    $pStmt = $PDO -> prepare( $sql );
+//    $pStmt -> execute(['friendsID' => $friendID, 'myID' => $myID]);
+//    $row = ($pStmt->fetch(PDO::FETCH_ASSOC));
+//
+//
+//    if ($row)
+//    {
+//        return $row['Status'];
+//
+//    }
+//    else
+//    {
+//        return "not friends";
+//    }
+//
+//
+//}
 
-function validateFriendshipThemToMe($friendID, $myID)
-{
-$dbConnection = parse_ini_file("db_connection.ini");
-    extract($dbConnection);
-    $PDO = new PDO($dsn, $un, $p);
 
-    $sql = "SELECT FriendRequesterId, FriendRequesteeId, Friendship.Status Status            
-            FROM `Friendship` 
-            WHERE FriendRequesteeId =:myID AND FriendRequesterId =:friendID";
-    $pStmt = $PDO -> prepare( $sql );
-    $pStmt -> execute(['myID' => $myID, 'friendsID' => $friendID]);
-    $row = ($pStmt->fetch(PDO::FETCH_ASSOC));
-
-
-    if ($row)
-    {
-        return $row['Status'];
-
-    }
-    else
-    {
-        return "not friends";
-    }
-
-
-}
+//
+//function validateFriendshipThemToMe($friendID, $myID)
+//{
+//$dbConnection = parse_ini_file("db_connection.ini");
+//    extract($dbConnection);
+//    $PDO = new PDO($dsn, $un, $p);
+//
+//    $sql = "SELECT FriendRequesterId, FriendRequesteeId, Friendship.Status Status
+//            FROM `Friendship`
+//            WHERE FriendRequesteeId =:myID AND FriendRequesterId =:friendID";
+//    $pStmt = $PDO -> prepare( $sql );
+//    $pStmt -> execute(['myID' => $myID, 'friendsID' => $friendID]);
+//    $row = ($pStmt->fetch(PDO::FETCH_ASSOC));
+//
+//
+//    if ($row)
+//    {
+//        return $row['Status'];
+//
+//    }
+//    else
+//    {
+//        return "not friends";
+//    }
+//
+//
+//}
+//endregion
 
 
 
@@ -146,34 +155,60 @@ function addFriendsFromExistingRequest($friendID, $myID)
     }
 
 }
-//
-//function friendshipStatus($myID, $friendID)
-//{
-//    $dbConnection = parse_ini_file("db_connection.ini");
-//    extract($dbConnection);
-//    $PDO = new PDO($dsn, $un, $p);
-//
-//    $sql = "SELECT FriendRequesterId, FriendRequesteeId, Friendship.Status Status
-//            FROM `Friendship`
-//            WHERE (FriendRequesteeId =:friendsID AND FriendRequesterId =:myID)
-//            OR (FriendRequesteeId =:myID AND FriendRequesterId =:friendID)";
-//    $pStmt = $PDO -> prepare( $sql );
-//    $pStmt -> execute(['friendsID' => $friendID, 'myID' => $myID, 'myID2' => $myID, 'friendsID2' => $friendID]);
-//    $row = ($pStmt->fetch(PDO::FETCH_ASSOC));
-//
-//
-//    if ($row)
-//    {
-//        return $row['Status'];
-//
-//    }
-//    else
-//    {
-//        return "not friends";
-//    }
-//
-//
-//}
+
+
+function friendshipStatus($myID, $friendID)
+{
+    $dbConnection = parse_ini_file("db_connection.ini");
+    extract($dbConnection);
+    $PDO = new PDO($dsn, $un, $p);
+
+    $sql = "SELECT FriendRequesterId, FriendRequesteeId, Friendship.Status Status
+            FROM `Friendship`
+            WHERE (FriendRequesteeId =:friendID AND FriendRequesterId =:myID)
+            OR (FriendRequesteeId =:myID2 AND FriendRequesterId =:friendID2)";
+    $pStmt = $PDO -> prepare( $sql );
+    $pStmt -> execute(['friendID' => $friendID, 'myID' => $myID, 'myID2' => $myID, 'friendID2' => $friendID]);
+    $row = ($pStmt->fetch(PDO::FETCH_ASSOC));
+
+
+    if ($row)
+    {
+        return $row['Status'];
+
+    }
+    else
+    {
+        return "not friends";
+    }
+
+}
+
+
+function sendFriendRequest($myID, $friendID)
+{
+    $dbConnection = parse_ini_file("db_connection.ini");
+    extract($dbConnection);
+    $PDO = new PDO($dsn, $un, $p);
+
+    $sql = "INSERT INTO `CST8257`.`Friendship` (`FriendRequesterId`, `FriendRequesteeId`, `Status`) 
+            VALUES (?, ?, ?);";
+    $pStmt = $PDO -> prepare( $sql );
+    $pStmt -> execute([$myID, $friendID, 'request']);
+
+    if ($pStmt)
+    {
+//        return "success";
+        return "success";
+    }
+    else
+    {
+        return "fail3";
+    }
+
+
+
+}
 
 
 
