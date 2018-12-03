@@ -95,6 +95,12 @@
         case "UploadPictures":
             header("Location: UploadPictures.php");
             exit();
+        case "AddFriend":
+            header("Location: AddFriend.php");
+            exit();
+        case "AddAlbums":
+            header("Location: AddAlbumbs.php");
+            exit();
         default:
             header("Location: Index.php");
             exit();
