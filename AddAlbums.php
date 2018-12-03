@@ -5,8 +5,7 @@
     if (!isset($_SESSION['loggedInUser'])) {
         header('Location: index.php');
     }
-    
-    var_dump($_SESSION['loggedInUser']);
+
     $valid = false;
     $sql = "SELECT * FROM Accessibility"; 
     $pStmt = $myPDO -> prepare($sql);
@@ -15,7 +14,16 @@
     
     if(isset($_POST['submitBtn'])) {
         $titleErrorMessage = ValidateID($_POST['title']);
+        $sql = 'SELECT * FROM Album WHERE Title = ? AND OwnerID = ?';
+        $preparedQuery = $myPDO->prepare($sql);
+        $preparedQuery->execute([$_POST['title'], $_SESSION['loggedInUser']->getID()]);
+        if ($preparedQuery->rowCount() > 0) {
+            $valid = false;
+            $titleErrorMessage = 'Album name already exists';
+        }
+        
         $valid = ValidatePage($titleErrorMessage);
+        
     }
     
     if(isset($_POST['submitBtn']) && $valid) {
@@ -23,6 +31,11 @@
                 . 'VALUES (DEFAULT,?,?,?,?,?)';
         $preparedQuery = $myPDO->prepare($sql);
         $preparedQuery->execute([$_POST['title'], $_POST['description'], date("Y-m-d H:i:s"), $_SESSION['loggedInUser']->getID(), $_POST['accessibility']]);
+        
+        $albumPath = USERS_DIR . '/'. str_replace(' ', '', $_SESSION['loggedInUser']->getName()) . '/' . $_POST['title'];
+        if(!file_exists(USERS_DIR . '/'. str_replace(' ', '', $_SESSION['loggedInUser']->getName()) . '/' . $_POST['title'])) {
+            mkdir($albumPath);
+        }
         
         header('Location: AddAlbums.php');
         die();
