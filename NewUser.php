@@ -52,7 +52,6 @@
         $_SESSION['encryptedPassword'] = $encryptedPassword;
 
         $valid = ValidatePage($idErrorMessage, $nameErrorMessage, $phoneNumberErrorMessage, $passwordErrorMessage, $passwordConfirmErrorMessage);
-        
     }
     
     // Inserting User into CST8257 and set loggedInUser Session.
@@ -62,9 +61,9 @@
         $preparedQuery->execute([$id, $name, $phoneNumber, $encryptedPassword]);
         
         $loggedInUser = new User($id, $name, $phoneNumber, $encryptedPassword);
-        $_SESSION['loggedInUser'] = $loggedInStudent;
+        $_SESSION['loggedInUser'] = $loggedInUser;
         
-        $userDirectory = USERS_DIR .'/'. $name;
+        $userDirectory = USERS_DIR .'/'. str_replace(' ', '', $name);
         if (!file_exists($userDirectory)) {
             mkdir($userDirectory,true);
 	}
