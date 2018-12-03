@@ -1,3 +1,14 @@
 .background {
     background-color: lightblue;
 }
+
+textarea {
+    width: 35%;
+    height: 100px;
+    padding: 12px 20px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    resize: none;
+}

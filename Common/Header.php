@@ -17,6 +17,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="/AlgCommon/Contents/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
         <link href="/AlgCommon/Contents/AlgCss/Site.css" rel="stylesheet" type="text/css"/>
+        <link href="/CST8257GroupFinal/Contents/Main.css" rel="stylesheet" type="text/css"/>
 </head>
 
 <meta name=”viewport” content=”width=device-width, initial-scale=1″>
