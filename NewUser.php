@@ -28,7 +28,7 @@
     
     //Validity when submit is pressed
     if (isset($_POST["submitBtn"])) {
-        $user = getUserById($_POST[$id]);
+        $user = getUserById($_POST['id']);
         
         //Checking if user exists
         if ($user != null) { 
@@ -54,10 +54,36 @@
         $valid = ValidatePage($idErrorMessage, $nameErrorMessage, $phoneNumberErrorMessage, $passwordErrorMessage, $passwordConfirmErrorMessage);
         
     }
+    
+    // Inserting User into CST8257 and set loggedInUser Session.
+    if(isset($_POST["submitBtn"]) && $valid) {
+        $sql = 'INSERT INTO User (UserID, Name, Phone, Password) VALUES (?,?,?,?)';
+        $preparedQuery = $myPDO->prepare($sql);
+        $preparedQuery->execute([$id, $name, $phoneNumber, $encryptedPassword]);
+        
+        $loggedInUser = new User($id, $name, $phoneNumber, $encryptedPassword);
+        $_SESSION['loggedInUser'] = $loggedInStudent;
+        
+        $userDirectory = USERS_DIR .'/'. $name;
+        if (!file_exists($userDirectory)) {
+            mkdir($userDirectory,true);
+	}
+        
+        $id = '';
+        $name = '';
+        $phoneNumber = '';
+        $password = '';
+        $passwordConfirm = '';
+
+        header("Location: Login.php");
+        die();
+    }
 ?>
 
-<center><h1>Sign Up</h1></center> 
+<h1 align="center">Sign Up</h1>
+<hr>
 
+<div clas="container">
 <form method="post" class="form-horizontal" action="<?php $_SERVER["PHP_SELF"]; ?>">
      
     <div class="form-group">
@@ -108,27 +134,9 @@
         </div>
      </div>
 </form>
+</div>
 
 <?php
-    // Inserting User into CST8257 and set loggedInUser Session.
-    if(isset($_POST["submitBtn"]) && $valid) {
-        $sql = 'INSERT INTO User (UserID, Name, Phone, Password) VALUES (?,?,?,?)';
-        $preparedQuery = $myPDO->prepare($sql);
-        $preparedQuery->execute([$id, $name, $phoneNumber, $encryptedPassword]);
-        
-        $loggedInUser = new User($id, $name, $phoneNumber, $encryptedPassword);
-        $_SESSION['loggedInUser'] = $loggedInStudent;
-        
-        $id = '';
-        $name = '';
-        $phoneNumber = '';
-        $password = '';
-        $passwordConfirm = '';
-        
-        header("Location: Login.php");
-        die();
-    }
-
     include './Common/Footer.php';
 
 

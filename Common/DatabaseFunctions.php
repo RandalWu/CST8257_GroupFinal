@@ -9,12 +9,12 @@ function getUserById($userId) {
     extract($dbConnection);
     $PDO = new PDO($dsn, $un, $p);
     
-    $sql = "SELECT * FROM Student WHERE StudentId = :userId"; 
+    $sql = "SELECT * FROM User WHERE UserID = :userId"; 
     $pStmt = $PDO -> prepare( $sql );
     $pStmt -> execute(['userId' => $userId]);
     $row = $pStmt->fetch(PDO::FETCH_ASSOC);
     if ($row){
-        return new Student($row['StudentId'], $row['Name'], $row['Phone'], $row['Password'] );  
+        return new User($row['UserID'], $row['Name'], $row['Phone'], $row['Password'] );  
     }
     else {
         return null;  
