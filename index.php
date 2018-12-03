@@ -1,19 +1,23 @@
 <?php
     include "./Common/Header.php"
 ?>
-<html>
-    <head>
-        <meta charset="UTF-8">
-        <title></title>
-    </head>
-    <body>
-        <h1>Welcome to Algonquin Social Media Website</h1>
-        <div>
-            <p>If you have never used this before, you have to <a href="NewUser.php">sign up</a> first</p>
-            <p>If you have already have an account, please <a href="Login.php">Login</a> here</p>
+
+
+    <div class="container">
+
+        <h1 align="center">Welcome to Algonquin Social Media Website</h1>
+        <hr>
+        <div  align="left">
+            <h4> If you have never used this before, you have to <a href="NewUser.php">SIGN UP</a> first.</h4>
+            <br>
+            <h4> If you have already have an account, please <a href="Login.php">LOGIN</a> here.</h4>
+            <br>
         </div>
-    </body>
-</html>
+
+
+    </div>
+
+
 <?php 
     include "./Common/Footer.php"
 ?>

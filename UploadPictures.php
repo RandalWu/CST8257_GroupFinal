@@ -1,9 +1,12 @@
 <?php 
     include './Common/Header.php';
 ?>
-<body>
-<center><h1>Upload Pictures</h1></center>
-<div>
+
+<h1 align="center">Upload Pictures</h1>
+<div class="container">
+    <hr>
+
+    <div>
     <p>The accepted file formats are: JPEG, GIF, and PNG.</p>
     <p>You can upload multiple pictures at a time by holding the SHIFT key while selecting pictures.</p>
     <p>When uploading multiple images, the description will apply to all images.</p>
@@ -47,8 +50,7 @@
     
     <input type="submit" name="uploadBtn" value="Upload" class="button"/>
     <input type="reset" name="btnReset" value="Reset" class="button" onclick="location.href='UploadPictures.php'"/>
-</form> 
-</body>
-
+</form>
+</div>
 <?php
     include './Common/Footer.php';

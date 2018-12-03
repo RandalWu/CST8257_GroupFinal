@@ -29,9 +29,12 @@
         $valid = ValidatePage($idErrorMessage, $passwordErrorMessage, $loginErrorMessage);
     }
 ?>
-<center><h1>Login</h1></center>
+<h1 align="center">Login</h1>
 
-<form method="post" class="form-horizontal" action="<?php $_SERVER["PHP_SELF"]; ?>">
+<div class="container">
+    <hr>
+
+    <form method="post" class="form-horizontal" action="<?php $_SERVER["PHP_SELF"]; ?>">
     <div>
         <span class="text-danger"><?php echo $loginErrorMessage; ?></span>
     </div>
@@ -53,12 +56,13 @@
     
     <div class="form-group"> 
         <div class="col-sm-offset-2 col-sm-10">
-            <button type="submit" name="submitBtn" class="btn btn-default">Submit</button>
-            <button type="reset" name="resetBtn" class="btn btn-default" onclick="location.href='Login.php'" >Clear</button>
+            <button type="submit" name="submitBtn" class="btn btn-primary">Submit</button>
+            <button type="reset" name="resetBtn" class="btn btn-danger" onclick="location.href='Login.php'" >Clear</button>
         </div>
     </div>
     
 </form>
+</div>
 <?php
 
     if (isset($_POST['submitBtn']) && $valid) {
