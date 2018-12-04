@@ -45,9 +45,9 @@
         <span class="text-danger"><?php echo $loginErrorMessage; ?></span>
     </div>
     <div class="form-group">
-        <label class="control-label col-sm-2">Student ID:</label>
+        <label class="control-label col-sm-2">User ID:</label>
         <div class="col-sm-2"> 
-            <input name="id" type="text" class="form-control" placeholder="Enter Your Student ID" value="<?php echo $id; ?>">
+            <input name="id" type="text" class="form-control" placeholder="Enter Your User ID" value="<?php echo $id; ?>">
         </div>
         <span class="text-danger"><?php echo $idErrorMessage; ?></span>
     </div>
