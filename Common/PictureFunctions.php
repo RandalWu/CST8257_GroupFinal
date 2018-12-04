@@ -1,11 +1,6 @@
 <?php
 function save_uploaded_file($destinationPath, $index)
 {
-	if (!file_exists($destinationPath))
-	{
-            mkdir($destinationPath, true);
-	}
-	
 	$tempFilePath = $_FILES['uploadTxt']['tmp_name'][$index];
 	$filePath = $destinationPath."/".$_FILES['uploadTxt']['name'][$index];
 	
@@ -28,11 +23,6 @@ function save_uploaded_file($destinationPath, $index)
 
 function resamplePicture($filePath, $destinationPath, $maxWidth, $maxHeight)
 {
-	if (!file_exists($destinationPath))
-	{
-            mkdir($destinationPath, true);
-	}
-
 	$imageDetails = getimagesize($filePath);
 	
 	$originalResource = null;

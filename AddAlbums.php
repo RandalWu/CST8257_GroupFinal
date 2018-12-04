@@ -34,10 +34,24 @@
         $preparedQuery->execute([$_POST['title'], $_POST['description'], date("Y-m-d H:i:s"), $_SESSION['loggedInUser']->getID(), $_POST['accessibility']]);
         
         $albumPath = USERS_DIR . '/'. str_replace(' ', '', $_SESSION['loggedInUser']->getName()) . '/' . $_POST['title'];
-        if(!file_exists(USERS_DIR . '/'. str_replace(' ', '', $_SESSION['loggedInUser']->getName()) . '/' . $_POST['title'])) {
-            mkdir($albumPath);
+        $originalPicPath = $albumPath . '/OriginalPictures';
+        $albumPicPath = $albumPath . '/AlbumPictures';
+        $thumbnailPicPath = $albumPath . '/ThumbnailPictures';
+       
+        if(!file_exists($albumPath)) {
+            mkdir($albumPath, true);
+            chmod($albumPath, 0755); //mkdir creates the directory in read only, hard change permissions manually
+            
+            mkdir($originalPicPath);
+            chmod($originalPicPath, 0755);
+            
+            mkdir($albumPicPath);
+            chmod($albumPicPath, 0755);
+            
+            mkdir($thumbnailPicPath); 
+            chmod($thumbnailPicPath, 0755);
         }
-        
+
         header('Location: AddAlbums.php');
         die();
     }
