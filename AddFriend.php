@@ -15,11 +15,13 @@ session_start(); 	// start PHP session!
 //TODO: insert session redirect
 
 //decided to do this in line ¯\_(ツ)_/¯
+$myID = 3;
+//  TODO  $myID = $_SESSION['userID'];
+
+
 if (isset($_POST["btnSearch"]))
 {
     //Your ID and Friend ID
-//  TODO  $myID = $_SESSION['userID'];
-    $myID = 4;
     $friendID = ($_POST["txtFriendID"]);
 
 
@@ -53,8 +55,12 @@ if (isset($_POST["btnSearch"]))
                 echo "<br>Friendship status is $friendshipStatus";
 
                 //check if user is already friends
-//                $checkFriendsAlreadyStatus = validateFriendshipMeToThem($friendID, $myID);
-                if ($friendshipStatus == "not friends" || $friendshipStatus == "request")
+                $checkFriendsAlreadyStatus = validateFriendshipMeToThem($friendID, $myID);
+
+                $checkRequestSentAlready = validateFriendshipMeToThem($friendID, $myID);
+
+
+                if ($checkFriendsAlreadyStatus == "not friends" || $checkFriendsAlreadyStatus == "request")
                 {
                     //region Error Checking
                     //                    echo "Not friends in database";
@@ -71,7 +77,7 @@ if (isset($_POST["btnSearch"]))
 //                    }
                     //endregion
 
-                    if ($friendshipStatus == "request")
+                    if ($checkRequestSentAlready == "request")
                     {
                         $errorMessage = "You have already sent a request to this user. They have not accepted...";
 
@@ -129,7 +135,10 @@ if (isset ($_POST['btnCheck']))
 
 }
 
-
+if (isset ($_POST['btnMe']))
+{
+    $errorMessage = "Your ID is $myID";
+}
 
 ?>
     <div class="container">
@@ -157,6 +166,7 @@ if (isset ($_POST['btnCheck']))
 
                 <input class="btn btn-primary" type="submit" name="btnSearch" value="Submit Friend Request"/>
                 <input class="btn btn-success" type="submit" name="btnCheck" value="Check Friend Status"/>
+                <input class="btn btn-danger" type="submit" name="btnMe" value="Check My ID"/>
             </form>
         </div>
 
