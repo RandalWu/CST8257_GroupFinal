@@ -15,7 +15,7 @@ session_start(); 	// start PHP session!
 //TODO: insert session redirect
 
 //decided to do this in line ¯\_(ツ)_/¯
-$myID = 3;
+$myID = 1;
 //  TODO  $myID = $_SESSION['userID'];
 
 
