@@ -3,6 +3,7 @@
     include "./Common/ValidationFunctions.php";
     
     if (!isset($_SESSION['loggedInUser'])) {
+        $_SESSION["fromPage"]= "AddAlbums";
         header('Location: index.php');
     }
 
@@ -42,7 +43,7 @@
     }
 ?>
 <h1 align="center">Add Album</h1>
-<p>Welcome <?php echo $_SESSION['loggedInUser']->getName(); ?>! (not you? change user <a href="Login.php">here</a></p>
+<p>Welcome <?php echo $_SESSION['loggedInUser']->getName(); ?>! (not you? change user <a href="Login.php">here</a>)</p>
 
 <form method="post" class="form-horizontal" action="<?php $_SERVER["PHP_SELF"]; ?>">
     <div class="form-group">

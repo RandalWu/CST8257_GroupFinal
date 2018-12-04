@@ -7,7 +7,7 @@ Class User {
     
     public function __construct($id, $name, $phone, $password) {
         $this->id = $id;
-        $this->name = $name;
+        $this->name = str_replace(' ', '', $name);
         $this->phone = $phone;
         $this->password = $password;
     }
