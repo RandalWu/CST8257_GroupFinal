@@ -40,16 +40,16 @@
        
         if(!file_exists($albumPath)) {
             mkdir($albumPath, true);
-            chmod($albumPath, 0755); //mkdir creates the directory in read only, hard change permissions manually
+            chmod($albumPath, 0777); //mkdir creates the directory in read only, hard change permissions manually
             
             mkdir($originalPicPath, true);
-            chmod($originalPicPath, 0755);
+            chmod($originalPicPath, 0777);
             
             mkdir($albumPicPath, true);
-            chmod($albumPicPath, 0755);
+            chmod($albumPicPath, 0777);
             
             mkdir($thumbnailPicPath, true);
-            chmod($thumbnailPicPath, 0755);
+            chmod($thumbnailPicPath, 0777);
         }
 
         header('Location: AddAlbums.php');
