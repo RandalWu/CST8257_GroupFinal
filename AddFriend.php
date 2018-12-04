@@ -19,14 +19,20 @@ $myName = $_SESSION['loggedInUser']->getName();
 $myID = $_SESSION['loggedInUser']->getID();
 
 
+
+
 //decided to do this in line ¯\_(ツ)_/¯
 if (isset($_POST["btnSearch"]))
 {
     $friendID = ($_POST["txtFriendID"]);
 
-    $validSearch = validateSearch($friendID);     //validate if form is empty
 
-    if ($validSearch = true)
+    $validSearch = validateSearch($friendID);     //validate if form is empty
+    if($validSearch == false)
+    {
+        $errorMessage = "You must input a user ID!";
+    }
+    else
     {
 
         if ($myID == $friendID)        //make sure entered ID is not your own
@@ -35,6 +41,7 @@ if (isset($_POST["btnSearch"]))
         }
         else
         {
+
             $retrievedID = getFriendIdById($friendID);       //check if user exists in database
             if ($retrievedID == null)
             {
@@ -42,29 +49,31 @@ if (isset($_POST["btnSearch"]))
             }
             else
             {
-                //checking if friends in either direction
-                $friendshipStatus = friendshipStatus($myID, $friendID);
 
-                //TODO: remove
-                echo "<br>Friendship status is $friendshipStatus";
+                $friendObject = getUserById($friendID); //get friend information once confirmed they exist in db
+                $friendName = $friendObject->getName();
 
-                //check if user is already friends
-                $checkFriendsAlreadyStatus = validateFriendshipMeToThem($friendID, $myID);
-                //check if you have already sent a request
-                $checkRequestSentAlready = validateFriendshipMeToThem($friendID, $myID);
 
-                if ($checkFriendsAlreadyStatus == "not friends" || $checkFriendsAlreadyStatus == "request")
+
+                //Could get rid of one of these
+                $checkFriendsAlreadyStatus = validateFriendshipMeToThem($friendID, $myID);        //check if user is already friends
+                $checkRequestSentAlready = validateFriendshipMeToThem($friendID, $myID);       //check if you have already sent a request
+
+                $friendshipStatus = friendshipStatus($myID, $friendID);      //checking if friends in either direction
+                if ($friendshipStatus == "accepted")
+                {
+                $errorMessage = "You are already friends with $friendName (ID: $friendID)!";
+
+                }
+                elseif ($checkFriendsAlreadyStatus == "not friends" || $checkFriendsAlreadyStatus == "request")
                 {
 
                     if ($checkRequestSentAlready == "request")
                     {
-                        $errorMessage = "You have already sent a request to this user. They have not accepted...";
+                        $errorMessage = "You have already sent a request to $friendName (ID $friendID). They have not accepted...";
                     }
                     else
                     {
-                        //continue with request
-                        echo "<br>...Sending Friend Request";
-
                         //add friend if request already exists
                         $checkIfRequestExists = validatePreExistingFriendRequest($friendID, $myID);
 
@@ -73,33 +82,19 @@ if (isset($_POST["btnSearch"]))
                             //update existing request to "accepted"
                             $updateFriendStatus = addFriendsFromExistingRequest($friendID, $myID);
 
-
-                            //TODO: get friend name + id for this message
-
-                            $errorMessage = "You and `NAME` are now friends. How nice for you!!!";
-
+                            $errorMessage = "You and $friendName (ID: $friendID) are now friends! Yay! <br> You can now view each other's shared albums!";
                         }
                         else
                         {
                             //insert friend request into table
                             $sendRequest = sendFriendRequest($myID, $friendID);
-                            $errorMessage = "No prior friend request exists. Friend Request Sent to: 'name/ id'";
+
+                            $errorMessage = "No prior friend request exists. <br>Sending friend request to: $friendName (ID: $friendID). <br>Once $friendName accepts your current request, you and $friendName will be able to view each other's shared albums.";
                         }
-
                     }
-
-                }
-                elseif ($friendshipStatus == "accepted")
-                {
-                    $errorMessage = "You are already friends with this user!";
-
                 }
             }
         }
-    }
-    elseif($validSearch == false)
-    {
-        $errorMessage = "You must input a user ID!";
     }
 }
 
@@ -112,6 +107,7 @@ if (isset ($_POST['btnCheck'])) //check friendship status without sending reques
     if ($friendshipStatus == 'request')
     {
         $errorMessage = "Your friendship status is: Not friends";
+        //TODO: Could update this to be more informative for requests sent or pending
 
     }
     if ($friendshipStatus == 'accepted')
@@ -123,7 +119,6 @@ if (isset ($_POST['btnCheck'])) //check friendship status without sending reques
     {
         $errorMessage = "Your friendship status is: Not friends";
     }
-
 }
 
 if (isset ($_POST['btnMe']))
@@ -152,8 +147,7 @@ if (isset ($_POST['btnMe']))
                     <input type="text" class="form-control" id="txtFriendID" name="txtFriendID" placeholder="Friend ID">
                 </div>
                 </div>
-
-
+                
                 <input class="btn btn-primary" type="submit" name="btnSearch" value="Submit Friend Request"/>
                 <input class="btn btn-success" type="submit" name="btnCheck" value="Check Friend Status"/>
                 <input class="btn btn-danger" type="submit" name="btnMe" value="Check My ID"/>
