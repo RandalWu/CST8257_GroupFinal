@@ -26,7 +26,7 @@ function save_uploaded_file($destinationPath, $index)
 	return $filePath;
 }
 
-function resamplePicture($filePath, $destinationPath, $maxWidth, $maxHeight)
+function resamplePicture($filePath, $maxWidth, $maxHeight)
 {
 	if (!file_exists($destinationPath))
 	{
@@ -66,7 +66,7 @@ function resamplePicture($filePath, $destinationPath, $maxWidth, $maxHeight)
 		return "";
 	}
 	$pathInfo = pathinfo($filePath);
-	$newFilePath = $destinationPath."/".$pathInfo['filename'];
+	$newFilePath = $filePath."/".$pathInfo['filename'];
 	if ($imageDetails[2] == IMAGETYPE_JPEG) 
 	{
 		$newFilePath .= ".jpg";
