@@ -1,11 +1,6 @@
 <?php
 function save_uploaded_file($destinationPath, $index)
 {
-	if (!file_exists($destinationPath))
-	{
-            mkdir($destinationPath, true);
-	}
-	
 	$tempFilePath = $_FILES['uploadTxt']['tmp_name'][$index];
 	$filePath = $destinationPath."/".$_FILES['uploadTxt']['name'][$index];
 	
@@ -26,13 +21,8 @@ function save_uploaded_file($destinationPath, $index)
 	return $filePath;
 }
 
-function resamplePicture($filePath, $maxWidth, $maxHeight)
+function resamplePicture($filePath, $destinationPath, $maxWidth, $maxHeight)
 {
-	if (!file_exists($destinationPath))
-	{
-            mkdir($destinationPath, true);
-	}
-
 	$imageDetails = getimagesize($filePath);
 	
 	$originalResource = null;
@@ -66,7 +56,7 @@ function resamplePicture($filePath, $maxWidth, $maxHeight)
 		return "";
 	}
 	$pathInfo = pathinfo($filePath);
-	$newFilePath = $filePath."/".$pathInfo['filename'];
+	$newFilePath = $destinationPath."/".$pathInfo['filename'];
 	if ($imageDetails[2] == IMAGETYPE_JPEG) 
 	{
 		$newFilePath .= ".jpg";

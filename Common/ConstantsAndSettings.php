@@ -1,8 +1,4 @@
 <?php
-
-define(ORIGINAL_PICTURES_DIR, "/OriginalPictures");
-define(ALBUM_PICTURES_DIR, "AlbumPictures");
-define(ALBUM_THUMBNAILS_DIR, "/AlbumThumbnails");
 define(USERS_DIR, "Users");
 
 define(IMAGE_MAX_WIDTH, 800);
