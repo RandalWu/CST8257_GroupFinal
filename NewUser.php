@@ -88,7 +88,7 @@
     <div class="form-group">
         <label class="control-label col-sm-2">User ID</label>
         <div class="col-sm-2"> 
-            <input name="id" type="text" class="form-control" placeholder="Enter Your Student ID" value="<?php echo $id; ?>">
+            <input name="id" type="text" class="form-control" placeholder="Enter Your User ID" value="<?php echo $id; ?>">
         </div>
         <span class="text-danger"><?php echo $idErrorMessage; ?></span>
     </div>
@@ -110,7 +110,7 @@
     </div>
     
     <div class="form-group">
-        <label id="email" class="control-label col-sm-2">Password</label>
+        <label id="password" class="control-label col-sm-2">Password</label>
         <div class="col-sm-2"> 
             <input name="password" type="text" class="form-control" placeholder="Enter Your Password" value="<?php echo $password; ?>">
         </div>
@@ -128,8 +128,8 @@
     
     <div class="form-group"> 
         <div class="col-sm-offset-2 col-sm-10">
-            <button type="submit" name="submitBtn" class="btn btn-default">Submit</button>
-            <button type="reset" name="resetBtn" class="btn btn-default" onclick="location.href='NewUser.php'" >Clear</button>
+            <button type="submit" name="submitBtn" class="btn btn-primary">Submit</button>
+            <button type="reset" name="resetBtn" class="btn btn-danger" onclick="location.href='NewUser.php'" >Clear</button>
         </div>
      </div>
 </form>

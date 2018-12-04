@@ -9,7 +9,10 @@ include './Common/Header.php';
 include './Common/ValidationFunctions.php';
 include './Common/DatabaseFunctions.php';
 
-
+if (!isset($_SESSION['loggedInUser'])) {
+    $_SESSION["fromPage"]= "MyFriends";
+    header('Location: index.php');
+}
 
 
 ?>

@@ -10,99 +10,80 @@ include './Common/Header.php';
 include './Common/ValidationFunctions.php';
 include './Common/DatabaseFunctions.php';
 
-session_start(); 	// start PHP session!
 
-//TODO: insert session redirect
+if (!isset($_SESSION['loggedInUser'])) {
+    $_SESSION["fromPage"]= "AddFriend";
+    header('Location: index.php');
+}
+$myName = $_SESSION['loggedInUser']->getName();
+$myID = $_SESSION['loggedInUser']->getID();
+
 
 //decided to do this in line ¯\_(ツ)_/¯
-$myID = 1;
-//  TODO  $myID = $_SESSION['userID'];
-
-
 if (isset($_POST["btnSearch"]))
 {
-    //Your ID and Friend ID
     $friendID = ($_POST["txtFriendID"]);
 
+    $validSearch = validateSearch($friendID);     //validate if form is empty
 
-
-    //validate if form is empty
-    $validSearch = validateSearch($friendID);
     if ($validSearch = true)
     {
 
-
-        //make sure entered ID is not your own
-        if ($myID == $friendID)
+        if ($myID == $friendID)        //make sure entered ID is not your own
         {
             $errorMessage = "You cannot add yourself as a friend!";
         }
         else
         {
-
-
-            //check if user exists in database
-            $retrievedID = getFriendIdById($friendID);
+            $retrievedID = getFriendIdById($friendID);       //check if user exists in database
             if ($retrievedID == null)
             {
                 $errorMessage = "This user doesn't exist!";
             }
             else
             {
-
-                //TODO: check if friends in either configuration
+                //checking if friends in either direction
                 $friendshipStatus = friendshipStatus($myID, $friendID);
+
+                //TODO: remove
                 echo "<br>Friendship status is $friendshipStatus";
 
                 //check if user is already friends
                 $checkFriendsAlreadyStatus = validateFriendshipMeToThem($friendID, $myID);
-
+                //check if you have already sent a request
                 $checkRequestSentAlready = validateFriendshipMeToThem($friendID, $myID);
-
 
                 if ($checkFriendsAlreadyStatus == "not friends" || $checkFriendsAlreadyStatus == "request")
                 {
-                    //region Error Checking
-                    //                    echo "Not friends in database";
-//                    echo '<br>';
-//                    echo $checkFriendsAlreadyStatus;
-//
-//                    if ($checkFriendsAlreadyStatus == "request")
-//                    {
-//                        echo "<br> It's a request";
-//                    }
-//                    if ($checkFriendsAlreadyStatus == "accepted")
-//                    {
-//                        echo "<br> WHY IS THIS PRINTING THEN";
-//                    }
-                    //endregion
 
                     if ($checkRequestSentAlready == "request")
                     {
                         $errorMessage = "You have already sent a request to this user. They have not accepted...";
-
                     }
                     else
                     {
                         //continue with request
                         echo "<br>...Sending Friend Request";
+
                         //add friend if request already exists
                         $checkIfRequestExists = validatePreExistingFriendRequest($friendID, $myID);
+
                         if ($checkIfRequestExists == "request")
                         {
-                            echo "<br>...They sent me a request and now I'm accepting!";
-                            //update existing request to "approved"
+                            //update existing request to "accepted"
                             $updateFriendStatus = addFriendsFromExistingRequest($friendID, $myID);
+
+
+                            //TODO: get friend name + id for this message
+
                             $errorMessage = "You and `NAME` are now friends. How nice for you!!!";
 
                         }
                         else
                         {
-                            echo "<br>...No prior request existed. Sending a request now";
                             //insert friend request into table
                             $sendRequest = sendFriendRequest($myID, $friendID);
-                            echo "<br>$sendRequest";
-                            $errorMessage = "Friend Request Sent";
+                            $errorMessage = "No prior friend request exists. Friend Request Sent to: 'name/ id'";
                         }
 
                     }
@@ -111,27 +92,37 @@ if (isset($_POST["btnSearch"]))
                 elseif ($friendshipStatus == "accepted")
                 {
                     $errorMessage = "You are already friends with this user!";
-//                    echo "<br> myID -> friendID = accepted in db";
 
                 }
             }
         }
     }
-    elseif($validSearch == null)
+    elseif($validSearch == false)
     {
         $errorMessage = "You must input a user ID!";
     }
 }
 
-if (isset ($_POST['btnCheck']))
+
+if (isset ($_POST['btnCheck'])) //check friendship status without sending request
 {
-    $myID = 1;
     $friendID = ($_POST["txtFriendID"]);
 
     $friendshipStatus = friendshipStatus($myID, $friendID);
-    echo $friendshipStatus;
-    $errorMessage = $friendshipStatus;
+    if ($friendshipStatus == 'request')
+    {
+        $errorMessage = "Your friendship status is: Not friends";
 
+    }
+    if ($friendshipStatus == 'accepted')
+    {
+        $errorMessage = "Your friendship status is: Friends!";
+
+    }
+    if ($friendshipStatus == 'not friends')
+    {
+        $errorMessage = "Your friendship status is: Not friends";
+    }
 
 }
 
@@ -146,8 +137,7 @@ if (isset ($_POST['btnMe']))
         <h1 align="center">Add Friend</h1>
         <hr>
         <div  align="left">
-<!--            TODO: insert name-->
-            <h4 align="left">Welcome <b>"insert name"</b>! (not you? You can change users <a href="Login.php">here</a>)</h4>
+            <h4 align="left">Welcome <b><?php echo $myName;?></b>! (not you? You can change users <a href="Login.php">here</a>)</h4>
             <br>
             <h4 align="left">Enter the ID of the student you want to be friends with.</h4>
             <br>

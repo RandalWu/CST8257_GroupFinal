@@ -76,10 +76,6 @@ function validateSearch($friendID)
         //input field is empty
         return false;
     }
-    elseif ($friendID == "")
-    {
-        return false;
-    }
     else
     {
         return true;

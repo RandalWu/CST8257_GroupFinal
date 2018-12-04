@@ -53,7 +53,7 @@
     </div>
     
     <div class="form-group">
-        <label id="postalcode" class="control-label col-sm-2">Password:</label>
+        <label id="password" class="control-label col-sm-2">Password:</label>
         <div class="col-sm-2"> 
             <input name="password" type="text" class="form-control" placeholder="Enter Your Password" value="<?php echo $password ?>">
         </div>
