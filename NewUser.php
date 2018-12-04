@@ -74,7 +74,7 @@
         $password = '';
         $passwordConfirm = '';
 
-        header("Location: Login.php");
+        header("Location: MyPictures.php");
         die();
     }
 ?>
