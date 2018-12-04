@@ -158,7 +158,7 @@ function addFriendsFromExistingRequest($friendID, $myID)
 
 }
 
-
+//checks if two users are friends or not
 function friendshipStatus($myID, $friendID)
 {
     $dbConnection = parse_ini_file("db_connection.ini");
@@ -176,7 +176,7 @@ function friendshipStatus($myID, $friendID)
 
     if ($row)
     {
-        return $row['Status'];
+        return $row['Status'];   //this will return "accepted" or "request"
 
     }
     else
@@ -208,9 +208,38 @@ function sendFriendRequest($myID, $friendID)
         return "fail3";
     }
 
+}
+
+
+
+function getListOfFriendIDs($myID)
+{
+    $dbConnection = parse_ini_file("db_connection.ini");
+    extract($dbConnection);
+    $PDO = new PDO($dsn, $un, $p);
+
+    $returnedArray = array();
+
+    $sql = "SELECT FriendRequesterId, FriendRequesteeId, Friendship.Status Status
+            FROM `Friendship`
+            WHERE (FriendRequesterId =:myID
+            OR FriendRequesteeId =:myID2)  AND Status='accepted'";
+    $pStmt = $PDO -> prepare( $sql );
+    $pStmt -> execute(['myID' => $myID, 'myID2' => $myID]);
+
+    foreach ($pStmt as $row)
+    {
+    //not finished
+        $returnedArray[] = $row['FriendRequesterId'];
+
+    }
+
+    return $returnedArray;
 
 
 }
+
+
 
 
 

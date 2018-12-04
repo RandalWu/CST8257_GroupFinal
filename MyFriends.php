@@ -19,7 +19,8 @@ $myID = $_SESSION['loggedInUser']->getID();
 
 //make array of user objects that I am friends with
 
-
+$returned = getListOfFriendIDs($myID);
+print_r($returned);
 //make array of user objects that have sent me a request
 
 //isset defriend
@@ -41,6 +42,9 @@ $myID = $_SESSION['loggedInUser']->getID();
         <hr>
 
     </div>
+
+
+        <form id="friendDisplay" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
 
         <table class="table table-striped">
             <thead class="thead-dark">
@@ -81,8 +85,9 @@ $myID = $_SESSION['loggedInUser']->getID();
 
         </div>
 
+        </form>
 
-
+        <form id="requestDisplay" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
 
 <!--Second table-->
         <p><b>Friends Requests</b></p>
@@ -96,8 +101,7 @@ $myID = $_SESSION['loggedInUser']->getID();
 
             <tbody>
             <?php
-            //for each "friend" of myID, print name + album
-            //create class for friend + shared album info?
+
 
             ?>
             <tr>
@@ -124,7 +128,7 @@ $myID = $_SESSION['loggedInUser']->getID();
 
         </div>
 
-
+        </form>
 
 
 
