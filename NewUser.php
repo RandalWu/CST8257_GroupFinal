@@ -66,6 +66,7 @@
         $userDirectory = USERS_DIR .'/'. str_replace(' ', '', $name);
         if (!file_exists($userDirectory)) {
             mkdir($userDirectory,true);
+            chmod($userDirectory, 0777);
 	}
         
         $id = '';
