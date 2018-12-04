@@ -1,8 +1,9 @@
 <?php
     include "./Common/Header.php";
-    if (!file_exists('/Users')) {
-        mkdir('/Users', true);
-        chomd('/Users', 0755);
+    
+    if (!file_exists('Users')) {
+        mkdir('Users', true);
+        chmod('Users', 0755);
     }
 ?>
     <div class="container">
