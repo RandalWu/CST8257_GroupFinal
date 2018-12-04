@@ -1,8 +1,78 @@
 <?php 
     include './Common/Header.php';
+    include './Common/ValidationFunctions.php';
+    include './Common/PictureFunctions.php';
     
+    //Check if albumId has a value, if yes, set the album name
+    if (isset($_POST['albumId'])) {
+        $sql = "SELECT Title FROM Album WHERE AlbumID = ?";
+        $preparedQuery = $myPDO->prepare($sql);
+        $preparedQuery->execute([$_POST['albumId']]);
+        $result = $preparedQuery->fetch();
+        
+        $albumName = $result['Title'];
+        $_POST['albumName'] = $albumName;
+    }
+    
+    //Invalid page access check
     if (!isset($_SESSION['loggedInUser'])) {
         header("Location: index.php");
+    }
+    
+    //Constants
+    define(ORIGINAL_PICTURES_DIR, 'Users/' . $_SESSION['loggedInUser']->getName() . '/' . $_POST['albumName'] . '/OriginalPictures');
+    define(ALBUM_PICTURES_DIR, 'Users/' . $_SESSION['loggedInUser']->getName() . '/' . $_POST['albumName'] . '/AlbumPictures');
+    define(ALBUM_THUMBNAILS_DIR, 'Users/' . $_SESSION['loggedInUser']->getName() . '/' . $_POST['albumName'] . '/ThumbnailPictures');
+    
+    //Page valid check variable
+    $valid = false;
+    
+    //Page Validity check
+    if (isset($_POST['uploadBtn'])) {
+        $titleError = ValidateID($_POST['title']);
+        
+        $valid = ValidatePage($titleError);
+    }
+    
+    //Save picture to local folders AND insert picture info into database
+    if (isset($_POST['uploadBtn']) && $valid) {
+        for ($i = 0; $i < count($_FILES['uploadTxt']['tmp_name']); $i++) {
+            if ($_FILES['uploadTxt']['error'][$i] == 0) {
+
+                $filePath = save_uploaded_file(ORIGINAL_PICTURES_DIR, $i);
+
+                $imageDetails = getimagesize($filePath);
+
+                if ($imageDetails && in_array($imageDetails[2], $supportedImageTypes)) {
+                    resamplePicture($filePath, ALBUM_PICTURES_DIR, IMAGE_MAX_WIDTH, IMAGE_MAX_HEIGHT);
+
+                    resamplePicture($filePath, ALBUM_THUMBNAILS_DIR, THUMB_MAX_WIDTH, THUMB_MAX_HEIGHT);
+                    
+                    $sql = 'INSERT INTO Picture (PictureID, AlbumID, FileName, Title, Description, DateAdded) '
+                            . 'VALUES (DEFAULT, ?, ?, ?, ?, ?)';
+                    $preparedQuery = $myPDO->prepare($sql);
+                    $preparedQuery->execute([$_POST['albumId'], $_FILES['uploadTxt']['name'], $_POST['title'], $_POST['description'], date("Y-m-d H:i:s")]);
+                    
+                    header('Location: UploadPictures.php');
+                } 
+                else {
+                    $error = "Uploaded file is not a supported type";
+                    unlink($filePath);
+                }
+            }
+            
+            elseif ($_FILES['txtUpload']['error'] == 1) {
+                $error = "Upload file is too large";
+            }
+            
+            elseif ($_FILES['txtUpload']['error'] == 4) {
+                $error = "No upload file specified";
+            } 
+            
+            else {
+                $error = "Error happened while uploading the file. Try again later";
+            }
+        }
     }
 ?>
 
@@ -11,64 +81,66 @@
     <hr>
 
     <div>
-    <p>The accepted file formats are: JPEG, GIF, and PNG.</p>
-    <p>You can upload multiple pictures at a time by holding the SHIFT key while selecting pictures.</p>
-    <p>When uploading multiple images, the description will apply to all images.</p>
-</div>
-<br>
+        <p>The accepted file formats are: JPEG, GIF, and PNG.</p>
+        <p>You can upload multiple pictures at a time by holding the SHIFT key while selecting pictures.</p>
+        <p>When uploading multiple images, the description will apply to all images.</p>
+    </div>
+    <br>
 
-<form action="<?php $_SERVER["PHP_SELF"]; ?>" method="POST" enctype="multipart/form-data">
-     <div class="form-group">
-        <label class="control-label col-sm-2">Upload to Album</label>
-        <div class="col-sm-2"> 
-            <select name="album">
-                <?php 
-                $sql = "SELECT * FROM Album WHERE OwnerID = ?";
-                $preparedQuery = $myPDO->prepare($sql);
-                $preparedQuery->execute([$_SESSION['loggedInUser']->getID()]);
-                if ($preparedQuery->rowCount() == 0) {
-                    echo '<option>You have no albums</option>';
-                }
-                else {
-                    foreach($preparedQuery as $rows) {
-                        printf("<option value='%s'>%s</option>", $rows['Title'], $rows['Title']);
+    <form action="<?php $_SERVER["PHP_SELF"]; ?>" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+            <label class="control-label col-sm-2">Upload to Album</label>
+            <div class="col-sm-2"> 
+                <select name="albumId">
+                    <?php
+                    
+                    //Select AlbumID and Tile from all Albums owned by current logged in user.
+                    //And display each album they own.
+                    $sql = "SELECT AlbumID, Title FROM Album WHERE OwnerID = ?";
+                    $preparedQuery = $myPDO->prepare($sql);
+                    $preparedQuery->execute([$_SESSION['loggedInUser']->getID()]);
+                    if ($preparedQuery->rowCount() == 0) {
+                        echo '<option>You have no albums</option>';
+                    } else {
+                        foreach ($preparedQuery as $rows) {
+                            printf("<option value='%s'>%s</option>", $rows['AlbumID'], $rows['Title']);
+                        }
                     }
-                }
-                ?>
-            </select>
+                    ?>
+                </select>
+            </div>
+            <input type="hidden" name="albumName" value="<?php echo $albumName?>">
         </div>
-        <span class='text-danger'><?php echo $error; ?></span>
-    </div>
-    
-    <div class="form-group">
-        <label class="control-label col-sm-2">File to Upload</label>
-        <div class="col-sm-2"> 
-            <input type="file" class="form-control" name="uploadTxt[]" multiple size="40"/>
-        </div>
-        <span class='text-danger'><?php echo $error; ?></span>
-    </div>
-    
-    <div class="form-group">
-        <label class="control-label col-sm-2">Title</label>
-        <div class="col-sm-2"> 
-            <input type="text" class="form-control" name="title"/>
-        </div>
-        <span class='text-danger'><?php echo $titleError; ?></span>
-    </div>
-    
-    <div class="form-group">
-        <label class="control-label col-sm-2">Description</label>
-        <div class="col-sm-2"> 
-            <input type="text" class="form-control" name="description"/>
-        </div>
-    </div>
-    
-    <br/>
-    <br/>
-    
-    <input type="submit" name="uploadBtn" value="Upload" class="button"/>
-    <input type="reset" name="btnReset" value="Reset" class="button" onclick="location.href='UploadPictures.php'"/>
-</form>
 
+        <div class="form-group">
+            <label class="control-label col-sm-2">File to Upload</label>
+            <div class="col-sm-2"> 
+                <input type="file" class="form-control" name="uploadTxt[]" multiple size="40"/>
+            </div>
+            <span class='text-danger'><?php echo $error; ?></span>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-2">Title</label>
+            <div class="col-sm-2"> 
+                <input type="text" class="form-control" name="title"/>
+            </div>
+            <span class='text-danger'><?php echo $titleError; ?></span>
+        </div>
+
+        <div class="form-group">
+            <label class="control-label col-sm-2">Description</label>
+            <div class="col-sm-2"> 
+                <input type="text" class="form-control" name="description"/>
+            </div>
+        </div>
+
+        <br/>
+        <br/>
+
+        <input type="submit" name="uploadBtn" value="Upload" class="button"/>
+        <input type="reset" name="btnReset" value="Reset" class="button" onclick="location.href='UploadPictures.php'"/>
+    </form>
+</div>
 <?php
-    include './Common/Footer.php';
+    include './Common/Footer.php'; 

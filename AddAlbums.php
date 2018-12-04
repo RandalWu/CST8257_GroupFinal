@@ -41,13 +41,13 @@
             mkdir($albumPath, true);
             chmod($albumPath, 0755); //mkdir creates the directory in read only, hard change permissions manually
             
-            mkdir($originalPicPath);
+            mkdir($originalPicPath, true);
             chmod($originalPicPath, 0755);
             
-            mkdir($albumPicPath);
+            mkdir($albumPicPath, true);
             chmod($albumPicPath, 0755);
             
-            mkdir($thumbnailPicPath); 
+            mkdir($thumbnailPicPath, true);
             chmod($thumbnailPicPath, 0755);
         }
 
