@@ -8,7 +8,7 @@
     }
     
     $user = $_SESSION['loggedInUser'];
-    $getAlbums = "SELECT * FROM Album WHERE OwnerID = ?";
+    $getAlbums = "SELECT Album.*, Accessibility.* FROM Album INNER JOIN Accessibility ON Album.Accessibility_Code=Accessibility.AccessibilityCode WHERE OwnerID = ?";
     $getAlbumsCheck = $myPDO->prepare($getAlbums);
     $getAlbumsCheck->execute([($user->getID())]);
         
@@ -18,6 +18,7 @@
             $deletePictures = "DELETE FROM Picture WHERE AlbumID=?";
             $deletePicturesCheck = $myPDO->prepare($deletePictures);
             $deletePicturesCheck->execute([($row["AlbumID"])]);
+            
             $deleteAlbum = "DELETE FROM Album WHERE Album.AlbumID=?";
             $deleteAlbumCheck = $myPDO->prepare($deleteAlbum);
             $deleteAlbumCheck->execute([($row["AlbumID"])]);
@@ -42,14 +43,14 @@
         
          <?php
         foreach ($getAlbumsCheck as $row) {
-            $getPictures = "SELECT * FROM Picture INNER JOIN Album ON Picture.AlbumID = Album.AlbumID WHERE Album.OwnerID= '011'";
+            $getPictures = "SELECT * FROM Picture INNER JOIN Album ON Picture.AlbumID = Album.AlbumID INNER JOIN Accessibility ON Album.Accessibility_Code = Accessibility.AccessibilityCode WHERE Album.OwnerID=?";
             $getPicturesCheck = $myPDO->prepare($getPictures);
             $getPicturesCheck->execute([($user->getID())]);
             
             print("<tr><td>" . $row["Title"] . "</td>");
             print("<td>" . $row["Date_Updated"] . "</td>");
             print("<td>" .$getPicturesCheck->rowCount() . "</td>");
-            print("<td>" .$row["Accessibility_Code"] . "</td>");
+            print("<td><select>)");
             printf("<td><button type='submit' class='btn btn-link' name='delete' value=%s onclick=\"return confirm('The album and all its pictures will be deleted')\">Delete</button></td></tr>", $row["Title"]);
         }
        
