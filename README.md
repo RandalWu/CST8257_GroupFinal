@@ -1,2 +1,3 @@
 Group Project for PHP
-Test
+
+This final assumes that upon starting, the corresponding database will be empty.
