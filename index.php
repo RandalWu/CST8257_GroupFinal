@@ -1,8 +1,10 @@
 <?php
-    include "./Common/Header.php"
+    include "./Common/Header.php";
+    if (!file_exists('/Users')) {
+        mkdir('/Users', true);
+        chomd('/Users', 0755);
+    }
 ?>
-
-
     <div class="container">
 
         <h1 align="center">Welcome to Algonquin Social Media Website</h1>
