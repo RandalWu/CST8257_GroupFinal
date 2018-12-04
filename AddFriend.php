@@ -150,7 +150,7 @@ if (isset ($_POST['btnMe']))
 
                 <input class="btn btn-primary" type="submit" name="btnSearch" value="Submit Friend Request"/>
                 <input class="btn btn-success" type="submit" name="btnCheck" value="Check Friend Status"/>
-                <input class="btn btn-danger" type="submit" name="btnMe" value="Check My ID"/>
+                <input class="btn btn-light" type="submit" name="btnMe" value="Check My ID"/>
             </form>
         </div>
 

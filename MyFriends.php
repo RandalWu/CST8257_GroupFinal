@@ -17,6 +17,17 @@ $myName = $_SESSION['loggedInUser']->getName();
 $myID = $_SESSION['loggedInUser']->getID();
 
 
+//make array of user objects that I am friends with
+
+
+//make array of user objects that have sent me a request
+
+//isset defriend
+//  remove row from friendship table
+
+//isset deny
+//remove request row from friendship table
+
 ?>
 
     <div class="container">
@@ -49,27 +60,69 @@ $myID = $_SESSION['loggedInUser']->getID();
             <tr>
                 <td>Mark</td>
                 <td>Otto</td>
-                <td>@mdo</td>
+                <td>o</td>
             </tr>
             <tr>
                 <td>Jacob</td>
                 <td>Thornton</td>
-                <td>@fat</td>
+                <td>o</td>
             </tr>
             <tr>
                 <td>Larry</td>
                 <td>the Bird</td>
-                <td>@twitter</td>
+                <td>o</td>
             </tr>
             </tbody>
         </table>
 
         <div align="right">
-            <input class="btn btn-danger" type="submit" name="btnDefriend" value="Defriend"
+            <input class="btn btn-danger" type="submit" name="btnDefriend" value="Defriend Selected"
                    onclick="return confirm('The selected friends will be defriended!')"/>
 
         </div>
 
+
+
+
+<!--Second table-->
+        <p><b>Friends Requests</b></p>
+        <table class="table table-striped">
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">Accept or Deny</th>
+            </tr>
+            </thead>
+
+            <tbody>
+            <?php
+            //for each "friend" of myID, print name + album
+            //create class for friend + shared album info?
+
+            ?>
+            <tr>
+                <td>Mark</td>
+                <td>o</td>
+            </tr>
+            <tr>
+                <td>Jacob</td>
+                <td>o</td>
+            </tr>
+            <tr>
+                <td>Larry</td>
+                <td>o</td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div align="right">
+            <input class="btn btn-success" type="submit" name="btnAccept" value="Accept Selected"/>
+
+
+            <input class="btn btn-warning" type="submit" name="btnDeny" value="Deny Selected"
+                   onclick="return confirm('Are you sure you want to decline their request?!')"/>
+
+        </div>
 
 
 
