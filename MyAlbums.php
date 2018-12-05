@@ -24,6 +24,14 @@
             $deleteAlbumCheck->execute([($row["AlbumID"])]);
         }
     }
+    
+    foreach ($getAlbumsCheck as $row) {
+        if (isset($_POST[$row["AlbumID"]])) {
+            $update = "UPDATE Album SET Album.Accessibility_Code='?' WHERE Album.AlbumID=?";
+            $updateCheck = $myPDO->prepare($update);
+            $updateCheck->execute([$_POST[$row["AlbumID"]], $row["AlbumID"]]);
+        }        
+    }
 }
 ?> 
 <div class="container">
@@ -55,11 +63,10 @@
             $getAccessCheck = $myPDO->prepare($getAccess);
             $getAccessCheck->execute();
             
-           
-            print("<tr><td>" . $row["Title"] . "</td>");
+            print("<tr><td><a href='MyPictures.php'>" . $row["Title"] . "</td>");
             print("<td>" . $row["Date_Updated"] . "</td>");
             print("<td>" .$getPicturesCheck->rowCount() . "</td>");
-            print("<td><select>");
+            print("<td><select name=".$row["AlbumID"].">");
             foreach($getAccessCheck as $r){
                 print("<option value=".$r['AccessibilityCode'].">".$r['Description']."</option>");
                 }
