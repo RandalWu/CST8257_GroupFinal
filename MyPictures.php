@@ -31,8 +31,8 @@ if (!isset($_SESSION['loggedInUser'])) {
             </div>
         </form>
     </div>
-    <!--///Testing Kyle's LAB 7/////////////////////////////////////////////////////////////////////////////////////////////-->
-<?
+
+<?php
 $myUser = $_SESSION['loggedInUser'];
 $userID = $myUser->getStrippedName();
 $albumID = $_POST['albumId'];
@@ -86,16 +86,16 @@ else
     else
     {
         //if there are no pictures uploaded display this message. Starts at 4 because of .DS_Store file
-        if ((count($thumbnailArray) < 4) || $thumbnailArray == null)
+        if ((count($thumbnailArray) < 3) || $thumbnailArray == null)
         {
             $basename = "YOU DO NOT CURRENTLY HAVE ANY PHOTOS TO DISPLAY. </br> <hr></br> PLEASE UPLOAD SOME USING THE UPLOAD PAGE.";
         }
         else
         {
 
-            $displayPicture = $albumPath.$albumImagesArray[3];
+            $displayPicture = $albumPath.$albumImagesArray[2];
 
-            $basename = $albumImagesArray[3];
+            $basename = $albumImagesArray[2];
 
         }
 
@@ -139,15 +139,26 @@ if (isset($_GET['download']))
     exit;
 }
 
-//if (isset($_GET['delete']))
-//{
-//    unlink(ORIGINAL_IMAGE_DESTINATION . '/' . $basename);
-//    unlink(IMAGE_DESTINATION . '/' . $basename);
-//    unlink(THUMB_DESTINATION . '/' . $basename);
-//    session_destroy();
-//    header("Location: MyPictures.php");
-//    exit();
-//}
+if (isset($_GET['delete']))
+{
+
+    unlink($originalFilePath . '/' . $basename);
+    unlink($albumPath . '/' . $basename);
+    unlink($thumbnailPath . '/' . $basename);
+
+
+    if (isset($_SESSION['displayedImage']))
+    {
+        $_SESSION['displayedImage'] = null;
+    }
+    if (isset($_SESSION['currentBasename']))
+    {
+        $_SESSION['currentBasename'] = null;
+    }
+
+    header("Location: MyPictures.php");
+    exit();
+}
 
 
 
