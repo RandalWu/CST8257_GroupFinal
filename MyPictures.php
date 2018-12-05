@@ -8,34 +8,9 @@ if (!isset($_SESSION['loggedInUser'])) {
     header('Location: Login.php');
 }
 
-?>
-    <div class="container">
-        <h1 align="center">My Pictures</h1>
-        <hr>
-
-        <form method="post" class="form-horizontal" action="<?php $_SERVER["PHP_SELF"]; ?>">
-            <div class="col-sm-2">
-                <select name="albumId">
-                    <?php
-                    $sql = 'Select * FROM Album WHERE OwnerID = ?';
-                    $preparedQuery = $myPDO->prepare($sql);
-                    $preparedQuery->execute([$_SESSION['loggedInUser']->getID()]);
-
-                    foreach ($preparedQuery as $row) {
-                        printf("<option value='%s'>%s - last updated on %s</option>", $row['AlbumID'], $row['Title'], $row['Date_Updated']);
-                    }
-                    ?>
-                </select>
-            </div>
-        </form>
-    </div>
-
-<?php
-
 $myUser = $_SESSION['loggedInUser'];
 $userID = $myUser->getStrippedName();
 $albumID = $_POST['albumId'];
-echo $albumID;
 
 $originalFilePath = "Users/$userID/$albumID/OriginalPictures/";
 $originalArray = scandir($originalFilePath);
