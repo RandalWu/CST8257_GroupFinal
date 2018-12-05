@@ -8,9 +8,22 @@ if (!isset($_SESSION['loggedInUser'])) {
     header('Location: Login.php');
 }
 
+//Keep track of dropdown selection and set selectedID session
+if (isset($_POST['albumId'])) {
+    $selectedAlbum = $_POST['albumId'];
+    $_SESSION['selectedID'] = $_POST['albumId'];
+}
+
+//Keeping albumID consistent with dropdown
+if (isset($_SESSION['selectedID'])) {
+    $albumID = $_SESSION['selectedID'];
+}
+else {
+    $albumID = $_POST['albumId'];
+}
+
 $myUser = $_SESSION['loggedInUser'];
 $userID = $myUser->getStrippedName();
-$albumID = $_POST['albumId'];
 
 $originalFilePath = "Users/$userID/$albumID/OriginalPictures/";
 $originalArray = scandir($originalFilePath);
@@ -48,8 +61,8 @@ else
     if (isset ($_SESSION['displayedImage']))
     {
         //        echo "from session";
-        $displayPicture = $_SESSION['displayedImage'];
-        $basename = $_SESSION['currentBasename'];
+        unset($_SESSION['displayedImage']);
+        unset($_SESSION['currentBasename']);
     }
     else
     {
@@ -143,7 +156,11 @@ if (isset($_GET['delete']))
                     $preparedQuery->execute([$_SESSION['loggedInUser']->getID()]);
 
                     foreach ($preparedQuery as $row) {
-                        printf("<option value='%s' >%s - last updated on %s</option>", $row['AlbumID'], $row['Title'], $row['Date_Updated']);
+                        printf("<option value='%s' ", $row['AlbumID']);
+                        if ($_POST['albumId'] && $_POST['albumId'] == $row['AlbumID']) {
+                            echo "selected";
+                        }
+                        printf (">%s - last updated on %s</option>", $row['Title'], $row['Date_Updated']);
                     }
                     ?>
                 </select>
