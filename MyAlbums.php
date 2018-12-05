@@ -8,7 +8,7 @@
     }
     
     $user = $_SESSION['loggedInUser'];
-    $getAlbums = "SELECT Album.*, Accessibility.* FROM Album INNER JOIN Accessibility ON Album.Accessibility_Code=Accessibility.AccessibilityCode WHERE OwnerID = ?";
+    $getAlbums = "SELECT * FROM Album INNER JOIN Accessibility ON Album.Accessibility_Code=Accessibility.AccessibilityCode WHERE OwnerID = ?";
     $getAlbumsCheck = $myPDO->prepare($getAlbums);
     $getAlbumsCheck->execute([($user->getID())]);
         
@@ -47,13 +47,22 @@
             $getPicturesCheck = $myPDO->prepare($getPictures);
             $getPicturesCheck->execute([($user->getID())]);
             
+            $getAccess = "SELECT * FROM Accessibility";
+            $getAccessCheck = $myPDO->prepare($getAccess);
+            $getAccessCheck->execute();
+            
+           
             print("<tr><td>" . $row["Title"] . "</td>");
             print("<td>" . $row["Date_Updated"] . "</td>");
             print("<td>" .$getPicturesCheck->rowCount() . "</td>");
-            print("<td><select>)");
+            print("<td><select>");
+            foreach($getAccessCheck as $r){
+                print("<option value=".$r['AccessibilityCode'].">".$r['Description']."</option>");
+                }
+            print("</select></td>");
             printf("<td><button type='submit' class='btn btn-link' name='delete' value=%s onclick=\"return confirm('The album and all its pictures will be deleted')\">Delete</button></td></tr>", $row["Title"]);
         }
-       
+        
         ?>
         
     </table>
