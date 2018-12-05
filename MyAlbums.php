@@ -26,9 +26,11 @@
     }
 }
 ?> 
-
+<div class="container">
 <h1 align="center">My Albums</h1>
-<p>Welcome <b><?php echo $_SESSION['loggedInUser']->getName(); ?></b>! (not you? change user <a href="Login.php">here</a>)</p><br><a href="AddAlbums.php">Create New Album</a></p>
+    <hr>
+
+<p>Welcome <b><?php echo $_SESSION['loggedInUser']->getName(); ?></b>! (not you? change user <a href="Login.php">here</a>)</p><p align="right"><br><a href="AddAlbums.php">Create New Album</a></p>
 
 <form method="post" class="form-horizontal" action="<?php $_SERVER["PHP_SELF"]; ?>">
    
@@ -67,13 +69,14 @@
         
     </table>
     
-    <div class="form-group"> 
-        <div class="col-sm-offset-2 col-sm-10">
-            <button type="submit" name="saveBtn" class="btn btn-default">Save Changes</button>
-        </div>
+    <div align="right">
+        <br>
+        <button type="submit" name="saveBtn" class="btn btn-primary">Save Changes</button>
+
     </div>
 
 </form>
+</div>
 
     <?php
     include "./Common/Footer.php"; 

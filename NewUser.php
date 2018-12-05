@@ -79,11 +79,11 @@
         die();
     }
 ?>
+    <div class="container">
 
 <h1 align="center">Sign Up</h1>
 <hr>
 
-<div clas="container">
 <form method="post" class="form-horizontal" action="<?php $_SERVER["PHP_SELF"]; ?>">
      
     <div class="form-group">

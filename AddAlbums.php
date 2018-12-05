@@ -56,7 +56,9 @@
         die();
     }
 ?>
+<div class="container">
 <h1 align="center">Add Album</h1>
+    <hr>
 <p>Welcome <?php echo $_SESSION['loggedInUser']->getName(); ?>! (not you? change user <a href="Login.php">here</a>)</p>
 
 <form method="post" class="form-horizontal" action="<?php $_SERVER["PHP_SELF"]; ?>">
@@ -87,15 +89,14 @@
             <textarea name='description' value='<?php echo $_POST['description']; ?>'></textarea>
         </div>
     </div>
-    
-    <div class="form-group"> 
-        <div class="col-sm-offset-2 col-sm-10">
-            <button type="submit" name="submitBtn" class="btn btn-default">Submit</button>
-            <button type="reset" name="resetBtn" class="btn btn-default" onclick="location.href='MyAlbums.php'" >Clear</button>
-        </div>
+
+    <div class="container">
+    <button type="submit" name="submitBtn" class="btn btn-primary">Submit</button>
+    <button type="reset" name="resetBtn" class="btn btn-danger" onclick="location.href='MyAlbums.php'" >Clear</button>
     </div>
-    
+
 </form>
+</div>
 
 <?php
     include "./Common/Footer.php";

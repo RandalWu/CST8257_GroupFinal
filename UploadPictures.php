@@ -88,12 +88,13 @@
     <br>
 
     <form action="<?php $_SERVER["PHP_SELF"]; ?>" method="POST" enctype="multipart/form-data">
+        <div style="width: 50%;">
         <div class="form-group">
-            <label class="control-label col-sm-2">Upload to Album</label>
-            <div class="col-sm-2"> 
-                <select name="albumId">
+            <label>Upload to Album</label>
+
+                <select id="soflow" name="albumId">
                     <?php
-                    
+
                     //Select AlbumID and Tile from all Albums owned by current logged in user.
                     //And display each album they own.
                     $sql = "SELECT AlbumID, Title FROM Album WHERE OwnerID = ?";
@@ -108,39 +109,96 @@
                     }
                     ?>
                 </select>
-            </div>
+
             <input type="hidden" name="albumName" value="<?php echo $albumName?>">
         </div>
 
+
         <div class="form-group">
-            <label class="control-label col-sm-2">File to Upload</label>
-            <div class="col-sm-2"> 
-                <input type="file" class="form-control" name="uploadTxt[]" multiple size="40"/>
-            </div>
+            <label for="uploadTxt[]">File to Upload</label>
+                <input type="file" class="form-control" id="uploadTxt[]" name="uploadTxt[]" multiple size="40"/>
             <span class='text-danger'><?php echo $error; ?></span>
         </div>
 
         <div class="form-group">
-            <label class="control-label col-sm-2">Title</label>
-            <div class="col-sm-2"> 
-                <input type="text" class="form-control" name="title"/>
-            </div>
+            <label for="title">Title</label>
+                <input type="text" class="form-control" name="title" id="title"/>
             <span class='text-danger'><?php echo $titleError; ?></span>
         </div>
 
         <div class="form-group">
-            <label class="control-label col-sm-2">Description</label>
-            <div class="col-sm-2"> 
-                <input type="text" class="form-control" name="description"/>
-            </div>
+            <label for="description">Description</label>
+                <input type="text" class="form-control" id="description" name="description"/>
         </div>
 
         <br/>
         <br/>
 
-        <input type="submit" name="uploadBtn" value="Upload" class="button"/>
-        <input type="reset" name="btnReset" value="Reset" class="button" onclick="location.href='UploadPictures.php'"/>
+        <input type="submit" name="uploadBtn" value="Upload" class="btn btn-primary"/>
+        <input type="reset" name="btnReset" value="Reset" class="btn btn-danger" onclick="location.href='UploadPictures.php'"/>
+        </div>
     </form>
+
+
+
+<!--    /////////////////////////////////////////////////////////////////////////////////////////////////////////-->
+<!--    <form action="--><?php //$_SERVER["PHP_SELF"]; ?><!--" method="POST" enctype="multipart/form-data">-->
+<!--        <div class="form-group" style="float:left;">-->
+<!--            <label class="control-label col-sm-2">Upload to Album</label>-->
+<!--            <div class="col-sm-2"> -->
+<!--                <select name="albumId">-->
+<!--                    --><?php
+//
+//                    //Select AlbumID and Tile from all Albums owned by current logged in user.
+//                    //And display each album they own.
+//                    $sql = "SELECT AlbumID, Title FROM Album WHERE OwnerID = ?";
+//                    $preparedQuery = $myPDO->prepare($sql);
+//                    $preparedQuery->execute([$_SESSION['loggedInUser']->getID()]);
+//                    if ($preparedQuery->rowCount() == 0) {
+//                        echo '<option>You have no albums</option>';
+//                    } else {
+//                        foreach ($preparedQuery as $rows) {
+//                            printf("<option value='%s'>%s</option>", $rows['AlbumID'], $rows['Title']);
+//                        }
+//                    }
+//                    ?>
+<!--                </select>-->
+<!--            </div>-->
+<!--            <input type="hidden" name="albumName" value="--><?php //echo $albumName?><!--">-->
+<!--        </div>-->
+<!--        <br>-->
+<!---->
+<!--        <div class="form-group">-->
+<!--            <label for="uploadTxt[]" class="control-label col-sm-2">File to Upload</label>-->
+<!--            <div class="col-sm-2"> -->
+<!--                <input type="file" class="form-control" id="uploadTxt[]" name="uploadTxt[]" multiple size="40"/>-->
+<!--            </div>-->
+<!--            <span class='text-danger'>--><?php //echo $error; ?><!--</span>-->
+<!--        </div>-->
+<!---->
+<!--        <div class="form-group">-->
+<!--            <label for="title" class="control-label col-sm-2">Title</label>-->
+<!--            <div class="col-sm-2"> -->
+<!--                <input type="text" class="form-control" name="title" id="title"/>-->
+<!--            </div>-->
+<!--            <span class='text-danger'>--><?php //echo $titleError; ?><!--</span>-->
+<!--        </div>-->
+<!---->
+<!--        <div class="form-group">-->
+<!--            <label for="description" class="control-label col-sm-2">Description</label>-->
+<!--            <div class="col-sm-2"> -->
+<!--                <input type="text" class="form-control" id="description" name="description"/>-->
+<!--            </div>-->
+<!--        </div>-->
+<!---->
+<!--        <br/>-->
+<!--        <br/>-->
+<!---->
+<!--        <input type="submit" name="uploadBtn" value="Upload" class="btn btn-primary"/>-->
+<!--        <input type="reset" name="btnReset" value="Reset" class="btn btn-danger" onclick="location.href='UploadPictures.php'"/>-->
+<!--    </form>-->
+
+
 </div>
 <?php
     include './Common/Footer.php'; 

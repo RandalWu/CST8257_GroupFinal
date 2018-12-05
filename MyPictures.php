@@ -8,7 +8,9 @@
     }
 
   ?>
+<div class="container">
 <h1 align="center">My Pictures</h1>
+    <hr>
 
 <form method="post" class="form-horizontal" action="<?php $_SERVER["PHP_SELF"]; ?>">
     <div class="col-sm-2">
@@ -25,5 +27,6 @@
         </select>
     </div>
 </form>
+</div>
 
 <?php  include "./Common/Footer.php"; 
