@@ -181,6 +181,8 @@ if (isset ($_POST['btnDeny']))
                 echo "<tr>";
                 //Link needs to include ? query with ID information to view specific pictures
                 echo "<td><a href='#'>$name</a></td><td>$sharedAlbums</td><td><input type='checkbox' name='selectedFriends[]' value='$id'/>&nbsp;</td>";
+//                <a href='FriendPictures.php?friendID=$id'>
+//                secure enough?
                 echo "</tr>";
             }
             ?>
