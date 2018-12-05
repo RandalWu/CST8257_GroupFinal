@@ -8,6 +8,30 @@ if (!isset($_SESSION['loggedInUser'])) {
     header('Location: Login.php');
 }
 
+?>
+    <div class="container">
+        <h1 align="center">My Pictures</h1>
+        <hr>
+
+        <form method="post" class="form-horizontal" action="<?php $_SERVER["PHP_SELF"]; ?>">
+            <div class="col-sm-2">
+                <select name="albumId">
+                    <?php
+                    $sql = 'Select * FROM Album WHERE OwnerID = ?';
+                    $preparedQuery = $myPDO->prepare($sql);
+                    $preparedQuery->execute([$_SESSION['loggedInUser']->getID()]);
+
+                    foreach ($preparedQuery as $row) {
+                        printf("<option value='%s'>%s - last updated on %s</option>", $row['AlbumID'], $row['Title'], $row['Date_Updated']);
+                    }
+                    ?>
+                </select>
+            </div>
+        </form>
+    </div>
+
+<?php
+
 $myUser = $_SESSION['loggedInUser'];
 $userID = $myUser->getStrippedName();
 $albumID = $_POST['albumId'];
@@ -55,16 +79,16 @@ else
     else
     {
         //if there are no pictures uploaded display this message. Starts at 4 because of .DS_Store file
-        if ((count($thumbnailArray) < 4) || $thumbnailArray == null)
+        if ((count($thumbnailArray) < 3) || $thumbnailArray == null)
         {
             $basename = "YOU DO NOT CURRENTLY HAVE ANY PHOTOS TO DISPLAY. </br> <hr></br> PLEASE UPLOAD SOME USING THE UPLOAD PAGE.";
         }
         else
         {
 
-            $displayPicture = $albumPath.$albumImagesArray[3];
+            $displayPicture = $albumPath.$albumImagesArray[2];
 
-            $basename = $albumImagesArray[3];
+            $basename = $albumImagesArray[2];
 
         }
 
@@ -108,15 +132,26 @@ if (isset($_GET['download']))
     exit;
 }
 
-//if (isset($_GET['delete']))
-//{
-//    unlink(ORIGINAL_IMAGE_DESTINATION . '/' . $basename);
-//    unlink(IMAGE_DESTINATION . '/' . $basename);
-//    unlink(THUMB_DESTINATION . '/' . $basename);
-//    session_destroy();
-//    header("Location: MyPictures.php");
-//    exit();
-//}
+if (isset($_GET['delete']))
+{
+
+    unlink($originalFilePath . '/' . $basename);
+    unlink($albumPath . '/' . $basename);
+    unlink($thumbnailPath . '/' . $basename);
+
+
+    if (isset($_SESSION['displayedImage']))
+    {
+        $_SESSION['displayedImage'] = null;
+    }
+    if (isset($_SESSION['currentBasename']))
+    {
+        $_SESSION['currentBasename'] = null;
+    }
+
+    header("Location: MyPictures.php");
+    exit();
+}
 
 
 ?>
