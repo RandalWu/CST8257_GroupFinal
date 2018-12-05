@@ -1,10 +1,11 @@
 <?php
 include "./Common/Header.php";
 include "./Common/ValidationFunctions.php";
+include "./Common/PictureFunctions.php";
 
 if (!isset($_SESSION['loggedInUser'])) {
     $_SESSION["fromPage"] = "MyAlbums";
-    header('Location: index.php');
+    header('Location: Login.php');
     die();
 }
 
@@ -14,6 +15,12 @@ $getAlbumsCheck = $myPDO->prepare($getAlbums);
 $getAlbumsCheck->execute([($user->getID())]);
     
 if (isset($_POST["delete"])) {
+    //Delete Album from Local Machine
+    $albumID = $getAlbumsCheck->fetch()[0];
+    $albumPath = 'Users/' . $user->getStrippedName() . '/' . $albumID;
+    deleteDirectory($albumPath);
+    
+    //Delete Pictures DB, Delete Album from DB    
     foreach ($getAlbumsCheck as $row) {
         if (($_POST["delete"]) == $row["Title"]) {
             $deletePictures = "DELETE FROM Picture WHERE AlbumID=?";
@@ -72,11 +79,17 @@ if (isset($_POST["saveBtn"])) {
             print("<td>" .$getPicturesCheck->rowCount() . "</td>");
             print("<td><select name=".$row["AlbumID"].">");
             foreach($getAccessCheck as $r){
-                print("<option value=".$r['AccessibilityCode'].">".$r['Description']."</option>");
+                print("<option value=".$r['AccessibilityCode']);
+                
+                if ($row['Accessibility_Code']== $r['AccessibilityCode']){
+                    echo " selected";               
+                }
+                print(">".$r['Description']. "</option>");
                 }
             print("</select></td>");
             printf("<td><button type='submit' class='btn btn-link' name='delete' value=%s onclick=\"return confirm('The album and all its pictures will be deleted')\">Delete</button></td></tr>", $row["Title"]);
-        }
+        
+            }
         
         ?>
         

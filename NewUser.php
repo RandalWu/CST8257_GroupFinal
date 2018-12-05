@@ -98,12 +98,9 @@
             header("Location: AddAlbums.php");
             exit();
         default:
-            header("Location: index.php");
+            header("Location: MyAlbums.php");
             exit();
         }
-
-        header("Location: MyPictures.php");
-        die();
     }
 ?>
     <div class="container">
