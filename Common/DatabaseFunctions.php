@@ -218,7 +218,7 @@ function getListOfFriendIDs($myID)
     extract($dbConnection);
     $PDO = new PDO($dsn, $un, $p);
 
-    $returnedArray = array();
+    $friendsList = array();
 
     $sql = "SELECT FriendRequesterId, FriendRequesteeId, Friendship.Status Status
             FROM `Friendship`
@@ -229,12 +229,57 @@ function getListOfFriendIDs($myID)
 
     foreach ($pStmt as $row)
     {
-    //not finished
-        $returnedArray[] = $row['FriendRequesterId'];
+        $requestReciever = $row['FriendRequesteeId'];
+        $requestSender = $row['FriendRequesterId'];
+
+        if ($requestReciever != $myID)
+        {
+            $friendsList[] = $requestReciever;
+        }
+        if ($requestSender != $myID)
+        {
+            $friendsList[] = $requestSender;
+
+        }
 
     }
 
-    return $returnedArray;
+    return $friendsList;
+
+
+}
+
+function getListOfRequests($myID)
+{
+    $dbConnection = parse_ini_file("db_connection.ini");
+    extract($dbConnection);
+    $PDO = new PDO($dsn, $un, $p);
+
+    $friendsRequests = array();
+
+    $sql = "SELECT FriendRequesterId, FriendRequesteeId, Friendship.Status Status
+            FROM `Friendship`
+            WHERE (FriendRequesterId =:myID
+            OR FriendRequesteeId =:myID2)  AND Status='request'";
+    $pStmt = $PDO -> prepare( $sql );
+    $pStmt -> execute(['myID' => $myID, 'myID2' => $myID]);
+
+    foreach ($pStmt as $row)
+    {
+        $requestReciever = $row['FriendRequesteeId'];
+        $requestSender = $row['FriendRequesterId'];
+
+        if ($requestReciever != $myID)
+        {
+            $friendsList[] = $requestReciever;
+        }
+        if ($requestSender != $myID)
+        {
+            $friendsRequests[] = $requestSender;
+        }
+    }
+
+    return $friendsRequests;
 
 
 }

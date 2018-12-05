@@ -16,12 +16,36 @@ if (!isset($_SESSION['loggedInUser'])) {
 $myName = $_SESSION['loggedInUser']->getName();
 $myID = $_SESSION['loggedInUser']->getID();
 
+//EXISTING FRIENDS====================================================================//
 
 //make array of user objects that I am friends with
+$listOfFriendIDs = getListOfFriendIDs($myID);
+//print_r($listOfFriendIDs);
 
-$returned = getListOfFriendIDs($myID);
-print_r($returned);
+$friendObjectArray = array();
+foreach ($listOfFriendIDs as $fID)
+{
+    //TODO: change function to get shared album count
+    $friendObject = getUserById($fID);
+    $friendObjectArray[] = $friendObject;
+    //TODO get better objects
+    //make FriendDisplay objects here?
+    //just need ID, Name, Shared Albums for this page
+}
+//print_r($friendObjectArray);
+
+//SENT REQUESTS====================================================================//
 //make array of user objects that have sent me a request
+$existingRequestIDs = getListOfRequests($myID);
+
+$requestObjectArray = array();
+foreach ($existingRequestIDs as $rIDs)
+{
+    $userObject = getUserById($rIDs);
+    $requestObjectArray[] = $userObject;
+}
+print_r($requestObjectArray);
+
 
 //isset defriend
 //  remove row from friendship table
@@ -58,24 +82,19 @@ print_r($returned);
             <tbody>
             <?php
             //for each "friend" of myID, print name + album
-            //create class for friend + shared album info?
+            foreach ($friendObjectArray as $f)
+            {
+                $name = $f->getName();
+                $sharedAlbums = $f->getID();
+                $id = $f->getID();
 
+                echo "<tr>";
+                //Link needs to include ? query with ID information to view specific pictures
+                echo "<td><a href='#'>$name</a></td><td>$sharedAlbums</td><td><input type='checkbox' name='selectedFriends[]' value='$id'/>&nbsp;</td>";
+                echo "</tr>";
+            }
             ?>
-            <tr>
-                <td>Mark</td>
-                <td>Otto</td>
-                <td>o</td>
-            </tr>
-            <tr>
-                <td>Jacob</td>
-                <td>Thornton</td>
-                <td>o</td>
-            </tr>
-            <tr>
-                <td>Larry</td>
-                <td>the Bird</td>
-                <td>o</td>
-            </tr>
+
             </tbody>
         </table>
 
@@ -89,9 +108,11 @@ print_r($returned);
 
         <form id="requestDisplay" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
 
-<!--Second table-->
+        <!--Second table-->
         <p><b>Friends Requests</b></p>
-        <table class="table table-striped">
+        <hr>
+
+            <table class="table table-striped">
             <thead class="thead-dark">
             <tr>
                 <th scope="col">Name</th>
@@ -101,21 +122,19 @@ print_r($returned);
 
             <tbody>
             <?php
+            //for each "request" for myID, print name
+            foreach ($requestObjectArray as $r)
+            {
+                $name = $r->getName();
+                $id = $f->getID();
 
-
+                echo "<tr>";
+                //Link needs to include ? query with ID information to view specific pictures
+                echo "<td>$name</td><td><input type='checkbox' name='selectedRequesters[]' value='$id'/>&nbsp;</td>";
+                echo "</tr>";
+            }
             ?>
-            <tr>
-                <td>Mark</td>
-                <td>o</td>
-            </tr>
-            <tr>
-                <td>Jacob</td>
-                <td>o</td>
-            </tr>
-            <tr>
-                <td>Larry</td>
-                <td>o</td>
-            </tr>
+
             </tbody>
         </table>
 

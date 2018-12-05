@@ -126,6 +126,12 @@ if (isset ($_POST['btnMe']))
     $errorMessage = "Your ID is $myID";
 }
 
+if (isset ($_POST['btnMyFriends']))
+{
+    header('location: MyFriends.php');
+    exit();
+}
+
 ?>
     <div class="container">
 
@@ -149,8 +155,9 @@ if (isset ($_POST['btnMe']))
                 </div>
 
                 <input class="btn btn-primary" type="submit" name="btnSearch" value="Submit Friend Request"/>
-                <input class="btn btn-success" type="submit" name="btnCheck" value="Check Friend Status"/>
-                <input class="btn btn-light" type="submit" name="btnMe" value="Check My ID"/>
+                <input class="btn btn-success" type="submit" name="btnCheck" value="Check Friendship Status"/>
+                <input class="btn btn-warning" type="submit" name="btnMe" value="Check My ID"/>
+                <input class="btn btn-dark" type="submit" name="btnMyFriends" value="View Friend Requests"/>
             </form>
         </div>
 
