@@ -4,7 +4,7 @@
     
     if (!isset($_SESSION['loggedInUser'])) {
         $_SESSION["fromPage"]= "AddAlbums";
-        header('Location: index.php');
+        header('Location: Login.php');
     }
 
     $valid = false;
@@ -33,7 +33,12 @@
         $preparedQuery = $myPDO->prepare($sql);
         $preparedQuery->execute([$_POST['title'], $_POST['description'], date("Y-m-d H:i:s"), $_SESSION['loggedInUser']->getID(), $_POST['accessibility']]);
         
-        $albumPath = USERS_DIR . '/'. str_replace(' ', '', $_SESSION['loggedInUser']->getName()) . '/' . $_POST['title'];
+        $albumIDSql = 'SELECT MAX(AlbumID) FROM Album';
+        $query = $myPDO->prepare($albumIDSql);
+        $query->execute();
+        $albumID = $query->fetch()[0];
+        
+        $albumPath = USERS_DIR . '/'. $_SESSION['loggedInUser']->getStrippedName() . '/' .$albumID;
         $originalPicPath = $albumPath . '/OriginalPictures';
         $albumPicPath = $albumPath . '/AlbumPictures';
         $thumbnailPicPath = $albumPath . '/ThumbnailPictures';

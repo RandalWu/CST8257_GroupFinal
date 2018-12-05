@@ -4,7 +4,7 @@
     
     if (!isset($_SESSION['loggedInUser'])) {
         $_SESSION["fromPage"]= "MyPictures";
-        header('Location: index.php');
+        header('Location: Login.php');
     }
 
   ?>

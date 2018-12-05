@@ -5,13 +5,14 @@ include "./Common/ValidationFunctions.php";
 if (!isset($_SESSION['loggedInUser'])) {
     $_SESSION["fromPage"] = "MyAlbums";
     header('Location: index.php');
+    die();
 }
 
 $user = $_SESSION['loggedInUser'];
 $getAlbums = "SELECT * FROM Album INNER JOIN Accessibility ON Album.Accessibility_Code=Accessibility.AccessibilityCode WHERE OwnerID = ?";
 $getAlbumsCheck = $myPDO->prepare($getAlbums);
 $getAlbumsCheck->execute([($user->getID())]);
-
+    
 if (isset($_POST["delete"])) {
     foreach ($getAlbumsCheck as $row) {
         if (($_POST["delete"]) == $row["Title"]) {

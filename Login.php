@@ -40,6 +40,7 @@
 <div class="container">
     <hr>
 
+    <p>Don'have an account? <a href='NewUser.php'>Sign up here!</a></p>
     <form method="post" class="form-horizontal" action="<?php $_SERVER["PHP_SELF"]; ?>">
     <div>
         <span class="text-danger"><?php echo $loginErrorMessage; ?></span>
