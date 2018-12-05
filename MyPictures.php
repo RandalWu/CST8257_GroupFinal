@@ -8,6 +8,11 @@ if (!isset($_SESSION['loggedInUser'])) {
     header('Location: Login.php');
 }
 
+if ($_POST['albumId'] != $_SESSION['selectedID']) {
+    unset($_SESSION['displayedImage']);
+    unset($_SESSION['currentBasename']);
+    unset($_SERVER['QUERY_STRING']);
+}
 //Keep track of dropdown selection and set selectedID session
 if (isset($_POST['albumId'])) {
     $selectedAlbum = $_POST['albumId'];
@@ -60,8 +65,8 @@ else
     if (isset ($_SESSION['displayedImage']))
     {
         //        echo "from session";
-        unset($_SESSION['displayedImage']);
-        unset($_SESSION['currentBasename']);
+        $_SESSION['displayedImage'];
+        $_SESSION['currentBasename'];
     }
     else
     {
