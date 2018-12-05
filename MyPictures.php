@@ -41,7 +41,6 @@ if (isset($_GET['imageName']))
             $_SESSION['currentBasename'] = $basename;
         }
     }
-
 }
 else
 {

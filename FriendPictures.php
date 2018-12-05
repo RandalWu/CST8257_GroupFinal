@@ -45,6 +45,9 @@ if (!isset($_SESSION['loggedInUser'])) {
 
 
   ?>
+
+<div style="width:60%;">
+
 <div class="container">
 <h1 align="center"><?php echo $friendName ?>'s Pictures</h1>
     <hr>
@@ -172,6 +175,9 @@ else
             </div>
         </div>
     </div>
+
+
+</div>
 
 
 <?php  include "./Common/Footer.php"; 
