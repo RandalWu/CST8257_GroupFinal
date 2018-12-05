@@ -18,6 +18,10 @@ if (!isset($_SESSION['loggedInUser'])) {
 $myName = $_SESSION['loggedInUser']->getName();
 $myID = $_SESSION['loggedInUser']->getID();
 
+if (isset($_SESSION['scoldUser']))
+{
+    $errorMessage = $_SESSION['scoldUser'];
+}
 
 
 

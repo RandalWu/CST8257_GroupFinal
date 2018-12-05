@@ -323,6 +323,29 @@ function getNumberOfSharedAlbums($friendID)
 }
 
 
+function getSharedAlbumsFromFriendID($friendID)
+{
+    $dbConnection = parse_ini_file("db_connection.ini");
+    extract($dbConnection);
+    $PDO = new PDO($dsn, $un, $p);
+
+    $sql = "SELECT * FROM Album 
+            WHERE Album.OwnerID =:friendID AND Album.Accessibility_Code = 'shared'";
+
+    $pStmt = $PDO -> prepare( $sql );
+    $pStmt -> execute(['friendID' => $friendID]);
+
+//    $sharedAlbumArray = array();
+//
+//    foreach ($pStmt as $row)
+//    {
+//        $sharedAlbumArray[] = $row;
+//    }
+
+    return $pStmt;
+
+}
+
 
 
 
