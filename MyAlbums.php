@@ -34,7 +34,8 @@
 
 <form method="post" class="form-horizontal" action="<?php $_SERVER["PHP_SELF"]; ?>">
    
-    <table class="table" name="table">
+    <table class="table table-striped">
+        <thead class="table-dark">
         <tr>
             <th>Title </th>
             <th>Date Updated </th>
@@ -42,6 +43,7 @@
             <th>Accessibility </th>
             <th></th>
         </tr>
+        </thead>
         
          <?php
         foreach ($getAlbumsCheck as $row) {
