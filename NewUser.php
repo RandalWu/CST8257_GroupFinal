@@ -101,9 +101,6 @@
             header("Location: index.php");
             exit();
         }
-
-        header("Location: MyPictures.php");
-        die();
     }
 ?>
     <div class="container">
