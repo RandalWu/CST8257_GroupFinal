@@ -1,6 +1,7 @@
 <?php
 include "./Common/Header.php";
 include "./Common/ValidationFunctions.php";
+include "./Common/PictureFunctions.php";
 
 if (!isset($_SESSION['loggedInUser'])) {
     $_SESSION["fromPage"] = "MyAlbums";
@@ -14,6 +15,12 @@ $getAlbumsCheck = $myPDO->prepare($getAlbums);
 $getAlbumsCheck->execute([($user->getID())]);
     
 if (isset($_POST["delete"])) {
+    //Delete Album from Local Machine
+    $albumID = $getAlbumsCheck->fetch()[0];
+    $albumPath = 'Users/' . $user->getStrippedName() . '/' . $albumID;
+    deleteDirectory($albumPath);
+    
+    //Delete Pictures DB, Delete Album from DB    
     foreach ($getAlbumsCheck as $row) {
         if (($_POST["delete"]) == $row["Title"]) {
             $deletePictures = "DELETE FROM Picture WHERE AlbumID=?";
