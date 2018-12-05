@@ -6,7 +6,7 @@
 
 if (!isset($_SESSION['loggedInUser'])) {
         $_SESSION["fromPage"]= "FriendPictures";
-        header('Location: index.php');
+        header('Location: Login.php');
     }
     else
     {

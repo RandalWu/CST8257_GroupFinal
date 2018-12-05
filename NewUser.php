@@ -74,6 +74,33 @@
         $phoneNumber = '';
         $password = '';
         $passwordConfirm = '';
+        
+        switch ($_SESSION["fromPage"]) {
+        case "MyFriends":
+            header("Location: MyFriends.php");
+            exit();
+        case "MyAlbums":
+            header("Location: MyAlbums.php");
+            exit();
+        case "MyPictures":
+            header("Location: MyPictures.php");
+            exit();
+        case "FriendPictures":
+            header("Location: FriendPictures.php");
+            exit();
+        case "UploadPictures":
+            header("Location: UploadPictures.php");
+            exit();
+        case "AddFriend":
+            header("Location: AddFriend.php");
+            exit();
+        case "AddAlbums":
+            header("Location: AddAlbums.php");
+            exit();
+        default:
+            header("Location: index.php");
+            exit();
+        }
 
         header("Location: MyPictures.php");
         die();
