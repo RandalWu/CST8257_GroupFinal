@@ -16,7 +16,8 @@
     
     //Invalid page access check
     if (!isset($_SESSION['loggedInUser'])) {
-        header("Location: index.php");
+        $_SESSION["fromPage"]= "UploadPictures";
+        header('Location: Login.php');
     }
     
     //Constants

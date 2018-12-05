@@ -11,7 +11,7 @@ include './Common/DatabaseFunctions.php';
 
 if (!isset($_SESSION['loggedInUser'])) {
     $_SESSION["fromPage"]= "MyFriends";
-    header('Location: index.php');
+    header('Location: Login.php');
 }
 $myName = $_SESSION['loggedInUser']->getName();
 $myID = $_SESSION['loggedInUser']->getID();
