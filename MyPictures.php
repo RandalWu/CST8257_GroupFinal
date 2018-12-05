@@ -8,14 +8,11 @@ if (!isset($_SESSION['loggedInUser'])) {
     header('Location: Login.php');
 }
 
-
 //Keep track of dropdown selection and set selectedID session
 if (isset($_POST['albumId'])) {
     $selectedAlbum = $_POST['albumId'];
     $_SESSION['selectedID'] = $_POST['albumId'];
 }
-
-
 
 //Keeping albumID consistent with dropdown
 if (isset($_SESSION['selectedID'])) {
