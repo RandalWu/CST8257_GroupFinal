@@ -15,6 +15,8 @@ if (!isset($_SESSION['loggedInUser'])) {
 }
 $myName = $_SESSION['loggedInUser']->getName();
 $myID = $_SESSION['loggedInUser']->getID();
+$defriendErrorMessage = $acceptDenyErrorMessage = "";
+
 
 //EXISTING FRIENDS====================================================================//
 
@@ -34,6 +36,32 @@ foreach ($listOfFriendIDs as $fID)
 }
 //print_r($friendObjectArray);
 
+//isset defriend
+if (isset ($_POST['btnDefriend']))
+{
+    $selectedFriends = $_POST['selectedFriends'];
+    //check if array of checkboxes is empty
+    if (empty($selectedFriends)) {
+        $defriendErrorMessage = "You must select as least 1 friend";
+    } else {
+        $status = "accepted";
+
+        //  remove row from friendship table
+        foreach ($selectedFriends as $friendID)
+        {
+            echo "<br>defriend: $friendID";
+
+            removeSelectedFriends($myID, $friendID, $status);
+        }
+
+        //reload page
+        header("Location: MyFriends.php");
+        exit();
+    }
+
+
+}
+
 //SENT REQUESTS====================================================================//
 //make array of user objects that have sent me a request
 $existingRequestIDs = getListOfRequests($myID);
@@ -44,14 +72,69 @@ foreach ($existingRequestIDs as $rIDs)
     $userObject = getUserById($rIDs);
     $requestObjectArray[] = $userObject;
 }
-print_r($requestObjectArray);
+//print_r($requestObjectArray);
 
 
-//isset defriend
-//  remove row from friendship table
+//isset accept
+if (isset ($_POST['btnAccept']))
+{
+    if (isset ($_POST['secondArray']))
+    {
+        $selectedRequesters = $_POST['secondArray'];
+
+        //check if array of checkboxes is empty
+        if (empty($selectedRequesters)) {
+            $acceptDenyErrorMessage = "You must select as least 1 person";
+        } else {
+
+            $status = "request";
+            //  remove row from friendship table
+            print_r($selectedRequesters);
+            foreach ($selectedRequesters as $requesterID)
+            {
+                echo "<br>deny: $requesterID";
+                addFriendsFromExistingRequest($requesterID, $myID);
+            }
+
+        //reload page
+        header("Location: MyFriends.php");
+        exit();
+        }
+
+    }
+
+}
+
+
 
 //isset deny
-//remove request row from friendship table
+if (isset ($_POST['btnDeny']))
+{
+    if (isset ($_POST['secondArray']))
+    {
+        $selectedRequesters = $_POST['secondArray'];
+
+        //check if array of checkboxes is empty
+        if (empty($selectedRequesters)) {
+            $acceptDenyErrorMessage = "You must select as least 1 person";
+        } else {
+
+            $status = "request";
+
+            //  remove row from friendship table
+            print_r($selectedRequesters);
+            foreach ($selectedRequesters as $requesterID)
+            {
+                echo "<br>deny: $requesterID";
+                removeSelectedFriends($myID, $requesterID, $status);
+            }
+            //reload page
+        header("Location: MyFriends.php");
+        exit();
+        }
+    }
+}
+
 
 ?>
 
@@ -70,7 +153,8 @@ print_r($requestObjectArray);
 
         <form id="friendDisplay" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
 
-        <table class="table table-striped">
+
+            <table class="table table-striped">
             <thead class="thead-dark">
             <tr>
                 <th scope="col">Name</th>
@@ -99,14 +183,17 @@ print_r($requestObjectArray);
         </table>
 
         <div align="right">
+            <span class="text-danger"><?php echo $defriendErrorMessage; ?></span>
+            <br>
+
             <input class="btn btn-danger" type="submit" name="btnDefriend" value="Defriend Selected"
                    onclick="return confirm('The selected friends will be defriended!')"/>
 
         </div>
 
-        </form>
-
-        <form id="requestDisplay" method="post" action="<?php echo $_SERVER['PHP_SELF']; ?>">
+<!--        </form>-->
+<!---->
+<!--        <form id="requestDisplay" method="post" action="--><?php //echo $_SERVER['PHP_SELF']; ?><!--">-->
 
         <!--Second table-->
         <p><b>Friends Requests</b></p>
@@ -125,12 +212,13 @@ print_r($requestObjectArray);
             //for each "request" for myID, print name
             foreach ($requestObjectArray as $r)
             {
-                $name = $r->getName();
-                $id = $f->getID();
+//                print_r($r);
+                $rName = $r->getName();
+                $rID = $r->getID();
 
                 echo "<tr>";
                 //Link needs to include ? query with ID information to view specific pictures
-                echo "<td>$name</td><td><input type='checkbox' name='selectedRequesters[]' value='$id'/>&nbsp;</td>";
+                echo "<td>$rName</td><td><input type='checkbox' name='secondArray[]' value='$rID'/>&nbsp;</td>";
                 echo "</tr>";
             }
             ?>
@@ -139,9 +227,11 @@ print_r($requestObjectArray);
         </table>
 
         <div align="right">
+            <span class="text-danger"><?php echo $acceptDenyErrorMessage; ?></span>
+            <br>
+
+
             <input class="btn btn-success" type="submit" name="btnAccept" value="Accept Selected"/>
-
-
             <input class="btn btn-warning" type="submit" name="btnDeny" value="Deny Selected"
                    onclick="return confirm('Are you sure you want to decline their request?!')"/>
 

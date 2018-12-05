@@ -281,6 +281,21 @@ function getListOfRequests($myID)
 
     return $friendsRequests;
 
+}
+
+function removeSelectedFriends($myID, $friendID, $status)
+{
+    $dbConnection = parse_ini_file("db_connection.ini");
+    extract($dbConnection);
+    $PDO = new PDO($dsn, $un, $p);
+
+    $sql = "DELETE FROM `Friendship`
+            WHERE ((FriendRequesteeId =:friendID AND FriendRequesterId =:myID)
+            OR (FriendRequesteeId =:myID2 AND FriendRequesterId =:friendID2)) 
+            AND Friendship.Status=:status";
+
+    $pStmt = $PDO -> prepare( $sql );
+    $pStmt -> execute(['friendID' => $friendID, 'myID' => $myID, 'myID2' => $myID, 'friendID2' => $friendID, 'status' => $status]);
 
 }
 
