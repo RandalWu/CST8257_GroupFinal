@@ -28,8 +28,14 @@ $friendObjectArray = array();
 foreach ($listOfFriendIDs as $fID)
 {
     //TODO: change function to get shared album count
+    $numberOfSharedAlbums = getNumberOfSharedAlbums($fID);
+
+    //make friendDisplay Object
     $friendObject = getUserById($fID);
-    $friendObjectArray[] = $friendObject;
+    $friendName = $friendObject->getName();
+    $friendDisplayObject = new FriendDisplay($fID, $friendName, $numberOfSharedAlbums);
+
+    $friendObjectArray[] = $friendDisplayObject;
     //TODO get better objects
     //make FriendDisplay objects here?
     //just need ID, Name, Shared Albums for this page
@@ -169,7 +175,7 @@ if (isset ($_POST['btnDeny']))
             foreach ($friendObjectArray as $f)
             {
                 $name = $f->getName();
-                $sharedAlbums = $f->getID();
+                $sharedAlbums = $f->getSharedAlbums();
                 $id = $f->getID();
 
                 echo "<tr>";
