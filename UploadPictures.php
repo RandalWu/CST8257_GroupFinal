@@ -3,17 +3,6 @@
     include './Common/ValidationFunctions.php';
     include './Common/PictureFunctions.php';
     
-    //Check if albumId has a value, if yes, set the album name
-    if (isset($_POST['albumId'])) {
-        $sql = "SELECT Title FROM Album WHERE AlbumID = ?";
-        $preparedQuery = $myPDO->prepare($sql);
-        $preparedQuery->execute([$_POST['albumId']]);
-        $result = $preparedQuery->fetch();
-        
-        $albumName = $result['Title'];
-        $_POST['albumName'] = $albumName;
-    }
-    
     //Invalid page access check
     if (!isset($_SESSION['loggedInUser'])) {
         $_SESSION["fromPage"]= "UploadPictures";
@@ -21,9 +10,9 @@
     }
     
     //Constants
-    define(ORIGINAL_PICTURES_DIR, 'Users/' . $_SESSION['loggedInUser']->getName() . '/' . $_POST['albumName'] . '/OriginalPictures');
-    define(ALBUM_PICTURES_DIR, 'Users/' . $_SESSION['loggedInUser']->getName() . '/' . $_POST['albumName'] . '/AlbumPictures');
-    define(ALBUM_THUMBNAILS_DIR, 'Users/' . $_SESSION['loggedInUser']->getName() . '/' . $_POST['albumName'] . '/ThumbnailPictures');
+    define(ORIGINAL_PICTURES_DIR, 'Users/' . $_SESSION['loggedInUser']->getStrippedName() . '/' .$_POST['albumId'] . '/OriginalPictures');
+    define(ALBUM_PICTURES_DIR, 'Users/' . $_SESSION['loggedInUser']->getStrippedName() . '/' . $_POST['albumId'] . '/AlbumPictures');
+    define(ALBUM_THUMBNAILS_DIR, 'Users/' . $_SESSION['loggedInUser']->getStrippedName() . '/' . $_POST['albumId'] . '/ThumbnailPictures');
     
     //Page valid check variable
     $valid = false;
@@ -110,8 +99,6 @@
                     }
                     ?>
                 </select>
-
-            <input type="hidden" name="albumName" value="<?php echo $albumName?>">
         </div>
 
 
