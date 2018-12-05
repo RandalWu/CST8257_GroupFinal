@@ -1,43 +1,46 @@
 <?php
-    include "./Common/Header.php";
-    include "./Common/ValidationFunctions.php";
+include "./Common/Header.php";
+include "./Common/ValidationFunctions.php";
+
+if (!isset($_SESSION['loggedInUser'])) {
+    $_SESSION["fromPage"] = "MyAlbums";
+    header('Location: index.php');
+    die();
+}
+
+$user = $_SESSION['loggedInUser'];
+$getAlbums = "SELECT * FROM Album INNER JOIN Accessibility ON Album.Accessibility_Code=Accessibility.AccessibilityCode WHERE OwnerID = ?";
+$getAlbumsCheck = $myPDO->prepare($getAlbums);
+$getAlbumsCheck->execute([($user->getID())]);
     
-    if (!isset($_SESSION['loggedInUser'])) {
-        $_SESSION["fromPage"]= "MyAlbums";
-        header('Location: Login.php');
-        die();
-    }
-    
-    $user = $_SESSION['loggedInUser'];
-    $getAlbums = "SELECT * FROM Album INNER JOIN Accessibility ON Album.Accessibility_Code=Accessibility.AccessibilityCode WHERE OwnerID = ?";
-    $getAlbumsCheck = $myPDO->prepare($getAlbums);
-    $getAlbumsCheck->execute([($user->getID())]);
-        
-    if (isset($_POST["delete"])) {
+if (isset($_POST["delete"])) {
     foreach ($getAlbumsCheck as $row) {
         if (($_POST["delete"]) == $row["Title"]) {
             $deletePictures = "DELETE FROM Picture WHERE AlbumID=?";
             $deletePicturesCheck = $myPDO->prepare($deletePictures);
             $deletePicturesCheck->execute([($row["AlbumID"])]);
-            
+
             $deleteAlbum = "DELETE FROM Album WHERE Album.AlbumID=?";
             $deleteAlbumCheck = $myPDO->prepare($deleteAlbum);
             $deleteAlbumCheck->execute([($row["AlbumID"])]);
+            
+            header("Location: MyAlbums.php");
+            exit();
         }
     }
-    
+}
+if (isset($_POST["saveBtn"])) {
     foreach ($getAlbumsCheck as $row) {
-        if (isset($_POST[$row["AlbumID"]])) {
-            $update = "UPDATE Album SET Album.Accessibility_Code='?' WHERE Album.AlbumID=?";
-            $updateCheck = $myPDO->prepare($update);
-            $updateCheck->execute([$_POST[$row["AlbumID"]], $row["AlbumID"]]);
-        }        
+        $update = "UPDATE Album SET Album.Accessibility_Code=? WHERE Album.AlbumID=?";
+        $updateCheck = $myPDO->prepare($update);
+        $updateCheck->execute([$_POST[$row["AlbumID"]],$row["AlbumID"]]);
+        header("Location: MyAlbums.php");
+        exit();
     }
 }
 ?> 
 <div class="container">
 <h1 align="center">My Albums</h1>
-    <hr>
 
 <p>Welcome <b><?php echo $_SESSION['loggedInUser']->getName(); ?></b>! (not you? change user <a href="Login.php">here</a>)</p><p align="right"><br><a href="AddAlbums.php">Create New Album</a></p>
 
@@ -81,7 +84,7 @@
     
     <div align="right">
         <br>
-        <button type="submit" name="saveBtn" class="btn btn-primary">Save Changes</button>
+        <button type="submit" name="saveBtn" value="save" class="btn btn-primary">Save Changes</button>
 
     </div>
 
