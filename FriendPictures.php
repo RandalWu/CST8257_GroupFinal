@@ -1,11 +1,30 @@
 <?php
     include "./Common/Header.php";
     include "./Common/ValidationFunctions.php";
-    
-    if (!isset($_SESSION['loggedInUser'])) {
+    include './Common/DatabaseFunctions.php';
+
+
+if (!isset($_SESSION['loggedInUser'])) {
         $_SESSION["fromPage"]= "FriendPictures";
         header('Location: index.php');
     }
+    else
+    {
+        //put current user info in variables
+        $myUser = $_SESSION['loggedInUser'];
+        $myID = $myUser->getID();
+
+        //get friendID from url
+
+    }
+
+
+
+
+
+
+
+
 
   ?>
 <div class="container">
