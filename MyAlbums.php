@@ -14,22 +14,24 @@ $getAlbums = "SELECT * FROM Album INNER JOIN Accessibility ON Album.Accessibilit
 $getAlbumsCheck = $myPDO->prepare($getAlbums);
 $getAlbumsCheck->execute([($user->getID())]);
     
-if (isset($_POST["delete"])) {
-    //Delete Album from Local Machine
-    $albumID = $getAlbumsCheck->fetch()[0];
-    $albumPath = 'Users/' . $user->getStrippedName() . '/' . $albumID;
-    deleteDirectory($albumPath);
-    
-    //Delete Pictures DB, Delete Album from DB    
+if (isset($_POST["delete"])) {   
     foreach ($getAlbumsCheck as $row) {
-        if (($_POST["delete"]) == $row["Title"]) {
+        if (($_POST["delete"]) == $row["AlbumID"]) {
+            //Delete Pictures from Album on DB
             $deletePictures = "DELETE FROM Picture WHERE AlbumID=?";
             $deletePicturesCheck = $myPDO->prepare($deletePictures);
             $deletePicturesCheck->execute([($row["AlbumID"])]);
 
+            //Delete Album from DB
             $deleteAlbum = "DELETE FROM Album WHERE Album.AlbumID=?";
             $deleteAlbumCheck = $myPDO->prepare($deleteAlbum);
             $deleteAlbumCheck->execute([($row["AlbumID"])]);
+            
+            //Delete Album from Local
+            $albumPath = 'Users/' . $_SESSION['loggedInUser']->getStrippedName() . '/' . $row['AlbumID'];
+            if (file_exists($albumPath)) {
+                deleteDirectory($albumPath);
+            }
             
             header("Location: MyAlbums.php");
             exit();
@@ -87,7 +89,7 @@ if (isset($_POST["saveBtn"])) {
                 print(">".$r['Description']. "</option>");
                 }
             print("</select></td>");
-            printf("<td><button type='submit' class='btn btn-link' name='delete' value=%s onclick=\"return confirm('The album and all its pictures will be deleted')\">Delete</button></td></tr>", $row["Title"]);
+            printf("<td><button type='submit' class='btn btn-link' name='delete' value=%s onclick=\"return confirm('The album and all its pictures will be deleted')\">Delete</button></td></tr>", $row["AlbumID"]);
         
             }
         
@@ -103,7 +105,6 @@ if (isset($_POST["saveBtn"])) {
 
 </form>
 </div>
-
     <?php
     include "./Common/Footer.php"; 
 
