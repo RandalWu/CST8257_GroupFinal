@@ -7,7 +7,7 @@ Class User {
     
     public function __construct($id, $name, $phone, $password) {
         $this->id = $id;
-        $this->name = str_replace(' ', '', $name);
+        $this->name = $name;
         $this->phone = $phone;
         $this->password = $password;
     }
@@ -18,6 +18,10 @@ Class User {
     
     public function getName () {
         return $this->name;
+    }
+    
+    public function getStrippedName () {
+        return str_replace(' ', '', $this->name);
     }
     
     public function getPhone() {
