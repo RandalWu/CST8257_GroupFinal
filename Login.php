@@ -92,6 +92,9 @@
         case "MyPictures":
             header("Location: MyPictures.php");
             exit();
+        case "FriendPictures":
+            header("Location: FriendPictures.php");
+            exit();
         case "UploadPictures":
             header("Location: UploadPictures.php");
             exit();
@@ -102,7 +105,7 @@
             header("Location: AddAlbums.php");
             exit();
         default:
-            header("Location: Index.php");
+            header("Location: index.php");
             exit();
         }
 }
