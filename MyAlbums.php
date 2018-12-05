@@ -4,7 +4,7 @@ include "./Common/ValidationFunctions.php";
 
 if (!isset($_SESSION['loggedInUser'])) {
     $_SESSION["fromPage"] = "MyAlbums";
-    header('Location: index.php');
+    header('Location: Login.php');
     die();
 }
 
