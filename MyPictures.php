@@ -8,50 +8,19 @@ if (!isset($_SESSION['loggedInUser'])) {
     header('Location: Login.php');
 }
 
-
-
-?>
-    <div class="container">
-        <h1 align="center">My Pictures</h1>
-        <hr>
-
-        <form method="post" class="form-horizontal" action="<?php $_SERVER["PHP_SELF"]; ?>">
-            <div class="col-sm-2">
-                <select name="albumId">
-                    <?php
-                    $sql = 'Select * FROM Album WHERE OwnerID = ?';
-                    $preparedQuery = $myPDO->prepare($sql);
-                    $preparedQuery->execute([$_SESSION['loggedInUser']->getID()]);
-
-                    foreach ($preparedQuery as $row) {
-                        printf("<option value='%s'>%s - last updated on %s</option>", $row['AlbumID'], $row['Title'], $row['Date_Updated']);
-                    }
-                    ?>
-                </select>
-            </div>
-        </form>
-    </div>
-    <!--///Testing Kyle's LAB 7/////////////////////////////////////////////////////////////////////////////////////////////-->
-<?
 $myUser = $_SESSION['loggedInUser'];
 $userID = $myUser->getStrippedName();
 $albumID = $_POST['albumId'];
 echo $albumID;
 
-
-
-//TODO ALBUM ID IS HARDCODED
-$originalFilePath = "Users/$userID/17/OriginalPictures/";
+$originalFilePath = "Users/$userID/$albumID/OriginalPictures/";
 $originalArray = scandir($originalFilePath);
-print_r($originalArray);
 
-//TODO ALBUM ID IS HARDCODED
-$thumbnailPath = "Users/$userID/17/ThumbnailPictures/";
+$thumbnailPath = "Users/$userID/$albumID/ThumbnailPictures/";
 $thumbnailArray = scandir($thumbnailPath);
 $totalThumbPath = $thumbnailPath.$thumbnailArray[3];
 
-//TODO ALBUM ID IS HARDCODED
-$albumPath = "Users/$userID/17/AlbumPictures/";
+$albumPath = "Users/$userID/$albumID/AlbumPictures/";
 //array of the filenames in folder
 $albumImagesArray = scandir($albumPath);
 $totalAlbumPath = $albumPath.$albumImagesArray[3];
@@ -150,8 +119,29 @@ if (isset($_GET['download']))
 //}
 
 
-
 ?>
+    <div class="container">
+        <h1 align="center">My Pictures</h1>
+        <hr>
+
+        <form method="post" class="form-horizontal" action="<?php $_SERVER["PHP_SELF"]; ?>">
+            <div class="col-sm-2">
+                <select name="albumId" onchange="this.form.submit();">
+                    <?php
+                    $sql = 'Select * FROM Album WHERE OwnerID = ?';
+                    $preparedQuery = $myPDO->prepare($sql);
+                    $preparedQuery->execute([$_SESSION['loggedInUser']->getID()]);
+
+                    foreach ($preparedQuery as $row) {
+                        printf("<option value='%s' >%s - last updated on %s</option>", $row['AlbumID'], $row['Title'], $row['Date_Updated']);
+                    }
+                    ?>
+                </select>
+            </div>
+        </form>
+    </div>
+    <!--///Testing Kyle's LAB 7/////////////////////////////////////////////////////////////////////////////////////////////-->
+    
     <h1 align="center"> <?php echo $basename;?></h1>
 
     <div class="img-container">
@@ -194,13 +184,5 @@ if (isset($_GET['download']))
             </div>
         </div>
     </div>
-
-
-
-
-
-
-
-
 
 <?php  include "./Common/Footer.php"; 
