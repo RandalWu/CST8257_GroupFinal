@@ -51,8 +51,8 @@ function resamplePicture($filePath, $destinationPath, $maxWidth, $maxHeight)
 	
 	if (!$success)
 	{
-		imagedestroy(newImage);
-		imagedestroy(originalResource);
+		imagedestroy($newImage);
+		imagedestroy($originalResource);
 		return "";
 	}
 	$pathInfo = pathinfo($filePath);
@@ -82,7 +82,7 @@ function resamplePicture($filePath, $destinationPath, $maxWidth, $maxHeight)
 	}
 	else
 	{
-		return newFilePath;
+		return $newFilePath;
 	}
 }
 
