@@ -4,19 +4,20 @@
 
     //Setting POST and SESSION variables
     if ($_POST['id'] != null) {
+        $id = htmlspecialchars($id);
         $id = $_POST['id'];
     }
     if ($_POST['password'] != null) {
+        $password = htmlspecialchars($password);
         $password = $_POST['password'];
     }
 
-//Security on FriendPictures page//
-unset($_SESSION['friendID']);
-unset($_SESSION['friendName']);
-unset($_SESSION['friendNameStripped']);
-unset($_SESSION['confirmedFriend']);
-///////////////////////////////////
-
+    //Security on FriendPictures page//
+    unset($_SESSION['friendID']);
+    unset($_SESSION['friendName']);
+    unset($_SESSION['friendNameStripped']);
+    unset($_SESSION['confirmedFriend']);
+    ///////////////////////////////////
     
     //Site validity variable
     $valid = false;
@@ -48,7 +49,7 @@ unset($_SESSION['confirmedFriend']);
 <div class="container">
     <hr>
 
-    <p>Don'have an account? <a href='NewUser.php'>Sign up here!</a></p>
+    <p>Don't have an account? <a href='NewUser.php'>Sign up here!</a></p>
     <form method="post" class="form-horizontal" action="<?php $_SERVER["PHP_SELF"]; ?>">
     <div>
         <span class="text-danger"><?php echo $loginErrorMessage; ?></span>
@@ -80,7 +81,7 @@ unset($_SESSION['confirmedFriend']);
 </div>
 <?php
 
-    if (isset($_POST['submitBtn']) && $valid) {
+    if (isset($_POST['submitBtn']) && $valid) {        
         $getStudent = "SELECT * FROM User WHERE UserID = ?";
         $preparedGetUser = $myPDO->prepare($getStudent);
         $preparedGetUser->execute([$id]);
