@@ -9,6 +9,13 @@ if (!isset($_SESSION['loggedInUser'])) {
     die();
 }
 
+//Security on FriendPictures page//
+unset($_SESSION['friendID']);
+unset($_SESSION['friendName']);
+unset($_SESSION['friendNameStripped']);
+unset($_SESSION['confirmedFriend']);
+///////////////////////////////////
+
 $user = $_SESSION['loggedInUser'];
 $getAlbums = "SELECT * FROM Album INNER JOIN Accessibility ON Album.Accessibility_Code=Accessibility.AccessibilityCode WHERE OwnerID = ?";
 $getAlbumsCheck = $myPDO->prepare($getAlbums);

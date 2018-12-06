@@ -7,6 +7,13 @@
         header('Location: Login.php');
     }
 
+//Security on FriendPictures page//
+unset($_SESSION['friendID']);
+unset($_SESSION['friendName']);
+unset($_SESSION['friendNameStripped']);
+unset($_SESSION['confirmedFriend']);
+///////////////////////////////////
+
     $valid = false;
     $sql = "SELECT * FROM Accessibility"; 
     $pStmt = $myPDO -> prepare($sql);

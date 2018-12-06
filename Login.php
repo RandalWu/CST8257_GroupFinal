@@ -9,6 +9,14 @@
     if ($_POST['password'] != null) {
         $password = $_POST['password'];
     }
+
+//Security on FriendPictures page//
+unset($_SESSION['friendID']);
+unset($_SESSION['friendName']);
+unset($_SESSION['friendNameStripped']);
+unset($_SESSION['confirmedFriend']);
+///////////////////////////////////
+
     
     //Site validity variable
     $valid = false;

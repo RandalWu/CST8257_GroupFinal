@@ -22,6 +22,13 @@
     if ($_SESSION['encryptedPassword'] != null) {
         $encryptedPassword = $_SESSION['encryptedPassword'];
     }
+//Security on FriendPictures page//
+unset($_SESSION['friendID']);
+unset($_SESSION['friendName']);
+unset($_SESSION['friendNameStripped']);
+unset($_SESSION['confirmedFriend']);
+///////////////////////////////////
+
     
     //Page valid variable
     $valid = false;

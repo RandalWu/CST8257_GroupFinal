@@ -8,6 +8,12 @@
         $_SESSION["fromPage"]= "UploadPictures";
         header('Location: Login.php');
     }
+//Security on FriendPictures page//
+unset($_SESSION['friendID']);
+unset($_SESSION['friendName']);
+unset($_SESSION['friendNameStripped']);
+unset($_SESSION['confirmedFriend']);
+///////////////////////////////////
     
     //Constants
     define(ORIGINAL_PICTURES_DIR, 'Users/' . $_SESSION['loggedInUser']->getStrippedName() . '/' .$_POST['albumId'] . '/OriginalPictures');
