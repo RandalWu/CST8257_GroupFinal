@@ -192,6 +192,7 @@ if (isset($_GET['delete']))
 
 
 
+
     <div class="img-container">
         <h1 align="center"> <?php echo $basename;?></h1>
 
@@ -227,7 +228,15 @@ if (isset($_GET['delete']))
                     for ($i = 2; $i < count($thumbnailArray); $i++) {
                         $totalThumbPath = $thumbnailPath.'/'.$thumbnailArray[$i];
                         $fileInfo = pathinfo($totalThumbPath);
-                        printf("<a href='MyPictures.php?imageName=%s&id=%s'> <img src='%s'/></a>", $fileInfo['basename'], $results[$i-2]['PictureID'], $totalThumbPath);
+                        if ($fileInfo['basename']==$basename)
+                        {
+                            printf("<a href='MyPictures.php?imageName=%s&id=%s'> <img class='activeThumb' src='%s'/></a>", $fileInfo['basename'], $results[$i-2]['PictureID'], $totalThumbPath);
+                        }
+                        else {
+                            printf("<a href='MyPictures.php?imageName=%s&id=%s'> <img src='%s'/></a>", $fileInfo['basename'], $results[$i-2]['PictureID'], $totalThumbPath);
+                        }
+
+
                     }
                     
                 }

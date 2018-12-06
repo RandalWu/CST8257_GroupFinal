@@ -118,6 +118,7 @@ textarea {
 
 /*blue border around active thumbnail*/
 .activeThumb {
-    border: 2px solid blue;
+    background-color: blue;
+    border: 5px solid blue;
     opacity: 1;
 }

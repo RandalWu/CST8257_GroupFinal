@@ -199,7 +199,14 @@ else
                             for ($i = 2; $i < count($thumbnailArray); $i++) {
                                 $totalThumbPath = $thumbnailPath.'/'.$thumbnailArray[$i];
                                 $fileInfo = pathinfo($totalThumbPath);
-                                printf("<a href='FriendPictures.php?imageName=%s'> <img src='%s'/></a>", $fileInfo['basename'], $totalThumbPath);
+
+                                if ($fileInfo['basename']==$basename)
+                                {
+                                    printf("<a href='FriendPictures.php?imageName=%s&id=%s'> <img class='activeThumb' src='%s'/></a>", $fileInfo['basename'], $results[$i-2]['PictureID'], $totalThumbPath);
+                                }
+                                else {
+                                    printf("<a href='FriendPictures.php?imageName=%s&id=%s'> <img src='%s'/></a>", $fileInfo['basename'], $results[$i-2]['PictureID'], $totalThumbPath);
+                                }
                             }
 
                         }
