@@ -16,6 +16,11 @@ unset($_SESSION['confirmedFriend']);
 
  
 $myOwnerID = $_SESSION['loggedInUser']->getID();
+
+if (!isset($_POST['albumId'])) {
+    $_SESSION['selectedID'] = $_POST['albumId'];
+}
+
 if (!isset($_POST['albumId']) && !isset($_SESSION['selectedID'])) {
     $sql = "SELECT MIN(AlbumID) from Album WHERE Album.OwnerID=:myID";
     $preparedQuery = $myPDO->prepare($sql);
@@ -42,6 +47,7 @@ if (!isset($_POST['albumId']) && !isset($_SESSION['selectedID'])) {
 }
 
 //Keep track of dropdown selection and set selectedID session
+
 if (isset($_POST['albumId'])) {
     $selectedAlbum = $_POST['albumId'];
     $_SESSION['selectedID'] = $_POST['albumId'];
@@ -69,15 +75,17 @@ if (isset($_GET['imageName']))
 {
     //getting basename from URL
     $basename = $_GET['imageName'];
+    $imageID = $_GET['id'];
     foreach ($albumImagesArray as $image)
     {
         if ($image == $basename)
         {
             //displayPicture is the full filepath to the specific image
-            $displayPicture = $albumPath.'/'.$basename;
+            $displayPicture = $albumPath.'/'.$basename.'?'.mktime();
             //sometimes we need a session to keep track of the selected picture
             $_SESSION['displayedImage'] = $displayPicture;
             $_SESSION['currentBasename'] = $basename;
+            $_SESSION['selectedImageID'] = $imageID;
         }
     }
 }
@@ -128,9 +136,14 @@ if (isset($_GET['download']))
 }
 if (isset($_GET['delete']))
 {
+    $sql = "DELETE FROM Picture WHERE PictureID = ?";
+    $preparedQuery = $myPDO->prepare($sql);
+    $preparedQuery->execute([$_SESSION['selectedImageID']]);
+    
     unlink($originalFilePath . '/' . $_SESSION['currentBasename']);
     unlink($albumPath . '/' . $_SESSION['currentBasename']);
     unlink($thumbnailPath . '/' . $_SESSION['currentBasename']);
+    
     if (isset($_SESSION['displayedImage']))
     {
         $_SESSION['displayedImage'] = null;
@@ -202,10 +215,15 @@ if (isset($_GET['delete']))
             <div class="row text-center">
                 <?php
                 if (count($thumbnailArray) > 2) {
+                    $sql = "SELECT PictureID from Picture WHERE AlbumID = ?";
+                    $preparedQuery = $myPDO->prepare($sql);
+                    $preparedQuery->execute([$_SESSION['selectedID']]);
+                    $results = $preparedQuery->fetchAll();
+                    
                     for ($i = 2; $i < count($thumbnailArray); $i++) {
                         $totalThumbPath = $thumbnailPath.'/'.$thumbnailArray[$i];
                         $fileInfo = pathinfo($totalThumbPath);
-                        printf("<a href='MyPictures.php?imageName=%s'> <img src='%s'/></a>", $fileInfo['basename'], $totalThumbPath);
+                        printf("<a href='MyPictures.php?imageName=%s&id=%s'> <img src='%s'/></a>", $fileInfo['basename'], $results[$i-2]['PictureID'], $totalThumbPath);
                     }
                     
                 }
@@ -265,4 +283,4 @@ if (isset($_GET['delete']))
 
     </div>
 </div>
-<?php  include "./Common/Footer.php";
+<?php include "./Common/Footer.php";
