@@ -64,7 +64,7 @@
 <div class="container">
 <h1 align="center">Add Album</h1>
     <hr>
-<p>Welcome <?php echo $_SESSION['loggedInUser']->getName(); ?>! (not you? change user <a href="Login.php">here</a>)</p>
+    <p>Welcome <b><?php echo $_SESSION['loggedInUser']->getName();?></b>! (not you? change user <a href="Login.php">here</a>)</p>
 
 <form method="post" class="form-horizontal" action="<?php $_SERVER["PHP_SELF"]; ?>">
     <div class="form-group">
