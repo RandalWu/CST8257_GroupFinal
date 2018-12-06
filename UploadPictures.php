@@ -31,6 +31,13 @@ unset($_SESSION['confirmedFriend']);
         $albumError = "Please select a valid album to upload to";
     }
     
+    $title = $_POST['title'];
+    $title = htmlspecialchars($title);
+
+    $description = $_POST['description'];
+    $description = htmlspecialchars($description);
+
+            
     //Save picture to local folders AND insert picture info into database
     if (isset($_POST['uploadBtn']) && $valid) {
         for ($i = 0; $i < count($_FILES['uploadTxt']['tmp_name']); $i++) {
@@ -48,7 +55,7 @@ unset($_SESSION['confirmedFriend']);
                     $sql = 'INSERT INTO Picture (PictureID, AlbumID, FileName, Title, Description, DateAdded) '
                             . 'VALUES (DEFAULT, ?, ?, ?, ?, ?)';
                     $preparedQuery = $myPDO->prepare($sql);
-                    $preparedQuery->execute([$_POST['albumId'], $_FILES['uploadTxt']['name'], $_POST['title'], $_POST['description'], date("Y-m-d H:i:s")]);
+                    $preparedQuery->execute([$_POST['albumId'], $_FILES['uploadTxt']['name'], $title, $description, date("Y-m-d H:i:s")]);
 
                     $success = "Successful upload!";
 
