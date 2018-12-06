@@ -13,6 +13,15 @@ if (!isset($_SESSION['loggedInUser'])) {
     $_SESSION["fromPage"]= "MyFriends";
     header('Location: Login.php');
 }
+
+//Security on FriendPictures page//
+unset($_SESSION['friendID']);
+unset($_SESSION['friendName']);
+unset($_SESSION['friendNameStripped']);
+unset($_SESSION['confirmedFriend']);
+///////////////////////////////////
+
+
 $myName = $_SESSION['loggedInUser']->getName();
 $myID = $_SESSION['loggedInUser']->getID();
 $defriendErrorMessage = $acceptDenyErrorMessage = "";

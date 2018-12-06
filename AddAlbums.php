@@ -7,6 +7,13 @@
         header('Location: Login.php');
     }
 
+//Security on FriendPictures page//
+unset($_SESSION['friendID']);
+unset($_SESSION['friendName']);
+unset($_SESSION['friendNameStripped']);
+unset($_SESSION['confirmedFriend']);
+///////////////////////////////////
+
     $valid = false;
     $sql = "SELECT * FROM Accessibility"; 
     $pStmt = $myPDO -> prepare($sql);
@@ -56,9 +63,7 @@
             mkdir($thumbnailPicPath, true);
             chmod($thumbnailPicPath, 0777);
         }
-
-        header('Location: AddAlbums.php');
-        die();
+        $success = "Successfully Created Album!";
     }
 ?>
 <div class="container">
@@ -67,12 +72,13 @@
     <p>Welcome <b><?php echo $_SESSION['loggedInUser']->getName();?></b>! (not you? change user <a href="Login.php">here</a>)</p>
 
 <form method="post" class="form-horizontal" action="<?php $_SERVER["PHP_SELF"]; ?>">
+    <span class='text-success'><?php echo $success; ?></span>
     <div class="form-group">
         <label class="control-label col-sm-2">Album Title:</label>
         <div class="col-sm-2"> 
             <input name="title" type="text" class="form-control" placeholder="Enter the title of your album" value="<?php echo $_POST['title']; ?>">
         </div>
-        <span class="text-danger"><?php echo $titleErrorMessage; ?></span>
+        <span class='text-danger'><?php echo $titleErrorMessage; ?></span>
     </div>
     
     <div class="form-group">

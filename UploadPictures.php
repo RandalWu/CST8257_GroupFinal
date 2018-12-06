@@ -8,6 +8,12 @@
         $_SESSION["fromPage"]= "UploadPictures";
         header('Location: Login.php');
     }
+//Security on FriendPictures page//
+unset($_SESSION['friendID']);
+unset($_SESSION['friendName']);
+unset($_SESSION['friendNameStripped']);
+unset($_SESSION['confirmedFriend']);
+///////////////////////////////////
     
     //Constants
     define(ORIGINAL_PICTURES_DIR, 'Users/' . $_SESSION['loggedInUser']->getStrippedName() . '/' .$_POST['albumId'] . '/OriginalPictures');
@@ -21,7 +27,7 @@
     if (isset($_POST['uploadBtn']) && $_POST['albumId'] != '-1') {
         $valid = true;
     }
-    else {
+    else if($_POST['albumId'] == '-1'){
         $albumError = "Please select a valid album to upload to";
     }
     
@@ -44,9 +50,7 @@
                     $preparedQuery = $myPDO->prepare($sql);
                     $preparedQuery->execute([$_POST['albumId'], $_FILES['uploadTxt']['name'], $_POST['title'], $_POST['description'], date("Y-m-d H:i:s")]);
 
-
-                    //header('Location: UploadPictures.php');
-                    //die();
+                    $success = "Successful upload!";
                 } 
                 else {
                     $error = "Uploaded file is not a supported type";
@@ -72,7 +76,7 @@
 <h1 align="center">Upload Pictures</h1>
 <div class="container">
     <hr>
-
+     <span class='text-success'><?php echo $success; ?></span>
     <div>
         <p>The accepted file formats are: JPEG, GIF, and PNG.</p>
         <p>You can upload multiple pictures at a time by holding the SHIFT key while selecting pictures.</p>

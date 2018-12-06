@@ -7,6 +7,13 @@ if (!isset($_SESSION['loggedInUser'])) {
     $_SESSION["fromPage"]= "MyPictures";
     header('Location: Login.php');
 }
+//Security on FriendPictures page//
+unset($_SESSION['friendID']);
+unset($_SESSION['friendName']);
+unset($_SESSION['friendNameStripped']);
+unset($_SESSION['confirmedFriend']);
+///////////////////////////////////
+
  
 $myOwnerID = $_SESSION['loggedInUser']->getID();
 

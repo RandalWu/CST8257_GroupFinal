@@ -15,6 +15,14 @@ if (!isset($_SESSION['loggedInUser'])) {
     $_SESSION["fromPage"]= "AddFriend";
     header('Location: index.php');
 }
+//Security on FriendPictures page//
+unset($_SESSION['friendID']);
+unset($_SESSION['friendName']);
+unset($_SESSION['friendNameStripped']);
+unset($_SESSION['confirmedFriend']);
+///////////////////////////////////
+
+
 $myName = $_SESSION['loggedInUser']->getName();
 $myID = $_SESSION['loggedInUser']->getID();
 

@@ -4,6 +4,15 @@
         mkdir('Users', true);
         chmod('Users', 0777);
     }
+//Security on FriendPictures page//
+unset($_SESSION['friendID']);
+unset($_SESSION['friendName']);
+unset($_SESSION['friendNameStripped']);
+unset($_SESSION['confirmedFriend']);
+///////////////////////////////////
+
+
+
 ?>
     <div class="container">
 
