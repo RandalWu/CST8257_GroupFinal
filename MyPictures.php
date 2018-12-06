@@ -152,7 +152,7 @@ if (isset($_GET['download']))
 }
 if (isset($_GET['delete']))
 {
-    $sql = "DELETE FROM Picture WHERE PictureID = ?";
+    $sql = "DELETE FROM Comment WHERE PictureID = ?";
     $preparedQuery = $myPDO->prepare($sql);
     $preparedQuery->execute([$_SESSION['selectedImageID']]);
     
