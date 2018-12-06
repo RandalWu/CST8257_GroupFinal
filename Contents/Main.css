@@ -38,6 +38,15 @@ textarea {
 .action-list a {
     margin: 10px;
 }
+.img-container2 {
+    /*position: relative;*/
+    width: fit-content;
+    margin: auto;
+}
+.img-container2:hover .action-list {
+    display: block;
+}
+
 .img-container {
     position: relative;
     width: fit-content;
@@ -94,6 +103,17 @@ textarea {
 }
 
 
+
+.vertical-scroll-wrapper {
+    white-space: nowrap;
+    max-width: 100%;
+    /* height: 100%; */
+    overflow: hidden;
+    overflow-x: auto;
+    padding: 1em;
+    cursor: pointer;
+    margin: 0 10px;
+}
 
 
 
