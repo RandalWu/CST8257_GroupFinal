@@ -166,7 +166,7 @@ if (isset($_GET['delete']))
 
 <!--        LEFT SIDE//////////////////////////////////////////////////-->
 
-    <div style="width: 50%; float:left;" class="container">
+    <div style="width: 70%; float:left;" class="container">
 
         <form method="post" class="form-horizontal" action="MyPictures.php">
             <div class="col-sm-2">

@@ -159,7 +159,7 @@ else
 
         <!--        LEFT SIDE//////////////////////////////////////////////////-->
 
-        <div style="width: 50%; float:left;" class="container">
+        <div style="width: 70%; float:left;" class="container">
 
             <form method="post" class="form-horizontal" action="FriendPictures.php">
                 <div class="col-sm-2">
@@ -208,7 +208,6 @@ else
                                     printf("<a href='FriendPictures.php?imageName=%s&id=%s'> <img src='%s'/></a>", $fileInfo['basename'], $results[$i-2]['PictureID'], $totalThumbPath);
                                 }
                             }
-
                         }
                         ?>
                     </div>
