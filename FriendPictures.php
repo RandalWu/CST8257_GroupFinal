@@ -46,7 +46,7 @@ if (!isset($_SESSION['loggedInUser'])) {
 
   ?>
 
-<div style="width:60%;">
+<div class="left-div">
 
 <div class="container">
 <h1 align="center"><?php echo $friendName ?>'s Pictures</h1>
@@ -83,7 +83,7 @@ echo $albumID;
 //TODO ALBUM ID IS HARDCODED
 $originalFilePath = "Users/$friendNameStripped/19/OriginalPictures/";
 $originalArray = scandir($originalFilePath);
-print_r($originalArray);
+//print_r($originalArray);
 
 //TODO ALBUM ID IS HARDCODED
 $thumbnailPath = "Users/$friendNameStripped/19/ThumbnailPictures/";
@@ -177,7 +177,18 @@ else
     </div>
 
 
+
+
+
+
 </div>
+    <div class="right-div">
+        <p>LoremIpsum LoremIpsum LoremIpsum LoremIpsum LoremIpsum LoremIpsum
+            LoremIpsum LoremIpsum LoremIpsum LoremIpsum LoremIpsum LoremIpsum
+            LoremIpsum LoremIpsum LoremIpsum LoremIpsum LoremIpsum LoremIpsum
+            LoremIpsum LoremIpsum LoremIpsum LoremIpsum LoremIpsum LoremIpsum
+            LoremIpsum LoremIpsum LoremIpsum LoremIpsum LoremIpsum LoremIpsum LoremIpsum </p>
+    </div>
 
 
 <?php  include "./Common/Footer.php"; 
