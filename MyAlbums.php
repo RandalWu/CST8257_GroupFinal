@@ -92,7 +92,7 @@ if (isset($_POST["saveBtn"])) {
             $getAccessCheck = $myPDO->prepare($getAccess);
             $getAccessCheck->execute();
             
-            print("<tr><td><a href='MyPictures.php'>" . $row["Title"] . "</td>");
+            print("<tr><td><a href='MyPictures.php?".$row["Title"]."'>" . $row["Title"] . "</td>");
             print("<td>" . $row["Date_Updated"] . "</td>");
             print("<td>" .$getPicturesCheck->rowCount() . "</td>");
             print("<td><select name=".$row["AlbumID"].">");

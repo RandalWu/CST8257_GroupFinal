@@ -180,6 +180,9 @@ if (isset($_GET['delete']))
                         if ($_SESSION['selectedID'] == $row['AlbumID']) {
                             echo "selected";
                         }
+                        elseif($_SERVER['QUERY_STRING']== $row["Title"]){
+                            echo "selected";
+                        }
                         printf (">%s - last updated on %s</option>", $row['Title'], $row['Date_Updated']);
                     }
                     ?>
