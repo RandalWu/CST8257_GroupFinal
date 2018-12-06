@@ -139,7 +139,7 @@ if (isset($_POST['btnSubmitComment']) && isset($_GET['imageName'])) {
     //sometimes we need a session to keep track of the selected picture
     $_SESSION['displayedImage2'] = $displayPicture;
     $_SESSION['currentBasename2'] = $basename;
-    $_SESSION['selectedImageID'] = $imageID;
+    $_SESSION['selectedImageID2'] = $imageID;
     }
     }
     }
@@ -218,8 +218,6 @@ if (isset($_POST['btnSubmitComment']) && isset($_GET['imageName'])) {
                             for ($i = 2; $i < count($thumbnailArray); $i++) {
                                 $totalThumbPath = $thumbnailPath.'/'.$thumbnailArray[$i];
                                 $fileInfo = pathinfo($totalThumbPath);
-                                //TODO IMPORTANT FOR FRIENDSPICTURES.PHP
-                              
                                 if ($fileInfo['basename']==$basename)
                                 {
                                     printf("<a href='FriendPictures.php?imageName=%s&id=%s'> <img class='activeThumb' src='%s'/></a>", $fileInfo['basename'], $results[$i-2]['PictureID'], $totalThumbPath);
@@ -227,10 +225,7 @@ if (isset($_POST['btnSubmitComment']) && isset($_GET['imageName'])) {
                                 else {
                                     printf("<a href='FriendPictures.php?imageName=%s&id=%s'> <img src='%s'/></a>", $fileInfo['basename'], $results[$i-2]['PictureID'], $totalThumbPath);
                                 }
-
-
                             }
-                    
                         }
                         ?>
                     </div>
@@ -261,7 +256,7 @@ if (isset($_POST['btnSubmitComment']) && isset($_GET['imageName'])) {
                     $sql = "select User.Name, CommentText, Date From Comment Inner Join User "
                         . "ON Comment.AuthorID = User.UserID Where PictureID = ?";
                     $preparedQuery = $myPDO->prepare($sql);
-                    $preparedQuery->execute([(int) $_SESSION['selectedImageID']]);
+                    $preparedQuery->execute([(int) $_SESSION['selectedImageID2']]);
             
                     foreach ($preparedQuery as $row) {
                         printf("<span style='color: navy'>%s(%s)</span>", $row['Name'], $row['Date']);
@@ -271,12 +266,11 @@ if (isset($_POST['btnSubmitComment']) && isset($_GET['imageName'])) {
                     ?>
 
                     </div>
-              
-                    </div>
-                </div>
             </div>
+
+
             <!--        Comment Text Box-->
-            <<form method="post" class="form-horizontal" action="<?php $_SERVER['REQUEST_URI']; ?>">
+            <form method="post" class="form-horizontal" action="<?php $_SERVER['REQUEST_URI']; ?>">
             <br>
             <textarea name="comment" rows="4" cols="50" style="height:7em;width:100%;" placeholder="Leave a comment"></textarea>
             <div align="left">
