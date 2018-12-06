@@ -37,6 +37,7 @@ if (isset($_SESSION['scoldUser']))
 if (isset($_POST["btnSearch"]))
 {
     $friendID = ($_POST["txtFriendID"]);
+    $friendID = htmlspecialchars($friendID);
 
 
     $validSearch = validateSearch($friendID);     //validate if form is empty
