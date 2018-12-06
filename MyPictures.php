@@ -77,7 +77,7 @@ if (isset($_GET['imageName']))
         if ($image == $basename)
         {
             //displayPicture is the full filepath to the specific image
-            $displayPicture = $albumPath.'/'.$basename.'?'.mktime();
+            $displayPicture = $albumPath.'/'.$basename;
             //sometimes we need a session to keep track of the selected picture
             $_SESSION['displayedImage'] = $displayPicture;
             $_SESSION['currentBasename'] = $basename;
