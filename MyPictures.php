@@ -261,7 +261,10 @@ if (isset($_GET['delete']))
     <div style="width: 30%; padding-bottom: auto; padding-top:6% ;padding-left:2%;float:right;" class="container">
         <!--        Comment Text Box-->
         <div style="height:30em;width:100%;overflow:auto;border:8px solid white;padding:2%">
-            <h4>Comments</h4>
+            <h4>Description:</h4>
+<!--            TODO insert description-->
+
+            <h4>Comments:</h4>
             <?php 
             $sql = "select User.Name, CommentText, Date From Comment Inner Join User "
                     . "ON Comment.AuthorID = User.UserID Where PictureID = ?";
