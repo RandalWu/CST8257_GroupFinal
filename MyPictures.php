@@ -251,30 +251,30 @@ if (isset($_GET['delete']))
                 <h4>Comments</h4>
                 <!--TODO Do a foreach here?-->
                 <span style="color: navy">Name of Commenter + metadata<?php ?></span>
-                <div style="border:2px solid white" >
+                <div style="border:2px solid white; background-color: ghostwhite;" >
                     <!--                        comment text--><?php //text?>
                     This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
                 </div>
                 <!--                    Examples v-->
                 <span style="color: navy">Name of Commenter + metadata<?php ?></span>
-                <div style="border:2px solid white" >
+                <div style="border:2px solid white; background-color: ghostwhite;" >
                     <!--                        comment text--><?php //text?>
                     This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
                 </div>
                 <span style="color: navy">Name of Commenter + metadata<?php ?></span>
-                <div style="border:2px solid white" >
-                    <!--                        comment text--><?php //text?>
-                    This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
-                </div>
-
-                <span style="color: navy">Name of Commenter + metadata<?php ?></span>
-                <div style="border:2px solid white" >
+                <div style="border:2px solid white; background-color: ghostwhite;" >
                     <!--                        comment text--><?php //text?>
                     This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
                 </div>
 
                 <span style="color: navy">Name of Commenter + metadata<?php ?></span>
-                <div style="border:2px solid white" >
+                <div style="border:2px solid white; background-color: ghostwhite;" >
+                    <!--                        comment text--><?php //text?>
+                    This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
+                </div>
+
+                <span style="color: navy">Name of Commenter + metadata<?php ?></span>
+                <div style="border:2px solid white; background-color: ghostwhite;" >
                     <!--                        comment text--><?php //text?>
                     This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
                 </div>

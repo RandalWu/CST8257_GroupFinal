@@ -15,7 +15,7 @@ if (isset($_SESSION['confirmedFriend']))
 {
     $myUser = $_SESSION['loggedInUser'];
     $myID = $myUser->getID();
-    echo "okay";
+//    echo "okay";
     $friendID= $_SESSION['friendID'];
     $friendName= $_SESSION['friendName'];
     $friendNameStripped= $_SESSION['friendNameStripped'];
@@ -189,22 +189,7 @@ else
 
                 <!--    display the image based on the basename-->
                 <img src="<?php echo $displayPicture ?>" >
-<!--                <form action="FriendPictures.php?imageName="--><?php //$basename; ?><!-- method="get">-->
-<!--                <div class="action-list">-->
-<!--                    <button style="border:none; background-color: transparent;" type="submit" name="btnLeft">-->
-<!--            <span class="glyphicon glyphicon-repeat gly-flip-horizontal actionButtons">-->
-<!--                    </button>-->
-<!--                    <button style="border:none; background-color: transparent;" type="submit" name="btnRight">-->
-<!--                        <span class="glyphicon glyphicon-repeat"></span>-->
-<!--                    </button>-->
-<!--                    <button style="border:none; background-color: transparent;" type="submit" name="download">-->
-<!--                        <span class="glyphicon glyphicon-download-alt"></span>-->
-<!--                    </button>-->
-<!--                    <button style="border:none; background-color: transparent;" type="submit" name="delete">-->
-<!--                        <span class="glyphicon glyphicon-trash"></span>-->
-<!--                    </button>-->
-<!--                </div>-->
-<!--                </form>-->
+
             </div>
             <div class="horizontal-scroll-wrapper">
                 <div class="container testimonial-group">
@@ -242,30 +227,30 @@ else
                     <!--TODO Do a foreach here?-->
 
                     <span style="color: navy">Name of Commenter + metadata<?php ?></span>
-                    <div style="border:2px solid white" >
+                    <div style="border:2px solid white; background-color: ghostwhite;" >
 <!--                        comment text--><?php //text?>
                         This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
                     </div>
 <!--                    Examples v-->
                     <span style="color: navy">Name of Commenter + metadata<?php ?></span>
-                    <div style="border:2px solid white" >
+                    <div style="border:2px solid white; background-color: ghostwhite;" >
                         <!--                        comment text--><?php //text?>
                         This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
                     </div>
                     <span style="color: navy">Name of Commenter + metadata<?php ?></span>
-                    <div style="border:2px solid white" >
-                        <!--                        comment text--><?php //text?>
-                        This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
-                    </div>
-
-                    <span style="color: navy">Name of Commenter + metadata<?php ?></span>
-                    <div style="border:2px solid white" >
+                    <div style="border:2px solid white; background-color: ghostwhite;" >
                         <!--                        comment text--><?php //text?>
                         This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
                     </div>
 
                     <span style="color: navy">Name of Commenter + metadata<?php ?></span>
-                    <div style="border:2px solid white" >
+                    <div style="border:2px solid white; background-color: ghostwhite;" >
+                        <!--                        comment text--><?php //text?>
+                        This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
+                    </div>
+
+                    <span style="color: navy">Name of Commenter + metadata<?php ?></span>
+                    <div style="border:2px solid white; background-color: ghostwhite;" >
                         <!--                        comment text--><?php //text?>
                         This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
                     </div>
