@@ -5,7 +5,7 @@ include './Common/DatabaseFunctions.php';
 include "./Common/PictureFunctions.php";
 
 
-
+//TODO IMPORTANT FOR FRIENDSPICTURES.PHP
 //Security
 if (!isset($_SESSION['loggedInUser'])) {
     $_SESSION["fromPage"]= "FriendPictures";
@@ -66,6 +66,7 @@ else
 
 //FROM MY PICTURES========================================================================
     $myOwnerID = $_SESSION['loggedInUser']->getID();
+//TODO IMPORTANT FOR FRIENDSPICTURES.PHP///////////////////////////////
     if (!isset($_POST['albumId']) && !isset($_SESSION['selectedID2'])) {
     $sql = "SELECT MIN(AlbumID) from Album WHERE Album.OwnerID=:friendID AND Album.Accessibility_Code = 'shared'";
     $preparedQuery = $myPDO->prepare($sql);
@@ -75,6 +76,7 @@ else
     if($result['MIN(AlbumID)'] != null) {
 
     $albumID = $result['MIN(AlbumID)'];
+        //TODO IMPORTANT FOR FRIENDSPICTURES.PHP
     $_SESSION['selectedID2'] = $albumID;
 
     $albumPath = "Users/". $friendNameStripped . '/' . $albumID . "/AlbumPictures";
@@ -97,6 +99,7 @@ else
     $_SESSION['selectedID2'] = $_POST['albumId'];
     }
     //Keeping albumID consistent with dropdown
+//TODO IMPORTANT FOR FRIENDSPICTURES.PHP
     if (isset($_SESSION['selectedID2'])) {
     $albumID = $_SESSION['selectedID2'];
     }
@@ -104,6 +107,7 @@ else
     $myUser = $_SESSION['loggedInUser'];
     $userID = $myUser->getStrippedName();
     if (is_numeric($albumID)) {
+        //TODO IMPORTANT FOR FRIENDSPICTURES.PHP
     $originalFilePath = "Users/$friendNameStripped/$albumID/OriginalPictures";
     $originalArray = scandir($originalFilePath);
     $thumbnailPath = "Users/$friendNameStripped/$albumID/ThumbnailPictures";
@@ -133,9 +137,11 @@ else
     }
     else
     {
+        //TODO IMPORTANT FOR FRIENDSPICTURES.PHP
     if (isset ($_SESSION['displayedImage2']))
     {
     //        echo "from session";
+        //TODO IMPORTANT FOR FRIENDSPICTURES.PHP
     $_SESSION['displayedImage2'];
     $_SESSION['currentBasename2'];
     }
@@ -154,6 +160,7 @@ else
 
     <div class="container">
         <div class="container">
+<!--            //TODO IMPORTANT FOR FRIENDSPICTURES.PHP-->
             <h1 align="center"><?php echo $friendName ?>'s Pictures</h1>
             <hr>
         </div>
@@ -166,6 +173,7 @@ else
                 <div class="col-sm-2">
                     <select name="albumId" onchange="this.form.submit();">
                         <?php
+                        //TODO IMPORTANT FOR FRIENDSPICTURES.PHP
                         $sql = "SELECT * FROM Album 
                                 WHERE Album.OwnerID = ?  
                                 AND Album.Accessibility_Code = 'shared'";
@@ -198,6 +206,7 @@ else
                                 $totalThumbPath = $thumbnailPath.'/'.$thumbnailArray[$i];
                                 $fileInfo = pathinfo($totalThumbPath);
 
+                                //TODO IMPORTANT FOR FRIENDSPICTURES.PHP
                                 if ($fileInfo['basename']==$basename)
                                 {
                                     printf("<a href='FriendPictures.php?imageName=%s&id=%s'> <img class='activeThumb' src='%s'/></a>", $fileInfo['basename'], $results[$i-2]['PictureID'], $totalThumbPath);
