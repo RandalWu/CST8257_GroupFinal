@@ -21,7 +21,7 @@
     if (isset($_POST['uploadBtn']) && $_POST['albumId'] != '-1') {
         $valid = true;
     }
-    else {
+    else if($_POST['albumId'] == '-1'){
         $albumError = "Please select a valid album to upload to";
     }
     
