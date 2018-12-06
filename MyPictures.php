@@ -122,6 +122,7 @@ if (isset($_POST['btnSubmitComment']) && isset($_GET['imageName'])) {
     $preparedQuery->execute([$myOwnerID, (int) $_SESSION['selectedImageID'], $comment, date("Y-m-d H:i:s")]);
 }
 
+
 if (isset($_GET['btnLeft']))
 {
 
@@ -166,11 +167,11 @@ if (isset($_GET['delete']))
     
     if (isset($_SESSION['displayedImage']))
     {
-        $_SESSION['displayedImage'] = null;
+        unset($_SESSION['displayedImage']);
     }
     if (isset($_SESSION['currentBasename']))
     {
-        $_SESSION['currentBasename'] = null;
+        unset($_SESSION['currentBasename']);
     }
     header("Location: MyPictures.php");
     exit();

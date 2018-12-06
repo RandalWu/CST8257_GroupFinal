@@ -65,6 +65,7 @@ else
     $myOwnerID = $_SESSION['loggedInUser']->getID();
 //TODO IMPORTANT FOR FRIENDSPICTURES.PHP///////////////////////////////
     if (!isset($_POST['albumId']) && !isset($_SESSION['selectedID2'])) {
+    echo 100000;
     $sql = "SELECT MIN(AlbumID) from Album WHERE Album.OwnerID=:friendID AND Album.Accessibility_Code = 'shared'";
     $preparedQuery = $myPDO->prepare($sql);
     $preparedQuery->execute(['friendID'=>$friendID]);
@@ -73,6 +74,7 @@ else
     if($result['MIN(AlbumID)'] != null) {
 
     $albumID = $result['MIN(AlbumID)'];
+
         //TODO IMPORTANT FOR FRIENDSPICTURES.PHP
     $_SESSION['selectedID2'] = $albumID;
 
