@@ -15,7 +15,8 @@ if (isset($_SESSION['confirmedFriend']))
 {
     $myUser = $_SESSION['loggedInUser'];
     $myID = $myUser->getID();
-    echo "okay";
+  
+//    echo "okay";
     $friendID= $_SESSION['friendID'];
     $friendName= $_SESSION['friendName'];
     $friendNameStripped= $_SESSION['friendNameStripped'];
@@ -158,8 +159,8 @@ else
         </div>
 
         <!--        LEFT SIDE//////////////////////////////////////////////////-->
+        <div style="width: 70%; float:left;" class="container">
 
-        <div style="width: 50%; float:left;" class="container">
 
             <form method="post" class="form-horizontal" action="FriendPictures.php">
                 <div class="col-sm-2">
@@ -182,28 +183,11 @@ else
                 </div>
             </form>
 
-
-            <h1 align="center"> <?php echo $basename;?></h1>
-
             <div class="img-container2">
+                <h1 align="center"> <?php echo $basename;?></h1>
+
                 <!--    display the image based on the basename-->
                 <img src="<?php echo $displayPicture ?>" >
-<!--                <form action="FriendPictures.php?imageName="--><?php //$basename; ?><!-- method="get">-->
-<!--                <div class="action-list">-->
-<!--                    <button style="border:none; background-color: transparent;" type="submit" name="btnLeft">-->
-<!--            <span class="glyphicon glyphicon-repeat gly-flip-horizontal actionButtons">-->
-<!--                    </button>-->
-<!--                    <button style="border:none; background-color: transparent;" type="submit" name="btnRight">-->
-<!--                        <span class="glyphicon glyphicon-repeat"></span>-->
-<!--                    </button>-->
-<!--                    <button style="border:none; background-color: transparent;" type="submit" name="download">-->
-<!--                        <span class="glyphicon glyphicon-download-alt"></span>-->
-<!--                    </button>-->
-<!--                    <button style="border:none; background-color: transparent;" type="submit" name="delete">-->
-<!--                        <span class="glyphicon glyphicon-trash"></span>-->
-<!--                    </button>-->
-<!--                </div>-->
-<!--                </form>-->
             </div>
             <div class="horizontal-scroll-wrapper">
                 <div class="container testimonial-group">
@@ -213,9 +197,15 @@ else
                             for ($i = 2; $i < count($thumbnailArray); $i++) {
                                 $totalThumbPath = $thumbnailPath.'/'.$thumbnailArray[$i];
                                 $fileInfo = pathinfo($totalThumbPath);
-                                printf("<a href='FriendPictures.php?imageName=%s'> <img src='%s'/></a>", $fileInfo['basename'], $totalThumbPath);
-                            }
 
+                                if ($fileInfo['basename']==$basename)
+                                {
+                                    printf("<a href='FriendPictures.php?imageName=%s&id=%s'> <img class='activeThumb' src='%s'/></a>", $fileInfo['basename'], $results[$i-2]['PictureID'], $totalThumbPath);
+                                }
+                                else {
+                                    printf("<a href='FriendPictures.php?imageName=%s&id=%s'> <img src='%s'/></a>", $fileInfo['basename'], $results[$i-2]['PictureID'], $totalThumbPath);
+                                }
+                            }
                         }
                         ?>
                     </div>
@@ -229,38 +219,47 @@ else
 
         <div style="width: 30%; padding-bottom: auto; padding-top:6% ;padding-left:2%;float:right;" class="container">
             <div style="height:30em;width:100%;overflow:auto;border:8px solid white;padding:2%">
-                <h4>Comments</h4>
-                This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
-                This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
-                This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
-                This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :DThis picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
-                This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
-                This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :DThis picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
-                This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
-                This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :DThis picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
-                This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
-                This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :DThis picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
-                This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
-                This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :DThis picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
-                This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
-                This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :DThis picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
-                This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
-                This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :DThis picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
-                This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
-                This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :DThis picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
-                This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
-                This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :DThis picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
-                This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
-                This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :DThis picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
-                This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
-                This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :DThis picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
-                This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
-                This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :DThis picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
-                This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
-                This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :DThis picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
-                This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
-                This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
+                <div>
+                    <h4>Description:</h4>
+                    <?php
+                    //input description here
+                    ?>
+                    <p>Lorem IpsumLorem IpsumLorem IpsumLorem Ipsum #Lorem Ipsum</p>
+                </div>
+                <div>
+                    <h4>Comments</h4>
+                    <!--TODO Do a foreach here?-->
 
+                    <span style="color: navy">Name of Commenter + metadata<?php ?></span>
+                    <div style="border:2px solid white; background-color: ghostwhite;" >
+<!--                        comment text--><?php //text?>
+                        This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
+                    </div>
+<!--                    Examples v-->
+                    <span style="color: navy">Name of Commenter + metadata<?php ?></span>
+                    <div style="border:2px solid white; background-color: ghostwhite;" >
+                        <!--                        comment text--><?php //text?>
+                        This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
+                    </div>
+                    <span style="color: navy">Name of Commenter + metadata<?php ?></span>
+                    <div style="border:2px solid white; background-color: ghostwhite;" >
+                        <!--                        comment text--><?php //text?>
+                        This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
+                    </div>
+
+                    <span style="color: navy">Name of Commenter + metadata<?php ?></span>
+                    <div style="border:2px solid white; background-color: ghostwhite;" >
+                        <!--                        comment text--><?php //text?>
+                        This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
+                    </div>
+
+                    <span style="color: navy">Name of Commenter + metadata<?php ?></span>
+                    <div style="border:2px solid white; background-color: ghostwhite;" >
+                        <!--                        comment text--><?php //text?>
+                        This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
+                    </div>
+<!--                    Examples ^-->
+                </div>
             </div>
             <!--        Comment Text Box-->
             <!--        Make a form here for submitting-->

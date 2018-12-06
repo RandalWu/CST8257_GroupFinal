@@ -149,6 +149,10 @@ if (isset($_GET['delete']))
     unlink($albumPath . '/' . $_SESSION['currentBasename']);
     unlink($thumbnailPath . '/' . $_SESSION['currentBasename']);
     
+    $update = "UPDATE Album SET Album.Date_Updated=? WHERE Album.AlbumID =?";
+    $updateCheck = $myPDO->prepare($update);
+    $updateCheck->execute([date("Y-m-d"),$_SESSION['selectedID']]);
+    
     if (isset($_SESSION['displayedImage']))
     {
         $_SESSION['displayedImage'] = null;
@@ -170,7 +174,7 @@ if (isset($_GET['delete']))
 
 <!--        LEFT SIDE//////////////////////////////////////////////////-->
 
-    <div style="width: 50%; float:left;" class="container">
+    <div style="width: 70%; float:left;" class="container">
 
         <form method="post" class="form-horizontal" action="MyPictures.php">
             <div class="col-sm-2">
@@ -184,6 +188,9 @@ if (isset($_GET['delete']))
                         if ($_SESSION['selectedID'] == $row['AlbumID']) {
                             echo "selected";
                         }
+                        elseif($_SERVER['QUERY_STRING']== $row["Title"]){
+                            echo "selected";
+                        }
                         printf (">%s - last updated on %s</option>", $row['Title'], $row['Date_Updated']);
                     }
                     ?>
@@ -192,9 +199,11 @@ if (isset($_GET['delete']))
         </form>
 
 
-    <h1 align="center"> <?php echo $basename;?></h1>
+
 
     <div class="img-container">
+        <h1 align="center"> <?php echo $basename;?></h1>
+
         <!--    display the image based on the basename-->
         <img src="<?php echo $displayPicture ?>" >
         <form action="MyPictures.php?imageName="<?php $basename; ?>" method="get">
@@ -227,7 +236,15 @@ if (isset($_GET['delete']))
                     for ($i = 2; $i < count($thumbnailArray); $i++) {
                         $totalThumbPath = $thumbnailPath.'/'.$thumbnailArray[$i];
                         $fileInfo = pathinfo($totalThumbPath);
-                        printf("<a href='MyPictures.php?imageName=%s&id=%s'> <img src='%s'/></a>", $fileInfo['basename'], $results[$i-2]['PictureID'], $totalThumbPath);
+                        if ($fileInfo['basename']==$basename)
+                        {
+                            printf("<a href='MyPictures.php?imageName=%s&id=%s'> <img class='activeThumb' src='%s'/></a>", $fileInfo['basename'], $results[$i-2]['PictureID'], $totalThumbPath);
+                        }
+                        else {
+                            printf("<a href='MyPictures.php?imageName=%s&id=%s'> <img src='%s'/></a>", $fileInfo['basename'], $results[$i-2]['PictureID'], $totalThumbPath);
+                        }
+
+
                     }
                     
                 }
@@ -255,6 +272,7 @@ if (isset($_GET['delete']))
                 printf('<span style="color:blue"><i>%s(%s)</i></span><p>%s</p>', $row['Name'], $row['Date'], $row['CommentText']);
             }
             ?>
+
         </div>
 <!--        Make a form here for submitting-->
         <form method="post" class="form-horizontal" action="<?php $_SERVER['REQUEST_URI']; ?>">
