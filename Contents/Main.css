@@ -80,6 +80,24 @@ textarea {
     float: none;
 }
 
+/*FriendPictures*/
+.left-div {
+    float: left;
+    width: 60%;
+    /*height: 20px;*/
+    margin-right: 8px;
+    background-color: linen;
+}
+.right-div {
+    margin-left: 108px;
+    background-color: lime;
+}
+
+
+
+
+
+
 /*.actionButtons {*/
 /*border: red;*/
 /*background-color: red;*/

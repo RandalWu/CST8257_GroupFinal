@@ -2,28 +2,28 @@
 include "./Common/Header.php";
 include "./Common/ValidationFunctions.php";
 include "./Common/PictureFunctions.php";
-
 if (!isset($_SESSION['loggedInUser'])) {
     $_SESSION["fromPage"]= "MyPictures";
     header('Location: Login.php');
 }
-
+ 
+$myOwnerID = $_SESSION['loggedInUser']->getID();
 if (!isset($_POST['albumId']) && !isset($_SESSION['selectedID'])) {
-    $sql = "SELECT MIN(AlbumID) from Album";
+    $sql = "SELECT MIN(AlbumID) from Album WHERE Album.OwnerID=:myID";
     $preparedQuery = $myPDO->prepare($sql);
-    $preparedQuery->execute();
+    $preparedQuery->execute(['myID'=>$myOwnerID]);
     $result = $preparedQuery->fetch();
-    
+
     $albumID = $result['MIN(AlbumID)'];
-    
-    
+
+
     $albumPath = "Users/". $_SESSION['loggedInUser']->getStrippedName() . '/' . $albumID . "/AlbumPictures/";
     //array of the filenames in folder
     $albumImagesArray = scandir($albumPath);
-    
+
     if (count($albumImagesArray) < 2 || $albumImagesArray == null) {
-        $basename = "YOU DO NOT CURRENTLY HAVE ANY PHOTOS TO DISPLAY. </br> PLEASE UPLOAD SOME USING THE UPLOAD PAGE."; 
-    }    
+        $basename = "YOU DO NOT CURRENTLY HAVE ANY PHOTOS TO DISPLAY. </br> PLEASE UPLOAD SOME USING THE UPLOAD PAGE.";
+    }
 }
 
 //Keep track of dropdown selection and set selectedID session
@@ -31,7 +31,6 @@ if (isset($_POST['albumId'])) {
     $selectedAlbum = $_POST['albumId'];
     $_SESSION['selectedID'] = $_POST['albumId'];
 }
-
 //Keeping albumID consistent with dropdown
 if (isset($_SESSION['selectedID'])) {
     $albumID = $_SESSION['selectedID'];
@@ -39,31 +38,25 @@ if (isset($_SESSION['selectedID'])) {
 
 $myUser = $_SESSION['loggedInUser'];
 $userID = $myUser->getStrippedName();
-
 $originalFilePath = "Users/$userID/$albumID/OriginalPictures/";
 $originalArray = scandir($originalFilePath);
-
 $thumbnailPath = "Users/$userID/$albumID/ThumbnailPictures/";
 $thumbnailArray = scandir($thumbnailPath);
 $totalThumbPath = $thumbnailPath.$thumbnailArray[3];
-
 $albumPath = "Users/$userID/$albumID/AlbumPictures/";
 //array of the filenames in folder
 $albumImagesArray = scandir($albumPath);
 $totalAlbumPath = $albumPath.$albumImagesArray[3];
-
 if (isset($_GET['imageName']))
 {
     //getting basename from URL
     $basename = $_GET['imageName'];
-
     foreach ($albumImagesArray as $image)
     {
         if ($image == $basename)
         {
             //displayPicture is the full filepath to the specific image
             $displayPicture = $albumPath.$basename;
-
             //sometimes we need a session to keep track of the selected picture
             $_SESSION['displayedImage'] = $displayPicture;
             $_SESSION['currentBasename'] = $basename;
@@ -86,28 +79,20 @@ else
             $basename = "YOU DO NOT CURRENTLY HAVE ANY PHOTOS TO DISPLAY. </br> PLEASE UPLOAD SOME USING THE UPLOAD PAGE.";
         }
     }
-
 }
-
 if (isset($_GET['btnLeft']))
 {
 
     rotateImage($_SESSION['displayedImage'], -90);
     header("location: MyPictures.php");
     exit();
-
-
 }
 if (isset($_GET['btnRight']))
 {
     rotateImage($_SESSION['displayedImage'], 90);
-
     header("location: MyPictures.php");
     exit();
-
-
 }
-
 if (isset($_GET['download']))
 {
     header('Content-Description: File Transfer');
@@ -123,15 +108,11 @@ if (isset($_GET['download']))
     readfile($_SESSION['displayedImage']);
     exit;
 }
-
 if (isset($_GET['delete']))
 {
-
     unlink($originalFilePath . '/' . $_SESSION['currentBasename']);
     unlink($albumPath . '/' . $_SESSION['currentBasename']);
     unlink($thumbnailPath . '/' . $_SESSION['currentBasename']);
-
-
     if (isset($_SESSION['displayedImage']))
     {
         $_SESSION['displayedImage'] = null;
@@ -140,7 +121,6 @@ if (isset($_GET['delete']))
     {
         $_SESSION['currentBasename'] = null;
     }
-
     header("Location: MyPictures.php");
     exit();
 }
@@ -157,7 +137,6 @@ if (isset($_GET['delete']))
                     $sql = 'Select * FROM Album WHERE OwnerID = ?';
                     $preparedQuery = $myPDO->prepare($sql);
                     $preparedQuery->execute([$_SESSION['loggedInUser']->getID()]);
-
                     foreach ($preparedQuery as $row) {
                         printf("<option value='%s' ", $row['AlbumID']);
                         if ($_SESSION['selectedID'] == $row['AlbumID']) {
@@ -171,7 +150,7 @@ if (isset($_GET['delete']))
         </form>
     </div>
     <!--///Testing Kyle's LAB 7/////////////////////////////////////////////////////////////////////////////////////////////-->
-    
+
     <h1 align="center"> <?php echo $basename;?></h1>
 
     <div class="img-container">
@@ -193,11 +172,7 @@ if (isset($_GET['delete']))
             </button>
         </div>
         </form>
-
     </div>
-
-
-
     <div class="horizontal-scroll-wrapper">
         <div class="container testimonial-group">
             <div class="row text-center">
@@ -210,9 +185,7 @@ if (isset($_GET['delete']))
                     }
                 }
                 ?>
-
             </div>
         </div>
     </div>
-
-<?php  include "./Common/Footer.php"; 
+<?php  include "./Common/Footer.php";
