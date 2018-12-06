@@ -13,10 +13,20 @@ $user = $_SESSION['loggedInUser'];
 $getAlbums = "SELECT * FROM Album INNER JOIN Accessibility ON Album.Accessibility_Code=Accessibility.AccessibilityCode WHERE OwnerID = ?";
 $getAlbumsCheck = $myPDO->prepare($getAlbums);
 $getAlbumsCheck->execute([($user->getID())]);
+
+
+$getCom = "SELECT * FROM Comment";
+$getComCheck = $myPDO->prepare($getCom);
+$getComCheck->execute();
     
 if (isset($_POST["delete"])) {   
     foreach ($getAlbumsCheck as $row) {
         if (($_POST["delete"]) == $row["AlbumID"]) {
+            //Delete Comments from Picture
+            $deleteComments = "DELETE Comment FROM Comment INNER JOIN Picture ON Comment.PictureID=Picture.PictureID Where Picture.AlbumID = ?";
+            $deleteCommentsCheck = $myPDO->prepare($deleteComments);
+            $deleteCommentsCheck->execute([($row["AlbumID"])]);
+            
             //Delete Pictures from Album on DB
             $deletePictures = "DELETE FROM Picture WHERE AlbumID=?";
             $deletePicturesCheck = $myPDO->prepare($deletePictures);
