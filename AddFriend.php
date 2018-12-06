@@ -10,11 +10,11 @@ include './Common/Header.php';
 include './Common/ValidationFunctions.php';
 include './Common/DatabaseFunctions.php';
 
-    if (!isset($_SESSION['selectedID'])) {
+    if (isset($_SESSION['selectedID'])) {
         unset($_SESSION['selectedID']);
     }
     
-     if (!isset($_SESSION['selectedID2'])) {
+     if (isset($_SESSION['selectedID2'])) {
         unset($_SESSION['selectedID2']);
     }
 
