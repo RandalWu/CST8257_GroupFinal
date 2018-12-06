@@ -51,10 +51,10 @@ unset($_SESSION['confirmedFriend']);
                     $preparedQuery->execute([$_POST['albumId'], $_FILES['uploadTxt']['name'], $_POST['title'], $_POST['description'], date("Y-m-d H:i:s")]);
 
                     $success = "Successful upload!";
+
                     $update = "UPDATE Album SET Album.Date_Updated=? WHERE Album.AlbumID =?";
                     $updateCheck = $myPDO->prepare($update);
                     $updateCheck->execute([date("Y-m-d"),$_POST['albumId']]);
-                    
                 } 
                 else {
                     $error = "Uploaded file is not a supported type";

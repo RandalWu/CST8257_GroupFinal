@@ -15,6 +15,7 @@ if (isset($_SESSION['confirmedFriend']))
 {
     $myUser = $_SESSION['loggedInUser'];
     $myID = $myUser->getID();
+  
 //    echo "okay";
     $friendID= $_SESSION['friendID'];
     $friendName= $_SESSION['friendName'];
@@ -158,8 +159,8 @@ else
         </div>
 
         <!--        LEFT SIDE//////////////////////////////////////////////////-->
-
         <div style="width: 70%; float:left;" class="container">
+
 
             <form method="post" class="form-horizontal" action="FriendPictures.php">
                 <div class="col-sm-2">
@@ -182,14 +183,11 @@ else
                 </div>
             </form>
 
-
-
             <div class="img-container2">
                 <h1 align="center"> <?php echo $basename;?></h1>
 
                 <!--    display the image based on the basename-->
                 <img src="<?php echo $displayPicture ?>" >
-
             </div>
             <div class="horizontal-scroll-wrapper">
                 <div class="container testimonial-group">
