@@ -4,12 +4,12 @@
 
     //Setting POST and SESSION variables
     if ($_POST['id'] != null) {
-        $id = htmlspecialchars($id);
         $id = $_POST['id'];
+        $id = htmlspecialchars($id);
     }
     if ($_POST['password'] != null) {
-        $password = htmlspecialchars($password);
         $password = $_POST['password'];
+        $password = htmlspecialchars($password);
     }
 
     //Security on FriendPictures page//

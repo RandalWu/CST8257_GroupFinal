@@ -105,10 +105,13 @@ else
 
 ///             Comments and Icon Functionality             ///
 if (isset($_POST['btnSubmitComment']) && isset($_GET['imageName'])) {
+    $comment = $_POST['comment'];
+    $comment = htmlspecialchars($comment);
+
     $sql = "INSERT INTO Comment (CommentID, AuthorID, PictureID, CommentText, Date) "
             . "VALUES (DEFAULT,?,?,?,?)";
     $preparedQuery = $myPDO->prepare($sql);
-    $preparedQuery->execute([$myOwnerID, (int) $_SESSION['selectedImageID'], $_POST['comment'], date("Y-m-d H:i:s")]);
+    $preparedQuery->execute([$myOwnerID, (int) $_SESSION['selectedImageID'], $comment, date("Y-m-d H:i:s")]);
 }
 
 if (isset($_GET['btnLeft']))
@@ -269,6 +272,8 @@ if (isset($_GET['delete']))
 
             <h4>Comments:</h4>
             <?php 
+            ///Don't delete me $sql = "select User.Name, CommentText, Date From Comment Inner Join User ON Comment.AuthorID = User.UserID Inner Join Album ON User.UserID = Album.OwnerID WHERE Comment.PictureID=? AND Album.AlbumID= ?";
+
             $sql = "select User.Name, CommentText, Date From Comment Inner Join User "
                     . "ON Comment.AuthorID = User.UserID Where PictureID = ?";
             $preparedQuery = $myPDO->prepare($sql);
