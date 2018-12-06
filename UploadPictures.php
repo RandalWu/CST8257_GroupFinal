@@ -44,9 +44,7 @@
                     $preparedQuery = $myPDO->prepare($sql);
                     $preparedQuery->execute([$_POST['albumId'], $_FILES['uploadTxt']['name'], $_POST['title'], $_POST['description'], date("Y-m-d H:i:s")]);
 
-
-                    //header('Location: UploadPictures.php');
-                    //die();
+                    $success = "Successful upload!";
                 } 
                 else {
                     $error = "Uploaded file is not a supported type";
@@ -72,7 +70,7 @@
 <h1 align="center">Upload Pictures</h1>
 <div class="container">
     <hr>
-
+     <span class='text-success'><?php echo $success; ?></span>
     <div>
         <p>The accepted file formats are: JPEG, GIF, and PNG.</p>
         <p>You can upload multiple pictures at a time by holding the SHIFT key while selecting pictures.</p>
