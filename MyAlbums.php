@@ -14,7 +14,6 @@ $getAlbums = "SELECT * FROM Album INNER JOIN Accessibility ON Album.Accessibilit
 $getAlbumsCheck = $myPDO->prepare($getAlbums);
 $getAlbumsCheck->execute([($user->getID())]);
 
-
 $getCom = "SELECT * FROM Comment";
 $getComCheck = $myPDO->prepare($getCom);
 $getComCheck->execute();
@@ -78,9 +77,9 @@ if (isset($_POST["saveBtn"])) {
         
          <?php
         foreach ($getAlbumsCheck as $row) {
-            $getPictures = "SELECT * FROM Picture INNER JOIN Album ON Picture.AlbumID = Album.AlbumID INNER JOIN Accessibility ON Album.Accessibility_Code = Accessibility.AccessibilityCode WHERE Album.OwnerID=?";
+            $getPictures = "SELECT * FROM Picture INNER JOIN Album ON Picture.AlbumID = Album.AlbumID INNER JOIN Accessibility ON Album.Accessibility_Code = Accessibility.AccessibilityCode WHERE Album.OwnerID=? AND Album.AlbumID =? ";
             $getPicturesCheck = $myPDO->prepare($getPictures);
-            $getPicturesCheck->execute([($user->getID())]);
+            $getPicturesCheck->execute([($user->getID()), $row["AlbumID"]]);
             
             $getAccess = "SELECT * FROM Accessibility";
             $getAccessCheck = $myPDO->prepare($getAccess);
@@ -102,9 +101,7 @@ if (isset($_POST["saveBtn"])) {
             printf("<td><button type='submit' class='btn btn-link' name='delete' value=%s onclick=\"return confirm('The album and all its pictures will be deleted')\">Delete</button></td></tr>", $row["AlbumID"]);
         
             }
-        
         ?>
-        
     </table>
     
     <div align="right">
