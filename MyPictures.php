@@ -144,6 +144,10 @@ if (isset($_GET['delete']))
     unlink($albumPath . '/' . $_SESSION['currentBasename']);
     unlink($thumbnailPath . '/' . $_SESSION['currentBasename']);
     
+    $update = "UPDATE Album SET Album.Date_Updated=? WHERE Album.AlbumID =?";
+    $updateCheck = $myPDO->prepare($update);
+    $updateCheck->execute([date("Y-m-d"),$_SESSION['selectedID']]);
+    
     if (isset($_SESSION['displayedImage']))
     {
         $_SESSION['displayedImage'] = null;
