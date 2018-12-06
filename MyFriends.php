@@ -14,6 +14,14 @@ if (!isset($_SESSION['loggedInUser'])) {
     header('Location: Login.php');
 }
 
+if (!isset($_SESSION['selectedID'])) {
+    unset($_SESSION['selectedID']);
+}
+
+if (!isset($_SESSION['selectedID2'])) {
+    unset($_SESSION['selectedID2']);
+}
+
 //Security on FriendPictures page//
 unset($_SESSION['friendID']);
 unset($_SESSION['friendName']);

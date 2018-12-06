@@ -4,7 +4,6 @@ include "./Common/ValidationFunctions.php";
 include './Common/DatabaseFunctions.php';
 include "./Common/PictureFunctions.php";
 
-
 //TODO IMPORTANT FOR FRIENDSPICTURES.PHP
 //Security
 if (!isset($_SESSION['loggedInUser'])) {

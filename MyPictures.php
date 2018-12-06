@@ -14,9 +14,18 @@ unset($_SESSION['friendNameStripped']);
 unset($_SESSION['confirmedFriend']);
 ///////////////////////////////////
 
+if (!isset($_SESSION['selectedID'])) {
+    unset($_SESSION['selectedID']);
+}
+
+if (!isset($_SESSION['selectedID2'])) {
+    unset($_SESSION['selectedID2']);
+}
+
 //        Picture Display      //
 $myOwnerID = $_SESSION['loggedInUser']->getID();
 
+//Coming from a fresh start and selecting a default album
 if (!isset($_POST['albumId']) && !isset($_SESSION['selectedID'])) {
     $sql = "SELECT MIN(AlbumID) from Album WHERE Album.OwnerID=:myID";
     $preparedQuery = $myPDO->prepare($sql);
@@ -43,7 +52,6 @@ if (!isset($_POST['albumId']) && !isset($_SESSION['selectedID'])) {
 }
 
 //Keep track of dropdown selection and set selectedID session
-echo $_POST['albumId'];
 if (isset($_POST['albumId'])) {
     $selectedAlbum = $_POST['albumId'];
     $_SESSION['selectedID'] = $_POST['albumId'];
@@ -259,10 +267,8 @@ if (isset($_GET['delete']))
     <!--RIGHT SIDE////////////////////////////////////////-->
     
     <div style="width: 30%; padding-bottom: auto; padding-top:6% ;padding-left:2%;float:right;" class="container">
-        <!--        Comment Text Box-->
         <div style="height:30em;width:100%;overflow:auto;border:8px solid white;padding:2%">
             <h4>Description:</h4>
-<!--            TODO insert description-->
 
             <h4>Comments:</h4>
             <?php 
@@ -277,7 +283,6 @@ if (isset($_GET['delete']))
             ?>
 
         </div>
-<!--        Make a form here for submitting-->
         <form method="post" class="form-horizontal" action="<?php $_SERVER['REQUEST_URI']; ?>">
             <br>
             <textarea name="comment" rows="4" cols="50" style="height:7em;width:100%;" placeholder="Leave a comment"></textarea>
