@@ -6,21 +6,27 @@
     //Setting POST and SESSION variables
     if ($_POST['id'] != null) {
         $id = $_POST['id'];
+        $id = htmlspecialchars($id);
     }
     if ($_POST['name'] != null) {
         $name = $_POST['name'];
+        $name = htmlspecialchars($name);
     }
     if ($_POST['phoneNumber'] != null) {
         $phoneNumber = $_POST['phoneNumber'];
+        $phoneNumber = htmlspecialchars($phoneNumber);
     }
     if ($_POST['password'] != null) {
         $password = $_POST['password'];
+        $password = htmlspecialchars($password);
     }
     if ($_POST['passwordConfirm'] != null) {
         $passwordConfirm = $_POST['passwordConfirm'];
+        $passwordConfirm = htmlspecialchars($passwordConfirm);
     }
     if ($_SESSION['encryptedPassword'] != null) {
         $encryptedPassword = $_SESSION['encryptedPassword'];
+        $encryptedPassword = htmlspecialchars($encryptedPassword);
     }
 //Security on FriendPictures page//
 unset($_SESSION['friendID']);
