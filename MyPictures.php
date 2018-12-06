@@ -137,9 +137,16 @@ if (isset($_GET['delete']))
 }
 
 ?>
+
+<div class="container">
     <div class="container">
         <h1 align="center">My Pictures</h1>
         <hr>
+    </div>
+
+<!--        LEFT SIDE//////////////////////////////////////////////////-->
+
+    <div style="width: 50%; float:left;" class="container">
 
         <form method="post" class="form-horizontal" action="MyPictures.php">
             <div class="col-sm-2">
@@ -160,6 +167,7 @@ if (isset($_GET['delete']))
             </div>
         </form>
     </div>
+
 
     <h1 align="center"> <?php echo $basename;?></h1>
 
@@ -199,4 +207,54 @@ if (isset($_GET['delete']))
             </div>
         </div>
     </div>
-<?php var_dump($fileInfo); include "./Common/Footer.php";
+</div>
+
+<!--RIGHT SIDE////////////////////////////////////////-->
+
+    <div style="width: 30%; padding-bottom: auto; padding-top:6% ;padding-left:2%;float:right;" class="container">
+        <div style="height:30em;width:100%;overflow:auto;border:8px solid white;padding:2%">
+            <h4>Comments</h4>
+            This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
+            This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
+            This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
+            This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :DThis picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
+            This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
+            This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :DThis picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
+            This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
+            This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :DThis picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
+            This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
+            This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :DThis picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
+            This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
+            This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :DThis picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
+            This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
+            This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :DThis picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
+            This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
+            This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :DThis picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
+            This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
+            This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :DThis picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
+            This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
+            This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :DThis picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
+            This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
+            This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :DThis picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
+            This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
+            This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :DThis picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
+            This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
+            This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :DThis picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
+            This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
+            This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :DThis picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
+            This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
+            This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
+
+        </div>
+<!--        Comment Text Box-->
+<!--        Make a form here for submitting-->
+        <textarea rows="4" cols="50" style="height:7em;width:100%;" placeholder="Leave a comment"></textarea>
+        <div align="left">
+            <br>
+            <button type="submit" name="btnSubmitComment" value="Add Comment" class="btn btn-primary">Add Comment</button>
+
+        </div>
+
+    </div>
+</div>
+<?php  include "./Common/Footer.php";
