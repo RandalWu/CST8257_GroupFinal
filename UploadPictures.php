@@ -18,10 +18,11 @@
     $valid = false;
     
     //Page Validity check
-    if (isset($_POST['uploadBtn'])) {
-        $titleError = ValidateID($_POST['title']);
-        
-        $valid = ValidatePage($titleError);
+    if (isset($_POST['uploadBtn']) && $_POST['albumId'] != '-1') {
+        $valid = true;
+    }
+    else {
+        $albumError = "Please select a valid album to upload to";
     }
     
     //Save picture to local folders AND insert picture info into database
@@ -44,7 +45,8 @@
                     $preparedQuery->execute([$_POST['albumId'], $_FILES['uploadTxt']['name'], $_POST['title'], $_POST['description'], date("Y-m-d H:i:s")]);
 
 
-                    header('Location: UploadPictures.php');
+                    //header('Location: UploadPictures.php');
+                    //die();
                 } 
                 else {
                     $error = "Uploaded file is not a supported type";
@@ -82,8 +84,8 @@
         <div style="width: 50%;">
         <div class="form-group">
             <label>Upload to Album</label>
-
                 <select id="soflow" name="albumId">
+                    <option value="-1">Please Choose an Album</option>
                     <?php
 
                     //Select AlbumID and Tile from all Albums owned by current logged in user.
@@ -91,15 +93,13 @@
                     $sql = "SELECT AlbumID, Title FROM Album WHERE OwnerID = ?";
                     $preparedQuery = $myPDO->prepare($sql);
                     $preparedQuery->execute([$_SESSION['loggedInUser']->getID()]);
-                    if ($preparedQuery->rowCount() == 0) {
-                        echo '<option>You have no albums</option>';
-                    } else {
-                        foreach ($preparedQuery as $rows) {
-                            printf("<option value='%s'>%s</option>", $rows['AlbumID'], $rows['Title']);
-                        }
+                    foreach ($preparedQuery as $rows) {
+                        printf("<option value='%s'>%s</option>", $rows['AlbumID'], $rows['Title']);
                     }
                     ?>
                 </select>
+            <br>
+            <span class='text-danger'><?php echo $albumError; ?></span>
         </div>
 
 
@@ -112,7 +112,6 @@
         <div class="form-group">
             <label for="title">Title</label>
                 <input type="text" class="form-control" name="title" id="title"/>
-            <span class='text-danger'><?php echo $titleError; ?></span>
         </div>
 
         <div class="form-group">

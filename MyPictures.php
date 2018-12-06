@@ -2,6 +2,7 @@
 include "./Common/Header.php";
 include "./Common/ValidationFunctions.php";
 include "./Common/PictureFunctions.php";
+
 if (!isset($_SESSION['loggedInUser'])) {
     $_SESSION["fromPage"]= "MyPictures";
     header('Location: Login.php');
@@ -14,14 +15,21 @@ if (!isset($_POST['albumId']) && !isset($_SESSION['selectedID'])) {
     $preparedQuery->execute(['myID'=>$myOwnerID]);
     $result = $preparedQuery->fetch();
 
-    $albumID = $result['MIN(AlbumID)'];
+    if($result['MIN(AlbumID)'] != null) {
+        
+        $albumID = $result['MIN(AlbumID)'];
+        $_SESSION['selectedID'] = $albumID;
 
+        $albumPath = "Users/". $_SESSION['loggedInUser']->getStrippedName() . '/' . $albumID . "/AlbumPictures";
+        //array of the filenames in folder
+        $albumImagesArray = scandir($albumPath);
 
-    $albumPath = "Users/". $_SESSION['loggedInUser']->getStrippedName() . '/' . $albumID . "/AlbumPictures/";
-    //array of the filenames in folder
-    $albumImagesArray = scandir($albumPath);
-
-    if (count($albumImagesArray) < 2 || $albumImagesArray == null) {
+        if (count($albumImagesArray) < 2 || $albumImagesArray == null) {
+            $basename = "YOU DO NOT CURRENTLY HAVE ANY PHOTOS TO DISPLAY. </br> PLEASE UPLOAD SOME USING THE UPLOAD PAGE.";
+        }
+    }
+    
+    else {
         $basename = "YOU DO NOT CURRENTLY HAVE ANY PHOTOS TO DISPLAY. </br> PLEASE UPLOAD SOME USING THE UPLOAD PAGE.";
     }
 }
@@ -38,15 +46,18 @@ if (isset($_SESSION['selectedID'])) {
 
 $myUser = $_SESSION['loggedInUser'];
 $userID = $myUser->getStrippedName();
-$originalFilePath = "Users/$userID/$albumID/OriginalPictures/";
-$originalArray = scandir($originalFilePath);
-$thumbnailPath = "Users/$userID/$albumID/ThumbnailPictures/";
-$thumbnailArray = scandir($thumbnailPath);
-$totalThumbPath = $thumbnailPath.$thumbnailArray[3];
-$albumPath = "Users/$userID/$albumID/AlbumPictures/";
-//array of the filenames in folder
-$albumImagesArray = scandir($albumPath);
-$totalAlbumPath = $albumPath.$albumImagesArray[3];
+if (is_numeric($albumID)) {
+    $originalFilePath = "Users/$userID/$albumID/OriginalPictures";
+    $originalArray = scandir($originalFilePath);
+    $thumbnailPath = "Users/$userID/$albumID/ThumbnailPictures";
+    $thumbnailArray = scandir($thumbnailPath);
+    $totalThumbPath = $thumbnailPath.$thumbnailArray[3];
+    $albumPath = "Users/$userID/$albumID/AlbumPictures";
+    //array of the filenames in folder
+    $albumImagesArray = scandir($albumPath);
+    $totalAlbumPath = $albumPath.$albumImagesArray[3];
+}
+
 if (isset($_GET['imageName']))
 {
     //getting basename from URL
@@ -56,7 +67,7 @@ if (isset($_GET['imageName']))
         if ($image == $basename)
         {
             //displayPicture is the full filepath to the specific image
-            $displayPicture = $albumPath.$basename;
+            $displayPicture = $albumPath.'/'.$basename;
             //sometimes we need a session to keep track of the selected picture
             $_SESSION['displayedImage'] = $displayPicture;
             $_SESSION['currentBasename'] = $basename;
@@ -149,7 +160,6 @@ if (isset($_GET['delete']))
             </div>
         </form>
     </div>
-    <!--///Testing Kyle's LAB 7/////////////////////////////////////////////////////////////////////////////////////////////-->
 
     <h1 align="center"> <?php echo $basename;?></h1>
 
@@ -179,13 +189,14 @@ if (isset($_GET['delete']))
                 <?php
                 if (count($thumbnailArray) > 2) {
                     for ($i = 2; $i < count($thumbnailArray); $i++) {
-                        $totalThumbPath = $thumbnailPath.$thumbnailArray[$i];
+                        $totalThumbPath = $thumbnailPath.'/'.$thumbnailArray[$i];
                         $fileInfo = pathinfo($totalThumbPath);
-                        printf("<a href='MyPictures.php?imageName=$fileInfo[basename]'> <img src='$totalThumbPath'/></a>");
+                        printf("<a href='MyPictures.php?imageName=%s'> <img src='%s'/></a>", $fileInfo['basename'], $totalThumbPath);
                     }
+                    
                 }
                 ?>
             </div>
         </div>
     </div>
-<?php  include "./Common/Footer.php";
+<?php var_dump($fileInfo); include "./Common/Footer.php";
