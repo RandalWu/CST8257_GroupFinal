@@ -185,25 +185,25 @@ else
 
             <h1 align="center"> <?php echo $basename;?></h1>
 
-            <div class="img-container">
+            <div class="img-container2">
                 <!--    display the image based on the basename-->
                 <img src="<?php echo $displayPicture ?>" >
-                <form action="FriendPictures.php?imageName="<?php $basename; ?> method="get">
-                <div class="action-list">
-                    <button style="border:none; background-color: transparent;" type="submit" name="btnLeft">
-            <span class="glyphicon glyphicon-repeat gly-flip-horizontal actionButtons">
-                    </button>
-                    <button style="border:none; background-color: transparent;" type="submit" name="btnRight">
-                        <span class="glyphicon glyphicon-repeat"></span>
-                    </button>
-                    <button style="border:none; background-color: transparent;" type="submit" name="download">
-                        <span class="glyphicon glyphicon-download-alt"></span>
-                    </button>
-                    <button style="border:none; background-color: transparent;" type="submit" name="delete">
-                        <span class="glyphicon glyphicon-trash"></span>
-                    </button>
-                </div>
-                </form>
+<!--                <form action="FriendPictures.php?imageName="--><?php //$basename; ?><!-- method="get">-->
+<!--                <div class="action-list">-->
+<!--                    <button style="border:none; background-color: transparent;" type="submit" name="btnLeft">-->
+<!--            <span class="glyphicon glyphicon-repeat gly-flip-horizontal actionButtons">-->
+<!--                    </button>-->
+<!--                    <button style="border:none; background-color: transparent;" type="submit" name="btnRight">-->
+<!--                        <span class="glyphicon glyphicon-repeat"></span>-->
+<!--                    </button>-->
+<!--                    <button style="border:none; background-color: transparent;" type="submit" name="download">-->
+<!--                        <span class="glyphicon glyphicon-download-alt"></span>-->
+<!--                    </button>-->
+<!--                    <button style="border:none; background-color: transparent;" type="submit" name="delete">-->
+<!--                        <span class="glyphicon glyphicon-trash"></span>-->
+<!--                    </button>-->
+<!--                </div>-->
+<!--                </form>-->
             </div>
             <div class="horizontal-scroll-wrapper">
                 <div class="container testimonial-group">
