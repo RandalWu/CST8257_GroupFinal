@@ -46,7 +46,7 @@ else
 
 ?>
 
-
+<!--Same as MyPictures /////////////////////////////////////////////////////////////////////////////-->
         <div class="container">
 
             <div style="width: 50%; text-align: justify; float: left">
@@ -181,20 +181,9 @@ else
 
 
     </div>
-    <div style="width: 30%; float:right;" class="container">
-        <div style="height:100px;width:140px;overflow:auto;border:8px solid yellowgreen;padding:2%">
-            This scroll box has had a border added to it. You can add borders to anything in HTML - including scroll boxes.
-            This scroll box has had a border added to it. You can add borders to anything in HTML - including scroll boxes.
 
-            This scroll box has had a border added to it. You can add borders to anything in HTML - including scroll boxes.
-            This scroll box has had a border added to it. You can add borders to anything in HTML - including scroll boxes.
-            This scroll box has had a border added to it. You can add borders to anything in HTML - including scroll boxes.
 
-            This scroll box has had a border added to it. You can add borders to anything in HTML - including scroll boxes.
-            This scroll box has had a border added to it. You can add borders to anything in HTML - including scroll boxes.
-
-        </div>
-    </div>
+    <!--Same as MyPictures /////////////////////////////////////////////////////////////////////////////-->
 
 
 <?php  include "./Common/Footer.php"; 

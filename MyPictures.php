@@ -166,7 +166,6 @@ if (isset($_GET['delete']))
                 </select>
             </div>
         </form>
-    </div>
 
 
     <h1 align="center"> <?php echo $basename;?></h1>
@@ -207,9 +206,11 @@ if (isset($_GET['delete']))
             </div>
         </div>
     </div>
-</div>
+    </div>
 
-<!--RIGHT SIDE////////////////////////////////////////-->
+
+
+    <!--RIGHT SIDE////////////////////////////////////////-->
 
     <div style="width: 30%; padding-bottom: auto; padding-top:6% ;padding-left:2%;float:right;" class="container">
         <div style="height:30em;width:100%;overflow:auto;border:8px solid white;padding:2%">
