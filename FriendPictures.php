@@ -183,9 +183,10 @@ else
             </form>
 
 
-            <h1 align="center"> <?php echo $basename;?></h1>
 
             <div class="img-container2">
+                <h1 align="center"> <?php echo $basename;?></h1>
+
                 <!--    display the image based on the basename-->
                 <img src="<?php echo $displayPicture ?>" >
 <!--                <form action="FriendPictures.php?imageName="--><?php //$basename; ?><!-- method="get">-->
