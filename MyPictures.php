@@ -8,11 +8,24 @@ if (!isset($_SESSION['loggedInUser'])) {
     header('Location: Login.php');
 }
 
-if ($_POST['albumId'] != $_SESSION['selectedID']) {
-    unset($_SESSION['displayedImage']);
-    unset($_SESSION['currentBasename']);
-    unset($_SERVER['QUERY_STRING']);
+if (!isset($_POST['albumId']) && !isset($_SESSION['selectedID'])) {
+    $sql = "SELECT MIN(AlbumID) from Album";
+    $preparedQuery = $myPDO->prepare($sql);
+    $preparedQuery->execute();
+    $result = $preparedQuery->fetch();
+    
+    $albumID = $result['MIN(AlbumID)'];
+    
+    
+    $albumPath = "Users/". $_SESSION['loggedInUser']->getStrippedName() . '/' . $albumID . "/AlbumPictures/";
+    //array of the filenames in folder
+    $albumImagesArray = scandir($albumPath);
+    
+    if (count($albumImagesArray) < 2 || $albumImagesArray == null) {
+        $basename = "YOU DO NOT CURRENTLY HAVE ANY PHOTOS TO DISPLAY. </br> PLEASE UPLOAD SOME USING THE UPLOAD PAGE."; 
+    }    
 }
+
 //Keep track of dropdown selection and set selectedID session
 if (isset($_POST['albumId'])) {
     $selectedAlbum = $_POST['albumId'];
@@ -22,9 +35,6 @@ if (isset($_POST['albumId'])) {
 //Keeping albumID consistent with dropdown
 if (isset($_SESSION['selectedID'])) {
     $albumID = $_SESSION['selectedID'];
-}
-else {
-    $albumID = $_POST['albumId'];
 }
 
 $myUser = $_SESSION['loggedInUser'];
@@ -73,17 +83,8 @@ else
         //if there are no pictures uploaded display this message. Starts at 4 because of .DS_Store file
         if ((count($thumbnailArray) < 3) || $thumbnailArray == null)
         {
-            $basename = "YOU DO NOT CURRENTLY HAVE ANY PHOTOS TO DISPLAY. </br> <hr></br> PLEASE UPLOAD SOME USING THE UPLOAD PAGE.";
+            $basename = "YOU DO NOT CURRENTLY HAVE ANY PHOTOS TO DISPLAY. </br> PLEASE UPLOAD SOME USING THE UPLOAD PAGE.";
         }
-        else
-        {
-
-            $displayPicture = $albumPath.$albumImagesArray[2];
-
-            $basename = $albumImagesArray[2];
-
-        }
-
     }
 
 }
@@ -91,8 +92,7 @@ else
 if (isset($_GET['btnLeft']))
 {
 
-    rotateImage($displayPicture, -90);
-
+    rotateImage($_SESSION['displayedImage'], -90);
     header("location: MyPictures.php");
     exit();
 
@@ -100,7 +100,7 @@ if (isset($_GET['btnLeft']))
 }
 if (isset($_GET['btnRight']))
 {
-    rotateImage($displayPicture, 90);
+    rotateImage($_SESSION['displayedImage'], 90);
 
     header("location: MyPictures.php");
     exit();
@@ -112,24 +112,24 @@ if (isset($_GET['download']))
 {
     header('Content-Description: File Transfer');
     header('Content-Type: application/octet-stream');
-    header('Content-Disposition: attachment; filename='.$basename);
+    header('Content-Disposition: attachment; filename='.$_SESSION['currentBasename']);
     header('Content-Transfer-Encoding: binary');
     header('Expires: 0');
     header('Cache-Control: must-revalidate, post-check=0, pre-check=0');
     header('Pragma: public');
-    header('Content-Length: '.filesize($displayPicture));
+    header('Content-Length: '.filesize($_SESSION['displayedImage']));
     ob_clean();
     flush();
-    readfile($displayPicture);
+    readfile($_SESSION['displayedImage']);
     exit;
 }
 
 if (isset($_GET['delete']))
 {
 
-    unlink($originalFilePath . '/' . $basename);
-    unlink($albumPath . '/' . $basename);
-    unlink($thumbnailPath . '/' . $basename);
+    unlink($originalFilePath . '/' . $_SESSION['currentBasename']);
+    unlink($albumPath . '/' . $_SESSION['currentBasename']);
+    unlink($thumbnailPath . '/' . $_SESSION['currentBasename']);
 
 
     if (isset($_SESSION['displayedImage']))
@@ -145,13 +145,12 @@ if (isset($_GET['delete']))
     exit();
 }
 
-
 ?>
     <div class="container">
         <h1 align="center">My Pictures</h1>
         <hr>
 
-        <form method="post" class="form-horizontal" action="<?php $_SERVER["PHP_SELF"]; ?>">
+        <form method="post" class="form-horizontal" action="MyPictures.php">
             <div class="col-sm-2">
                 <select name="albumId" onchange="this.form.submit();">
                     <?php
@@ -161,7 +160,7 @@ if (isset($_GET['delete']))
 
                     foreach ($preparedQuery as $row) {
                         printf("<option value='%s' ", $row['AlbumID']);
-                        if ($_POST['albumId'] && $_POST['albumId'] == $row['AlbumID']) {
+                        if ($_SESSION['selectedID'] == $row['AlbumID']) {
                             echo "selected";
                         }
                         printf (">%s - last updated on %s</option>", $row['Title'], $row['Date_Updated']);
