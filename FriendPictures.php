@@ -62,8 +62,6 @@ else
     }
 }
 
-
-
 //FROM MY PICTURES========================================================================
     $myOwnerID = $_SESSION['loggedInUser']->getID();
     if (!isset($_POST['albumId']) && !isset($_SESSION['selectedID2'])) {
@@ -90,6 +88,14 @@ else
     $basename = "YOU DO NOT CURRENTLY HAVE ANY PHOTOS TO DISPLAY. </br> PLEASE UPLOAD SOME USING THE UPLOAD PAGE.";
     }
     }
+
+///             Comments and Icon Functionality             ///
+if (isset($_POST['btnSubmitComment']) && isset($_GET['imageName'])) {
+    $sql = "INSERT INTO Comment (CommentID, AuthorID, PictureID, CommentText, Date) "
+            . "VALUES (DEFAULT,?,?,?,?)";
+    $preparedQuery = $myPDO->prepare($sql);
+    $preparedQuery->execute([$myOwnerID, (int)$_GET['id'], $_POST['comment'], date("Y-m-d H:i:s")]);
+}
 
     //Keep track of dropdown selection and set selectedID session
     if (isset($_POST['albumId'])) {
@@ -119,6 +125,7 @@ else
     {
     //getting basename from URL
     $basename = $_GET['imageName'];
+    $imageID = $_GET['id'];
     foreach ($albumImagesArray as $image)
     {
     if ($image == $basename)
@@ -128,6 +135,7 @@ else
     //sometimes we need a session to keep track of the selected picture
     $_SESSION['displayedImage2'] = $displayPicture;
     $_SESSION['currentBasename2'] = $basename;
+    $_SESSION['selectedImageID'] = $imageID;
     }
     }
     }
@@ -194,10 +202,14 @@ else
                     <div class="row text-center">
                         <?php
                         if (count($thumbnailArray) > 2) {
+                            $sql = "SELECT PictureID from Picture WHERE AlbumID = ?";
+                            $preparedQuery = $myPDO->prepare($sql);
+                            $preparedQuery->execute([$_SESSION['selectedID2']]);
+                            $results = $preparedQuery->fetchAll();
+
                             for ($i = 2; $i < count($thumbnailArray); $i++) {
                                 $totalThumbPath = $thumbnailPath.'/'.$thumbnailArray[$i];
                                 $fileInfo = pathinfo($totalThumbPath);
-
                                 if ($fileInfo['basename']==$basename)
                                 {
                                     printf("<a href='FriendPictures.php?imageName=%s&id=%s'> <img class='activeThumb' src='%s'/></a>", $fileInfo['basename'], $results[$i-2]['PictureID'], $totalThumbPath);
@@ -205,7 +217,10 @@ else
                                 else {
                                     printf("<a href='FriendPictures.php?imageName=%s&id=%s'> <img src='%s'/></a>", $fileInfo['basename'], $results[$i-2]['PictureID'], $totalThumbPath);
                                 }
+
+
                             }
+                    
                         }
                         ?>
                     </div>
@@ -222,56 +237,49 @@ else
                 <div>
                     <h4>Description:</h4>
                     <?php
-                    //input description here
+                    $sql = "SELECT Description FROM Picture WHERE PictureID = ?";
+                    $preparedQuery = $myPDO->prepare($sql);
+                    $preparedQuery->execute([(int)$_SESSION['selectedID2']]);
+                    $results = $preparedQuery->fetch();
+                    printf("<p>%s</p>",$results['Description']);
                     ?>
-                    <p>Lorem IpsumLorem IpsumLorem IpsumLorem Ipsum #Lorem Ipsum</p>
+                    
                 </div>
                 <div>
                     <h4>Comments</h4>
-                    <!--TODO Do a foreach here?-->
+                    <?php
+                    $sql = "select User.Name, CommentText, Date From Comment Inner Join User "
+                        . "ON Comment.AuthorID = User.UserID Where PictureID = ?";
+                    $preparedQuery = $myPDO->prepare($sql);
+                    $preparedQuery->execute([(int) $_SESSION['selectedImageID']]);
+            
+                    foreach ($preparedQuery as $row) {
+                        printf("<span style='color: navy'>%s(%s)</span>", $row['Name'], $row['Date']);
+                        echo ' <div style="border:2px solid white; background-color: ghostwhite;" >';
+                        printf('%s</div>', $row['CommentText']);
+                    }
+                    ?>
 
-                    <span style="color: navy">Name of Commenter + metadata<?php ?></span>
-                    <div style="border:2px solid white; background-color: ghostwhite;" >
-<!--                        comment text--><?php //text?>
-                        This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
                     </div>
-<!--                    Examples v-->
-                    <span style="color: navy">Name of Commenter + metadata<?php ?></span>
-                    <div style="border:2px solid white; background-color: ghostwhite;" >
-                        <!--                        comment text--><?php //text?>
-                        This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
+              
                     </div>
-                    <span style="color: navy">Name of Commenter + metadata<?php ?></span>
-                    <div style="border:2px solid white; background-color: ghostwhite;" >
-                        <!--                        comment text--><?php //text?>
-                        This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
-                    </div>
-
-                    <span style="color: navy">Name of Commenter + metadata<?php ?></span>
-                    <div style="border:2px solid white; background-color: ghostwhite;" >
-                        <!--                        comment text--><?php //text?>
-                        This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
-                    </div>
-
-                    <span style="color: navy">Name of Commenter + metadata<?php ?></span>
-                    <div style="border:2px solid white; background-color: ghostwhite;" >
-                        <!--                        comment text--><?php //text?>
-                        This picture is trash. Omg you're so cool. Please marry me. Hey do you have a bf? Omg yass queen. Love you! :D
-                    </div>
-<!--                    Examples ^-->
                 </div>
             </div>
             <!--        Comment Text Box-->
-            <!--        Make a form here for submitting-->
-            <textarea rows="4" cols="50" style="height:7em;width:100%;" placeholder="Leave a comment"></textarea>
+            <<form method="post" class="form-horizontal" action="<?php $_SERVER['REQUEST_URI']; ?>">
+            <br>
+            <textarea name="comment" rows="4" cols="50" style="height:7em;width:100%;" placeholder="Leave a comment"></textarea>
             <div align="left">
                 <br>
-                <button type="submit" name="btnSubmitComment" value="Add Comment" class="btn btn-primary">Add Comment</button>
-
+                <?php 
+                if (isset($_GET['imageName'])) {
+                   echo '<button type="submit" name="btnSubmitComment" value="Add Comment" class="btn btn-primary">Add Comment</button> ';
+                }
+                ?>
             </div>
-
+        </form>
         </div>
     </div>
 
 
-<?php  include "./Common/Footer.php"; 
+<?php  include "./Common/Footer.php"; echo $_SESSION['selectedID2'];
